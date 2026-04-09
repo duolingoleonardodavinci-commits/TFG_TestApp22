@@ -52,6 +52,30 @@
                 $rUsuario = isset($_POST['respuestas']) ? $_POST['respuestas'] : []; 
                 $resultado = comprobarRespuestas($rUsuario, $preguntas);
                 
+                // ====================================================================
+                // NUEVO: GUARDAR LA PUNTUACIÓN EN LA BASE DE DATOS
+                // ====================================================================
+                $id_alumno = $_SESSION['id_alumno'] ?? null; 
+                $nota_bd = $resultado['nota_final']; // Viene de 0 a 100 desde la función
+
+                if ($id_alumno && $id_test) {
+                    try {
+                        $conn = conexionBD();
+                        $stmt = $conn->prepare("INSERT INTO puntuacion (id_alumno, id_test, puntuacion) VALUES (:id_alumno, :id_test, :puntuacion)");
+                        $stmt->execute([
+                            ':id_alumno' => $id_alumno,
+                            ':id_test' => $id_test,
+                            ':puntuacion' => $nota_bd
+                        ]);
+                    } catch (PDOException $e) {
+                        // Si falla, lo mostramos sutilmente en la consola del navegador para no romper la pantalla del usuario
+                        echo "<script>console.error('Error al guardar puntuación: " . addslashes($e->getMessage()) . "');</script>";
+                    } finally {
+                        $conn = null;
+                    }
+                }
+                // ====================================================================
+
                 echo "<div class='results'>";
                 echo "<h2>¡Test Completado!</h2>";
                 echo "<p class='subtitle'>Resultados del módulo: <b>" . htmlspecialchars($modulo) . "</b></p>";

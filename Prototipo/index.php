@@ -6,8 +6,9 @@
     unset($_SESSION['orden_internos']);
     
     // Temporal ----------------------
-        $_SESSION['Nombre'] = 'Pepe';
-        $_SESSION['Apellidos'] = 'Malho';
+        $_SESSION['id_alumno'] = 'al01@edu.es'; // Añadimos un alumno de prueba que tiene notas en la BD
+        $_SESSION['Nombre'] = 'Lucas';
+        $_SESSION['Apellidos'] = 'Pérez';
         $_SESSION['Ciclo'] = 'DAM';
     // -------------------------------
     include 'funciones/funciones.php';
@@ -33,6 +34,7 @@
                 <button class="nav-btn" onclick="showSection('sec-crear-pregunta', this)">Preguntas</button>
                 <button class="nav-btn" onclick="showSection('sec-crear-test', this)">Tests</button>
                 <button class="nav-btn active" onclick="showSection('sec-probar-test', this)">Probar Test</button>
+                <button class="nav-btn" onclick="showSection('sec-historial', this)">Historial</button>
             </div>
 
             <div id="sec-crear-pregunta" class="section-content">
@@ -123,6 +125,24 @@
                     <input type="submit" value="Comenzar Test" name="iniciar_test" class="btn">
                 </form>
             </div>
+
+            <div id="sec-historial" class="section-content">
+                <h2>Mis Puntuaciones</h2>
+                <div style="background-color: #FAFAFA; padding: 20px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div class="form-group">
+                        <label style="font-weight: 600;">Selecciona un Módulo para ver tu historial:</label>
+                        <select id="historial_select_modulo">
+                            <option value="">Selecciona un módulo...</option>
+                            <?php try { desplegableModulos($_SESSION['Ciclo']); } catch(PDOException $e) { echo error($e); } ?>
+                        </select>
+                    </div>
+                    
+                    <div id="historial_resultados" style="margin-top: 20px;">
+                        <p style="text-align: center; color: var(--text-muted);">Selecciona un módulo para ver tus notas.</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <script>
@@ -140,9 +160,6 @@
                 const inputCiclo = document.getElementById('ciclo');
                 const ciclo = inputCiclo ? inputCiclo.value : 'DAM';
 
-                // =========================================================
-                // FUNCIÓN PARA SOLICITAR TESTS (Reutilizada)
-                // =========================================================
                 function solicitarTests(moduloSeleccionado, idSelectDestino) {
                     const selectTest = document.getElementById(idSelectDestino);
                     if (!selectTest) return;
@@ -175,15 +192,11 @@
                         }).catch(e => console.error("Error Fetch Tests:", e));
                 }
 
-                // =========================================================
-                // FUNCIÓN PARA SOLICITAR PREGUNTAS (NUEVO)
-                // =========================================================
                 function solicitarPreguntas(moduloSeleccionado) {
                     const selectPregunta = document.getElementById('gp_select_pregunta');
                     const inputBuscar = document.getElementById('gp_buscar_pregunta');
                     const btnCrear = document.getElementById('gp_btn_crear');
 
-                    // Reset botones edición
                     document.getElementById('gp_btn_editar').style.pointerEvents = 'none';
                     document.getElementById('gp_btn_editar').style.opacity = '0.4';
                     document.getElementById('gp_btn_eliminar').style.pointerEvents = 'none';
@@ -199,7 +212,6 @@
                         return;
                     }
 
-                    // Activamos botón de crear (le pasamos el módulo por URL)
                     btnCrear.href = `gestionar_pregunta.php?accion=nuevo&modulo=${encodeURIComponent(moduloSeleccionado)}`;
                     btnCrear.style.pointerEvents = 'auto';
                     btnCrear.style.opacity = '1';
@@ -214,31 +226,23 @@
                                     selectPregunta.disabled = true;
                                     inputBuscar.disabled = true;
                                 } else {
-                                    // Rellenamos la lista
                                     datos.forEach(p => {
                                         const op = document.createElement('option');
                                         op.value = p.id_pregunta;
-                                        // Mostramos el tipo [TEST] o [TF] seguido del título
                                         op.textContent = `[${p.tipo}] ${p.titulo}`; 
                                         selectPregunta.appendChild(op);
                                     });
                                     selectPregunta.disabled = false;
                                     inputBuscar.disabled = false;
-                                    inputBuscar.value = ''; // Limpiar buscador
+                                    inputBuscar.value = '';
                                 }
                             }
                         }).catch(e => console.error("Error Fetch Preguntas:", e));
                 }
 
-                // =========================================================
-                // DELEGACIÓN DE EVENTOS PRINCIPAL
-                // =========================================================
                 document.addEventListener('change', function(event) {
-                    
                     // --- GESTIÓN DE PREGUNTAS ---
-                    if (event.target.id === 'gp_select_modulo') {
-                        solicitarPreguntas(event.target.value);
-                    }
+                    if (event.target.id === 'gp_select_modulo') solicitarPreguntas(event.target.value);
 
                     if (event.target.id === 'gp_select_pregunta') {
                         const idPregunta = event.target.value;
@@ -275,29 +279,82 @@
                         }
                     }
                     
-                    // --- SELECTORES DE MÓDULO PARA TESTS ---
                     if (event.target.id === 'select_modulo') solicitarTests(event.target.value, 'select_test');
                     if (event.target.id === 'ct_select_modulo') solicitarTests(event.target.value, 'ct_select_test');
+
+                    // =========================================================
+                    // LÓGICA NUEVA: CARGAR HISTORIAL AL SELECCIONAR MÓDULO
+                    // =========================================================
+                    if (event.target.id === 'historial_select_modulo') {
+                        const modulo = event.target.value;
+                        const contenedor = document.getElementById('historial_resultados');
+
+                        if (modulo === "") {
+                            contenedor.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Selecciona un módulo para ver tus notas.</p>';
+                            return;
+                        }
+
+                        contenedor.innerHTML = '<p style="text-align: center;">⏳ Cargando historial...</p>';
+
+                        fetch(`obtener_historial.php?modulo=${encodeURIComponent(modulo)}`)
+                            .then(r => r.json())
+                            .then(datos => {
+                                if (datos.error) {
+                                    contenedor.innerHTML = `<p style="color: red; text-align: center;">Error: ${datos.error}</p>`;
+                                    return;
+                                }
+                                if (datos === 'vacio') {
+                                    contenedor.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Aún no tienes puntuaciones registradas en este módulo.</p>';
+                                    return;
+                                }
+
+                                // Pintamos la tabla con los resultados
+                                let html = `
+                                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                        <thead>
+                                            <tr style="background-color: var(--primary); color: white;">
+                                                <th style="padding: 12px; text-align: left;">Nombre del Test</th>
+                                                <th style="padding: 12px; text-align: left;">Fecha</th>
+                                                <th style="padding: 12px; text-align: center;">Nota Final</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                `;
+                                
+                                datos.forEach(fila => {
+                                    const fecha = new Date(fila.fecha).toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                                    const nota = (fila.puntuacion / 10).toFixed(1); // Convierte 85 a 8.5
+                                    const colorNota = fila.puntuacion >= 50 ? '#10B981' : '#EF4444'; // Verde si aprueba, Rojo si suspende
+
+                                    html += `
+                                        <tr style="border-bottom: 1px solid var(--border);">
+                                            <td style="padding: 12px; font-weight: 500;">${fila.nombre}</td>
+                                            <td style="padding: 12px; color: var(--text-muted); font-size: 0.9rem;">${fecha}</td>
+                                            <td style="padding: 12px; text-align: center; font-weight: bold; font-size: 1.1rem; color: ${colorNota};">${nota} / 10</td>
+                                        </tr>
+                                    `;
+                                });
+                                
+                                html += `</tbody></table>`;
+                                contenedor.innerHTML = html;
+                            })
+                            .catch(err => {
+                                contenedor.innerHTML = '<p style="color: red; text-align: center;">❌ Error de conexión al obtener el historial.</p>';
+                                console.error(err);
+                            });
+                    }
                 });
 
-                // =========================================================
-                // EVENTOS DE ESCRITURA (Inputs)
-                // =========================================================
-                
-                // 1. Buscador de Preguntas (Filtro en tiempo real)
                 document.getElementById('gp_buscar_pregunta').addEventListener('input', function(e) {
                     const filtro = e.target.value.toLowerCase();
                     const opciones = document.querySelectorAll('#gp_select_pregunta option');
-                    
                     opciones.forEach(opcion => {
-                        if (opcion.disabled) return; // Ignorar la opción por defecto
+                        if (opcion.disabled) return; 
                         const texto = opcion.textContent.toLowerCase();
-                        // Oculta o muestra la opción según si coincide con la búsqueda
                         opcion.style.display = texto.includes(filtro) ? '' : 'none';
                     });
                 });
 
-                // 2. Input de Crear Nuevo Test
                 document.getElementById('nuevo_test_input').addEventListener('input', function() {
                     const btnCrear = document.getElementById('gt_btn_crear');
                     const modulo = document.getElementById('ct_select_modulo').value;
@@ -312,7 +369,6 @@
                         btnCrear.style.opacity = '0.4';
                     }
                 });
-
             });
         </script>
     </body>

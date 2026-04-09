@@ -4,6 +4,9 @@
     // =========================================================================
     define('ACTIVAR_ALEATORIEDAD', true); 
 
+    // CONFIGURAMOS LA ZONA HORARIA A ESPAÑA
+    date_default_timezone_set('Europe/Madrid');
+
     function test_input($data) {  
         $data = trim($data);
         $data = stripslashes($data);
