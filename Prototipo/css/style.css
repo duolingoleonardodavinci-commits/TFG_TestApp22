@@ -279,3 +279,52 @@ button:hover, input[type="submit"]:hover, .btn:hover {
     font-size: 0.9rem;
     font-weight: 700;
 }
+
+/* =========================================
+   MENÚ DE NAVEGACIÓN (TABS)
+========================================= */
+.nav-menu {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: auto; /* Para que no ocupen el 100% como los otros botones */
+}
+
+.nav-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.nav-btn.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Ocultar y mostrar secciones */
+.section-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.section-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

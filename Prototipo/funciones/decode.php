@@ -27,7 +27,6 @@
             $keys2 = array_keys($contenido['div-2']);
             $claves_select = array_keys($contenido['div-2']);
 
-            // --- INTERRUPTOR APLICADO AQUÍ ---
             if (ACTIVAR_ALEATORIEDAD) {
                 shuffle($keys1); 
                 shuffle($keys2); 
@@ -69,36 +68,34 @@
 
         $max_rows = max(count($keys1), count($keys2));
 
-        echo '<div class="conecta-grid">'; 
+        echo '<div class="conecta-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; margin-bottom: 10px;">'; 
 
         for ($i = 0; $i < $max_rows; $i++) {
             
-            echo '<div class="conecta-item-izq">';
+            // 1. COLUMNA IZQUIERDA
+            echo '<div class="conecta-item-izq" style="display: flex; align-items: center; gap: 15px; width: 100%; position: relative;">';
             if (isset($keys1[$i])) {
                 $number = $keys1[$i];
                 $texto_opcion = $contenido['div-1'][$number];
                 $num_visual = $map_numeros[$number]; 
-                echo '<strong>' . htmlspecialchars($num_visual) . '.</strong> ' . htmlspecialchars($texto_opcion);
-            }
-            echo '</div>';
-
-            echo '<div class="conecta-select-centro">';
-            if (isset($keys1[$i])) {
-                $number = $keys1[$i];
-                $classSelect = '';
+                
+                $classSelect = 'conecta-grupo-' . $id_pregunta; 
                 $user_ans = $estado ? ($estado['usuario'][$number] ?? '') : '';
                 
-                // CAMBIO AQUÍ: Evaluamos si es correcto para pintar de verde
                 if ($estado) {
                     $correct_ans = $estado['correcta'][$number] ?? '';
                     if ($user_ans === $correct_ans) {
-                        $classSelect = 'correct-bg'; 
+                        $classSelect .= ' correct-bg'; 
                     } else {
-                        $classSelect = 'incorrect-bg'; 
+                        $classSelect .= ' incorrect-bg'; 
                     }
                 }
 
-                echo '<select name="respuestas[' . $id_pregunta . '][' . $number . ']" class="' . $classSelect . '" ' . $disabled . ' ' . (!$estado?'required':'') . '>';
+                // CONTENEDOR DEL DESPLEGABLE Y SU RESPUESTA CORRECTA
+                echo '<div style="position: relative; display: flex; flex-direction: column; align-items: center; flex-shrink: 0;">';
+
+                // DESPLEGABLE CON LOS ESTILOS SOLICITADOS
+                echo '<select name="respuestas[' . $id_pregunta . '][' . $number . ']" class="' . $classSelect . '" style="width: 70px; padding: 0.4rem 1.2rem 0.4rem 0.8rem; font-size: 0.95rem; background-position: right 0.3rem center; text-align: center; cursor: pointer;" ' . $disabled . ' ' . (!$estado?'required':'') . ' onchange="actualizarSelectsConecta(' . $id_pregunta . ')">';
                 echo '<option value="">-</option>';
                 
                 foreach ($display_to_original as $disp_letter => $orig_key)  {
@@ -106,25 +103,67 @@
                     echo '<option value="' . htmlspecialchars($orig_key) . '" ' . $selected . '>' . htmlspecialchars($disp_letter) . '</option>';
                 }
                 echo '</select>';
-                
+
+                // AVISO DE RESPUESTA CORRECTA DEBAJO (Absoluto para no desplazar)
                 if ($estado && $user_ans !== $correct_ans) {
                     $letra_correcta_visual = isset($map_letras[$correct_ans]) ? $map_letras[$correct_ans] : $correct_ans;
-                    echo '<div class="correct-text" style="font-size: 0.8rem; margin-top: 4px;">Correcta: ' . htmlspecialchars($letra_correcta_visual) . '</div>';
+                    echo '<div class="correct-text" style="position: absolute; top: 100%; margin-top: 4px; font-size: 0.75rem; font-weight: bold; color: #EF4444; white-space: nowrap;">Correcta: ' . htmlspecialchars($letra_correcta_visual) . '</div>';
                 }
+
+                echo '</div>'; // Fin del contenedor del desplegable
+
+                echo '<span style="flex-grow: 1;"><strong>' . htmlspecialchars($num_visual) . '.</strong> ' . htmlspecialchars($texto_opcion) . '</span>';
             }
             echo '</div>';
 
-            echo '<div class="conecta-item-der">';
+            // 2. COLUMNA DERECHA
+            echo '<div class="conecta-item-der" style="display: flex; align-items: center; width: 100%;">';
             if (isset($keys2[$i])) {
                 $letra = $keys2[$i];
                 $texto_opcion = $contenido['div-2'][$letra];
                 $letra_visual = $map_letras[$letra]; 
-                echo '<strong>' . htmlspecialchars($letra_visual) . '.</strong> ' . htmlspecialchars($texto_opcion);
+                echo '<span><strong>' . htmlspecialchars($letra_visual) . '.</strong> ' . htmlspecialchars($texto_opcion) . '</span>';
             }
             echo '</div>';
         }
 
         echo '</div>'; 
+
+        // =========================================================================
+        // SCRIPT JAVASCRIPT PARA OCULTAR OPCIONES
+        // =========================================================================
+        static $script_conecta_impreso = false;
+        if (!$script_conecta_impreso) {
+            echo '
+            <script>
+                function actualizarSelectsConecta(idPregunta) {
+                    const selects = document.querySelectorAll(".conecta-grupo-" + idPregunta);
+                    const valoresSeleccionados = Array.from(selects)
+                        .map(s => s.value)
+                        .filter(v => v !== "");
+
+                    selects.forEach(select => {
+                        const valorActual = select.value;
+                        Array.from(select.options).forEach(opcion => {
+                            if (opcion.value === "") return; 
+                            
+                            if (valoresSeleccionados.includes(opcion.value) && opcion.value !== valorActual) {
+                                opcion.style.display = "none";
+                                opcion.disabled = true;       
+                            } else {
+                                opcion.style.display = "";     
+                                opcion.disabled = false;       
+                            }
+                        });
+                    });
+                }
+            </script>';
+            $script_conecta_impreso = true;
+        }
+
+        if (!$estado) {
+            echo '<script>actualizarSelectsConecta(' . $id_pregunta . ');</script>';
+        }
     }
 
     function decode_texto($id_pregunta, $contenido, $estado = null)  {  
