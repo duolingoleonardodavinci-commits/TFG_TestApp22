@@ -13,7 +13,7 @@ class AlumnoModuloController extends Controller
     public function modulosMostrar() {
         $modulos = Auth::user()->alumno->modulos;
 
-        return view('alumno.modulo.modulos', compact('modulos'));
+        return view('usuario.alumno.modulo.matriculacion.modulos', compact('modulos'));
     }
 
     // Muestra todos los módulos creados por los profesores
@@ -25,13 +25,13 @@ class AlumnoModuloController extends Controller
             $query->where('alumnos.id_alumno', $alumno->id_alumno);
         })->get();
 
-        return view('alumno.modulo.unirseModulo', compact('modulos'));
+        return view('usuario.alumno.modulo.matriculacion.seleccionarModulo', compact('modulos'));
     }
 
     // Muestra el formulario para introducir la clave de matriculación al módulo
 
     public function matricularseModuloMostrar(Modulo $modulo) {
-        return view('alumno.modulo.matricularseModulo', compact('modulo'));
+        return view('usuario.alumno.modulo.matriculacion.matricularseModulo', compact('modulo'));
     }
 
     // Introduce al alumno en el módulo usando una tabla pivote
@@ -62,6 +62,6 @@ class AlumnoModuloController extends Controller
     // --- DASHBOARD MÓDULOS DE ALUMNOS ---
 
     public function moduloDashboardMostrar(Modulo $modulo) {
-        return view('alumno.modulo.dashboard.dashboard', compact('modulo'));
+        return view('usuario.alumno.modulo.dashboard.dashboard', compact('modulo'));
     }
 }
