@@ -18,11 +18,16 @@ class InicioController
     }
 
     public function loginMostrar() {
-        return view('auth.login');
+        // Deshabilita el caché para que el usuario no pueda vovler a la página de login con las flechas de navegación
+        return response()->view('auth.login')
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache');
     }
 
     public function registerMostrar() {
-        return view('auth.register');
+        return response()->view('auth.register')
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache');
     }
 
     public function dashboardProfesorMostrar() {
