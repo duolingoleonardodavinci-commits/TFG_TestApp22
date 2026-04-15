@@ -36,15 +36,23 @@ class AlumnoModuloController extends Controller
 
     // Introduce al alumno en el módulo usando una tabla pivote
 
-    public function matricularseModuloEntrar(Request $request, Modulo $modulo) {
-        $clave_intento = $request->clave_matriculacion;
+    public function matricularseModuloEntrar(Request $request, Modulo $modulo)
+{
+        $alumno = Auth::user()->alumno;
 
-        if ($modulo->clave_matriculacion !== $clave_intento) {
-            return back()
-            ->withErrors(['clave_matriculacion' => 'Clave incorrecta']);
+        // Comprobamos si el alumno ya pertenece al módulo
+
+        if ($modulo->alumnos()->where('alumnos.id_alumno', $alumno->id_alumno)->exists()) {
+            return redirect()->route('alumno.moduloDashboard.mostrar', compact('modulo'));
         }
 
-        $alumno = Auth::user()->alumno;
+        // Comprobamos si la clave de matriculación es correcta
+
+        if ($modulo->clave_matriculacion !== $request->clave_matriculacion) {
+            return back()->withErrors(['clave_matriculacion' => 'Clave incorrecta']);
+        }
+
+        // Matriculamos al alumno
 
         $alumno->modulos()->attach($modulo->id_modulo);
 
