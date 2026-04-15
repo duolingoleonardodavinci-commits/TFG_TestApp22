@@ -13,7 +13,7 @@ class AlumnoModuloController extends Controller
     public function modulosMostrar() {
         $modulos = Auth::user()->alumno->modulos;
 
-        return view('alumno.modulo.modulos', compact('modulos'));
+        return view('usuario.alumno.modulo.matriculacion.modulos', compact('modulos'));
     }
 
     // Muestra todos los módulos creados por los profesores
@@ -25,26 +25,34 @@ class AlumnoModuloController extends Controller
             $query->where('alumnos.id_alumno', $alumno->id_alumno);
         })->get();
 
-        return view('alumno.modulo.unirseModulo', compact('modulos'));
+        return view('usuario.alumno.modulo.matriculacion.seleccionarModulo', compact('modulos'));
     }
 
     // Muestra el formulario para introducir la clave de matriculación al módulo
 
     public function matricularseModuloMostrar(Modulo $modulo) {
-        return view('alumno.modulo.matricularseModulo', compact('modulo'));
+        return view('usuario.alumno.modulo.matriculacion.matricularseModulo', compact('modulo'));
     }
 
     // Introduce al alumno en el módulo usando una tabla pivote
 
-    public function matricularseModuloEntrar(Request $request, Modulo $modulo) {
-        $clave_intento = $request->clave_matriculacion;
+    public function matricularseModuloEntrar(Request $request, Modulo $modulo)
+{
+        $alumno = Auth::user()->alumno;
 
-        if ($modulo->clave_matriculacion !== $clave_intento) {
-            return back()
-            ->withErrors(['clave_matriculacion' => 'Clave incorrecta']);
+        // Comprobamos si el alumno ya pertenece al módulo
+
+        if ($modulo->alumnos()->where('alumnos.id_alumno', $alumno->id_alumno)->exists()) {
+            return redirect()->route('alumno.moduloDashboard.mostrar', compact('modulo'));
         }
 
-        $alumno = Auth::user()->alumno;
+        // Comprobamos si la clave de matriculación es correcta
+
+        if ($modulo->clave_matriculacion !== $request->clave_matriculacion) {
+            return back()->withErrors(['clave_matriculacion' => 'Clave incorrecta']);
+        }
+
+        // Matriculamos al alumno
 
         $alumno->modulos()->attach($modulo->id_modulo);
 
@@ -54,6 +62,6 @@ class AlumnoModuloController extends Controller
     // --- DASHBOARD MÓDULOS DE ALUMNOS ---
 
     public function moduloDashboardMostrar(Modulo $modulo) {
-        return view('alumno.modulo.dashboard.dashboard', compact('modulo'));
+        return view('usuario.alumno.modulo.dashboard.dashboard', compact('modulo'));
     }
 }

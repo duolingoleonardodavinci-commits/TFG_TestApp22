@@ -11,13 +11,13 @@ class ProfesorModuloController extends Controller {
     // Mostrar la vista del módulo del profesor
 
     public function modulosMostrar(Modulo $modulo) {
-        return view('profesor.modulo.modulo', compact('modulo'));
+        return view('usuario.profesor.modulo.modulo', compact('modulo'));
     }
 
     // Mostrar la vista de la creación del módulo
 
     public function crearModuloMostrar() {
-        return view('profesor.modulo.crearModulo');
+        return view('usuario.profesor.modulo.crearModulo');
     }
 
     // Crear el modulo

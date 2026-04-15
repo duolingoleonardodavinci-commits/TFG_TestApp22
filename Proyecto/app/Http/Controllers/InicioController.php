@@ -10,8 +10,8 @@ class InicioController
     public function indexMostrar() {
         if (Auth::check()) {
             return Auth::user()->esProfesor()
-                ? view('profesor.dashboard')
-                : view('alumno.dashboard');
+                ? view('usuario.profesor.dashboard')
+                : view('usuario.alumno.dashboard');
         }
 
         return view('index');
@@ -26,10 +26,10 @@ class InicioController
     }
 
     public function dashboardProfesorMostrar() {
-        return view('profesor.dashboard');
+        return view('usuario.profesor.dashboard');
     }
 
     public function dashboardAlumnoMostrar() {
-        return view('alumno.dashboard');
+        return view('usuario.alumno.dashboard');
     }
 }
