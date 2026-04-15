@@ -13,6 +13,14 @@ class AuthController extends Controller {
 
     public function login(Request $request) {
 
+        // En el caso de que ya haya iniciado sesión
+
+        if (Auth::check()) {
+            return redirect()->intended('/')->with('success', 'Bienvenido de vuelta');
+        }
+
+        // Se comprueba las credenciales
+        
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -49,7 +57,7 @@ class AuthController extends Controller {
         ]);
 
         Alumno::create([
-            'id_usuario' => $usuario->id_usuario,
+            'id_alumno' => $usuario->id_usuario,
         ]);
 
         Auth::login($usuario);
