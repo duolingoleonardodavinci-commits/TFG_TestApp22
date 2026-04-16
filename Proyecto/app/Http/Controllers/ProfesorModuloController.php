@@ -39,4 +39,10 @@ class ProfesorModuloController extends Controller {
 
         return redirect()->route('profesor.modulos.mostrar', compact('modulo'));
     }
+
+    // Mostrar la vista de la creación de preguntas
+
+    public function preguntasMostrar() {
+        return view('usuario.profesor.modulo.preguntas.preguntas');
+    }
 }

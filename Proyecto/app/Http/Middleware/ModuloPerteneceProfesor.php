@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Modulo;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,10 @@ class ModuloPerteneceProfesor
 
         // Obtener el módulo desde la ruta (route model binding)
         $modulo = $request->route('modulo');
+
+        if (!$modulo instanceof Modulo) {
+            $modulo = Modulo::findOrFail($modulo);
+        }
 
         if ($modulo->id_profesor !== $usuario->id_usuario) {
             return redirect()
