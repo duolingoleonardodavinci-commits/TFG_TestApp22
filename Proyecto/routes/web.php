@@ -4,6 +4,7 @@ use App\Http\Controllers\AlumnoModuloController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfesorModuloController;
+use App\Models\Modulo;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [InicioController::class, 'indexMostrar'])->name('inicio.index.mostrar');
@@ -45,6 +46,7 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
             })
             ->group(function () {
                 Route::get('/profesor/{modulo}', 'modulosMostrar')->name('profesor.modulos.mostrar');
+                Route::get('/profesor/{modulo}/preguntas', 'preguntasMostrar')->name('profesor.preguntas.mostrar');
             });
     });
 
