@@ -39,23 +39,22 @@ class AlumnoModuloController extends Controller
     public function matricularseModuloEntrar(Request $request, Modulo $modulo) {
         $alumno = Auth::user()->alumno;
 
-        // Comprobamos si el alumno ya pertenece al módulo
-
         if ($modulo->alumnos()->where('alumnos.id_alumno', $alumno->id_alumno)->exists()) {
             return redirect()->route('alumno.moduloDashboard.mostrar', compact('modulo'));
         }
-
-        // Comprobamos si la clave de matriculación es correcta
 
         if ($modulo->clave_matriculacion !== $request->clave_matriculacion) {
             return back()->withErrors(['clave_matriculacion' => 'Clave incorrecta']);
         }
 
-        // Matriculamos al alumno
+        try {
+            $alumno->modulos()->attach($modulo->id_modulo);
 
-        $alumno->modulos()->attach($modulo->id_modulo);
+            return redirect()->route('alumno.moduloDashboard.mostrar', compact('modulo'));
 
-        return redirect()->route('alumno.moduloDashboard.mostrar', compact('modulo'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Error al matricularse, inténtalo de nuevo.']);
+        }
     }
 
     // --- DASHBOARD MÓDULOS DE ALUMNOS ---
