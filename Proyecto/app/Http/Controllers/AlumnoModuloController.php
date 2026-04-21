@@ -36,8 +36,7 @@ class AlumnoModuloController extends Controller
 
     // Introduce al alumno en el módulo usando una tabla pivote
 
-    public function matricularseModuloEntrar(Request $request, Modulo $modulo)
-{
+    public function matricularseModuloEntrar(Request $request, Modulo $modulo) {
         $alumno = Auth::user()->alumno;
 
         // Comprobamos si el alumno ya pertenece al módulo
