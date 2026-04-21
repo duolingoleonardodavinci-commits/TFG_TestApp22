@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller {
     
@@ -48,21 +49,33 @@ class AuthController extends Controller {
             'password' => 'required|string|min:4|confirmed',
         ]);
 
-        $usuario = Usuario::create([
-            'nombre' => $validated['nombre'],
-            'apellidos' => $validated['apellidos'],
-            'email' => $validated['email'],
-            'password' => $validated['password'],
-            'rol' => 'alumno', 
-        ]);
+        try {
+            DB::beginTransaction();
 
-        Alumno::create([
-            'id_alumno' => $usuario->id_usuario,
-        ]);
+            $usuario = Usuario::create([
+                'nombre' => $validated['nombre'],
+                'apellidos' => $validated['apellidos'],
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+                'rol' => 'alumno', 
+            ]);
 
-        Auth::login($usuario);
+            Alumno::create([
+                'id_alumno' => $usuario->id_usuario,
+            ]);
+
+            Auth::login($usuario);
+
+            DB::commit();
+
+            return redirect()->route('inicio.dashboardAlumno.mostrar');
+
+        } catch (\Exception $e){
+            DB::rollBack();
+            
+            return back()->withErrors(['error' => 'Error al crear la cuenta, inténtalo de nuevo.']);
+        }
  
-        return redirect()->route('inicio.dashboardAlumno.mostrar');
     }
 
     // Cerrar sesión

@@ -30,14 +30,20 @@ class ProfesorModuloController extends Controller {
             'clave_matriculacion' => 'required|string|min:4'
         ]);
 
-        $modulo = Modulo::create([
-            'ciclo' => $validated['ciclo'],
-            'modulo' => $validated['modulo'],
-            'clave_matriculacion' => $validated['clave_matriculacion'],
-            'id_profesor' => Auth::user()->profesor->id_profesor,
-        ]);
+        try {
+            $modulo = Modulo::create([
+                'ciclo' => $validated['ciclo'],
+                'modulo' => $validated['modulo'],
+                'clave_matriculacion' => $validated['clave_matriculacion'],
+                'id_profesor' => Auth::user()->profesor->id_profesor,
+            ]);
 
-        return redirect()->route('profesor.modulos.mostrar', compact('modulo'));
+            return redirect()->route('profesor.modulos.mostrar', compact('modulo'));
+        } catch(\Exception $e) {
+           return back()->withErrors(['error' => 'Error al crear el módulo, inténtalo de nuevo.']);
+        }
+        
+
     }
 
     // Mostrar la vista de la creación de preguntas

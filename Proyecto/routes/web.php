@@ -23,19 +23,19 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
     // Dashboards
     
-    Route::middleware('profesor')->group(function() {
+    Route::middleware('profesor')->prefix('profesor')->group(function() {
         // Mostrar dashboard de profesor
 
-        Route::get('/profesor', [InicioController::class, 'dashboardProfesorMostrar'])->name('inicio.dashboardProfesor.mostrar');
+        Route::get('/', [InicioController::class, 'dashboardProfesorMostrar'])->name('inicio.dashboardProfesor.mostrar');
 
         // Crear modulos
 
         Route::controller(ProfesorModuloController::class)->group(function() {
             // Mostrar formulario para crear modulos nuevos
-            Route::get('/profesor/crearModulo', 'crearModuloMostrar')->name('profesor.crearModulo.mostrar');
+            Route::get('/crearModulo', 'crearModuloMostrar')->name('profesor.crearModulo.mostrar');
 
             // Crear el modulo
-            Route::post('/profesor/crearModulo', 'crearModuloCrear')->name('profesor.crearModulo.crear');
+            Route::post('/crearModulo', 'crearModuloCrear')->name('profesor.crearModulo.crear');
         });
 
         // Acceder Modulos
@@ -45,24 +45,24 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                     ->with('error', 'Este módulo no existe.');
             })
             ->group(function () {
-                Route::get('/profesor/{modulo}', 'modulosMostrar')->name('profesor.modulos.mostrar');
-                Route::get('/profesor/{modulo}/preguntas', 'preguntasMostrar')->name('profesor.preguntas.mostrar');
+                Route::get('/{modulo}', 'modulosMostrar')->name('profesor.modulos.mostrar');
+                Route::get('/{modulo}/preguntas', 'preguntasMostrar')->name('profesor.preguntas.mostrar');
             });
     });
 
-    Route::middleware('alumno')->group(function() {
-        Route::get('/alumno', [InicioController::class, 'dashboardAlumnoMostrar'])->name('inicio.dashboardAlumno.mostrar');
+    Route::middleware('alumno')->prefix('alumno')->group(function() {
+        Route::get('/', [InicioController::class, 'dashboardAlumnoMostrar'])->name('inicio.dashboardAlumno.mostrar');
 
         Route::controller(AlumnoModuloController::class)->group(function() {
-            Route::get('alumno/modulos', 'modulosMostrar')->name('alumno.modulos.mostrar');
-            Route::get('alumno/modulos/seleccionar', 'seleccionarModuloMostrar')->name('alumno.seleccionarModulo.mostrar');
-            Route::get('alumno/modulos/seleccionar/{modulo}', 'matricularseModuloMostrar')->name('alumnos.matricularseModulo.mostrar');
-            Route::post('alumno/modulos/seleccionar/{modulo}', 'matricularseModuloEntrar')->name('alumnos.matricularseModulo.entrar');
+            Route::get('/modulos', 'modulosMostrar')->name('alumno.modulos.mostrar');
+            Route::get('/modulos/seleccionar', 'seleccionarModuloMostrar')->name('alumno.seleccionarModulo.mostrar');
+            Route::get('/modulos/seleccionar/{modulo}', 'matricularseModuloMostrar')->name('alumnos.matricularseModulo.mostrar');
+            Route::post('/modulos/seleccionar/{modulo}', 'matricularseModuloEntrar')->name('alumnos.matricularseModulo.entrar');
 
             // Dentro del modulo
 
             Route::middleware('moduloAlumno')->group(function() {
-                Route::get('alumno/modulo/{modulo}', 'moduloDashboardMostrar')->name('alumno.moduloDashboard.mostrar');
+                Route::get('/modulo/{modulo}', 'moduloDashboardMostrar')->name('alumno.moduloDashboard.mostrar');
             });
         });
 
