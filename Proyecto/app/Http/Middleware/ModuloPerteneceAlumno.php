@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Modulo;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +15,20 @@ class ModuloPerteneceAlumno
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-    {
+    public function handle(Request $request, Closure $next): Response {
+        $modulo = $request->route('modulo');
+
+        // Si no hay módulo, dejamos pasar (es opcional)
+
+        if (!$modulo) {
+            return $next($request);
+        }
+
         $usuario = Auth::user();
 
-        $modulo = $request->route('modulo');
+        if (!$modulo instanceof Modulo) {
+            $modulo = Modulo::findOrFail($modulo);
+        }
 
         if (!$modulo->alumnos->contains('id_alumno', $usuario->id_usuario)) {
             return redirect()

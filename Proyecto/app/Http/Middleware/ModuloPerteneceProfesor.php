@@ -15,12 +15,15 @@ class ModuloPerteneceProfesor
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-    {
-        $usuario = Auth::user();
-
-        // Obtener el módulo desde la ruta (route model binding)
+   public function handle(Request $request, Closure $next): Response {
         $modulo = $request->route('modulo');
+
+        // Si no hay módulo, dejamos pasar (es opcional)
+        if (!$modulo) {
+            return $next($request);
+        }
+
+        $usuario = Auth::user();
 
         if (!$modulo instanceof Modulo) {
             $modulo = Modulo::findOrFail($modulo);
@@ -29,7 +32,7 @@ class ModuloPerteneceProfesor
         if ($modulo->id_profesor !== $usuario->id_usuario) {
             return redirect()
                 ->route('inicio.dashboardProfesor.mostrar')
-                ->with('error', 'No tienes acceso a este módulo.'); // para algún futuro mensaje de error en pantalla
+                ->with('error', 'No tienes acceso a este módulo.');
         }
 
         return $next($request);

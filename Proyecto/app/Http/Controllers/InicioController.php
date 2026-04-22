@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 
 class InicioController
 {
-    public function indexMostrar() {
+   public function indexMostrar() {
         if (Auth::check()) {
             return Auth::user()->esProfesor()
-                ? view('usuario.profesor.dashboard')
-                : view('usuario.alumno.dashboard');
+                ? redirect()->route('inicio.dashboardProfesor.mostrar')
+                : redirect()->route('inicio.dashboardAlumno.mostrar');
         }
 
         return view('index');
@@ -31,12 +31,37 @@ class InicioController
             ->header('Pragma', 'no-cache');
     }
 
-    public function dashboardProfesorMostrar(Modulo $modulo) {
+    // Dashboard de profesor
+
+    public function dashboardProfesorMostrar(?Modulo $modulo = null) {
+        $profesor = Auth::user();
         
-        return view('usuario.profesor.dashboard');
+        // Si el módulo es null busca el último módulo. Recibe null si no se ha visitado ninguno
+        $moduloActual = $modulo ?? Modulo::find($profesor->id_ultimo_modulo_visitado);
+
+        // Se guarda el último módulo visitado
+        if ($moduloActual) {
+            $profesor->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
+            $profesor->save();
+        }
+
+        return view('usuario.profesor.dashboard', compact('moduloActual'));
     }
 
-    public function dashboardAlumnoMostrar() {
-        return view('usuario.alumno.dashboard');
+    // Dashboard de alumno
+
+    public function dashboardAlumnoMostrar(?Modulo $modulo = null) {
+        $alumno = Auth::user();
+
+        // Si el módulo es null busca el último módulo. Recibe null si no se ha visitado ninguno
+        $moduloActual = $modulo ?? Modulo::find($alumno->id_ultimo_modulo_visitado);
+
+        // Se guarda el último módulo visitado
+        if ($moduloActual) {
+            $alumno->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
+            $alumno->save();
+        }
+
+        return view('usuario.alumno.dashboard', compact('moduloActual'));
     }
 }

@@ -68,7 +68,7 @@ class AuthController extends Controller {
 
             DB::commit();
 
-            return redirect()->route('inicio.dashboardAlumno.mostrar');
+            return redirect()->route('inicio.dashboard.mostrar');
 
         } catch (\Exception $e){
             DB::rollBack();
