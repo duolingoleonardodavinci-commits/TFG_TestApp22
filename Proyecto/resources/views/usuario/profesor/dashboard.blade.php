@@ -23,7 +23,7 @@
             <option value="">-- Selecciona un módulo --</option>
 
             @foreach (Auth::user()->profesor->modulos as $modulo)
-                <option value="{{ route('inicio.dashboard.mostrar', $modulo->id_modulo) }}"
+                <option value="{{ route('inicio.dashboardProfesor.mostrar', $modulo->id_modulo) }}"
                     {{ $moduloActual->id_modulo === $modulo->id_modulo ? 'selected' : '' }}
                 >
                     {{ $modulo->ciclo }} {{ $modulo->modulo }}

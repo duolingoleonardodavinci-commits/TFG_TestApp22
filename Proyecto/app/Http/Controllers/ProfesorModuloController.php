@@ -8,12 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfesorModuloController extends Controller {
 
-    // Mostrar la vista del módulo del profesor
-
-    public function modulosMostrar(Modulo $modulo) {
-        return view('usuario.profesor.modulo.modulo', compact('modulo'));
-    }
-
     // Mostrar la vista de la creación del módulo
 
     public function crearModuloMostrar() {
@@ -38,7 +32,7 @@ class ProfesorModuloController extends Controller {
                 'id_profesor' => Auth::user()->profesor->id_profesor,
             ]);
 
-            return redirect()->route('inicio.dashboard.mostrar', $modulo->id_modulo);
+            return redirect()->route('inicio.dashboardProfesor.mostrar', $modulo->id_modulo);
         } catch(\Exception $e) {
            return back()->withErrors(['error' => 'Error al crear el módulo, inténtalo de nuevo.']);
         }

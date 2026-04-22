@@ -10,7 +10,9 @@ class InicioController
 {
    public function indexMostrar() {
         if (Auth::check()) {
-            return redirect()->route('inicio.dashboard.mostrar');
+            return Auth::user()->esProfesor()
+                ? redirect()->route('inicio.dashboardProfesor.mostrar')
+                : redirect()->route('inicio.dashboardAlumno.mostrar');
         }
 
         return view('index');
@@ -29,27 +31,37 @@ class InicioController
             ->header('Pragma', 'no-cache');
     }
 
-    public function dashboardMostrar(?Modulo $modulo = null) {
+    // Dashboard de profesor
 
-        $usuario = Auth::user();
+    public function dashboardProfesorMostrar(?Modulo $modulo = null) {
+        $profesor = Auth::user();
+        
+        // Si el módulo es null busca el último módulo. Recibe null si no se ha visitado ninguno
+        $moduloActual = $modulo ?? Modulo::find($profesor->id_ultimo_modulo_visitado);
 
-        // Si el $modulo es null se busca el último módulo con el que el usuario ha interactuado.
-
-        $moduloActual = $modulo ?? Modulo::find($usuario->id_ultimo_modulo_visitado);
-
-        // Actualiza el id del último módulo visitado
-
-        if($moduloActual) {
-            $usuario->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
-            $usuario->save();
+        // Se guarda el último módulo visitado
+        if ($moduloActual) {
+            $profesor->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
+            $profesor->save();
         }
 
-        // Redirigir al dashboard correspondiente
+        return view('usuario.profesor.dashboard', compact('moduloActual'));
+    }
 
-        if ($usuario->rol === 'profesor') {
-            return view('usuario.profesor.dashboard', compact('moduloActual'));
-        } elseif($usuario->rol === 'alumno') {
-            return view('usuario.alumno.dashboard', compact('moduloActual'));
+    // Dashboard de alumno
+
+    public function dashboardAlumnoMostrar(?Modulo $modulo = null) {
+        $alumno = Auth::user();
+
+        // Si el módulo es null busca el último módulo. Recibe null si no se ha visitado ninguno
+        $moduloActual = $modulo ?? Modulo::find($alumno->id_ultimo_modulo_visitado);
+
+        // Se guarda el último módulo visitado
+        if ($moduloActual) {
+            $alumno->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
+            $alumno->save();
         }
+
+        return view('usuario.alumno.dashboard', compact('moduloActual'));
     }
 }
