@@ -46,9 +46,5 @@ class ProfesorModuloController extends Controller {
 
     }
 
-    // Mostrar la vista de la creación de preguntas
-
-    public function preguntasMostrar() {
-        return view('usuario.profesor.modulo.preguntas.preguntas');
-    }
+    
 }

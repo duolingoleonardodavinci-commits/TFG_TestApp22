@@ -4,6 +4,7 @@ use App\Http\Controllers\AlumnoModuloController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfesorModuloController;
+use App\Http\Controllers\PreguntaController;
 use App\Models\Modulo;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +47,18 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
             })
             ->group(function () {
                 Route::get('/{modulo}', 'modulosMostrar')->name('profesor.modulos.mostrar');
+                    
+            });
+            
+            // Preguntas
+            Route::controller(PreguntaController::class)->group(function() {
                 Route::get('/{modulo}/preguntas', 'preguntasMostrar')->name('profesor.preguntas.mostrar');
+
+                // Mostrar formulario para crear preguntas nuevas
+                Route::get('/{modulo}/preguntas/crear', 'crearPreguntasMostrar')->name('profesor.crearPregunta.mostrar');
+
+                // Crear el modulo
+                Route::post('/{modulo}/preguntas/crear', 'crearPreguntaCrear')->name('profesor.crearPregunta.crear');
             });
     });
 
