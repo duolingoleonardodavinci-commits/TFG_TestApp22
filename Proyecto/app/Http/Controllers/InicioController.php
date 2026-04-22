@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Modulo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,8 @@ class InicioController
             ->header('Pragma', 'no-cache');
     }
 
-    public function dashboardProfesorMostrar() {
+    public function dashboardProfesorMostrar(Modulo $modulo) {
+        
         return view('usuario.profesor.dashboard');
     }
 

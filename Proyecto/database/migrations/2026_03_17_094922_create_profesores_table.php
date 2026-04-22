@@ -11,7 +11,10 @@ return new class extends Migration
      */
     public function up(): void {
         Schema::create('profesores', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_profesor')->primary()->foreign()->references('id_usuario')->on('usuarios')->cascadeOnDelete();
+            $table->foreignId('id_profesor')
+                  ->primary()
+                  ->constrained('usuarios', 'id_usuario')
+                  ->cascadeOnDelete();
         });
     }
 
