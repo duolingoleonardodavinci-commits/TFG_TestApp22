@@ -8,14 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AlumnoModuloController extends Controller
 {
-    // Muestra todos los módulos a los que se ha unido el alumno
-
-    public function modulosMostrar() {
-        $modulos = Auth::user()->alumno->modulos;
-
-        return view('usuario.alumno.modulo.matriculacion.modulos', compact('modulos'));
-    }
-
     // Muestra todos los módulos creados por los profesores
 
     public function seleccionarModuloMostrar() {
@@ -39,27 +31,22 @@ class AlumnoModuloController extends Controller
     public function matricularseModuloEntrar(Request $request, Modulo $modulo) {
         $alumno = Auth::user()->alumno;
 
-        if ($modulo->alumnos()->where('alumnos.id_alumno', $alumno->id_alumno)->exists()) {
-            return redirect()->route('alumno.moduloDashboard.mostrar', compact('modulo'));
-        }
+        // Si la clave de matriculiación no es correcta
 
         if ($modulo->clave_matriculacion !== $request->clave_matriculacion) {
             return back()->withErrors(['clave_matriculacion' => 'Clave incorrecta']);
         }
 
         try {
-            $alumno->modulos()->attach($modulo->id_modulo);
+            // En caso de que el alumno intente matricularse de nuevo se ignora el insert
+            if (!($modulo->alumnos()->where('alumnos.id_alumno', $alumno->id_alumno)->exists())) {
+                $alumno->modulos()->attach($modulo->id_modulo);
+            }
 
-            return redirect()->route('alumno.moduloDashboard.mostrar', compact('modulo'));
+            return redirect()->route('inicio.dashboardAlumno.mostrar', compact('modulo'));
 
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Error al matricularse, inténtalo de nuevo.']);
         }
-    }
-
-    // --- DASHBOARD MÓDULOS DE ALUMNOS ---
-
-    public function moduloDashboardMostrar(Modulo $modulo) {
-        return view('usuario.alumno.modulo.dashboard.dashboard', compact('modulo'));
     }
 }
