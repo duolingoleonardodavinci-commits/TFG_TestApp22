@@ -15,17 +15,17 @@
 
     <h1>Modulos</h1>
 
-    @forelse (Auth::user()->profesor->modulos as $modulo)
+    <select onchange="location = this.options[this.selectedIndex].value;">
 
-        <a href="{{ route('profesor.modulos.mostrar', $modulo->id_modulo) }}">
-            {{ $modulo->id_modulo }}
-            {{ $modulo->ciclo }}
-            {{ $modulo->modulo }}
-        </a>
+        @forelse (Auth::user()->profesor->modulos as $modulo)
 
-    @empty
-        <p>No tiene modulos</p>
-    @endforelse
+            <option value="{{ route('inicio.dashboardProfesor.mostrar', $modulo->id_modulo) }}"></option>
+
+        @empty
+            <p>No tiene modulos</p>
+        @endforelse
+
+    </select>
 
     <p><a href="{{ route('profesor.crearModulo.mostrar') }}">Crear nuevo modulo</a></p>
 @endsection

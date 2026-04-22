@@ -13,6 +13,7 @@ class Profesor extends Model {
 
     protected $fillable = [
         'id_profesor',
+        'id_ultimo_modulo_visitado',
     ];
 
     // Relaciones
