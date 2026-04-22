@@ -38,12 +38,10 @@ class ProfesorModuloController extends Controller {
                 'id_profesor' => Auth::user()->profesor->id_profesor,
             ]);
 
-            return redirect()->route('profesor.modulos.mostrar', compact('modulo'));
+            return redirect()->route('inicio.dashboard.mostrar', $modulo->id_modulo);
         } catch(\Exception $e) {
            return back()->withErrors(['error' => 'Error al crear el módulo, inténtalo de nuevo.']);
         }
-        
-
     }
 
     // Mostrar la vista de la creación de preguntas

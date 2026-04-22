@@ -4,29 +4,45 @@ use App\Http\Controllers\AlumnoModuloController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfesorModuloController;
-use App\Models\Modulo;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [InicioController::class, 'indexMostrar'])->name('inicio.index.mostrar');
 
+// =================
+// ===== GUEST =====
+// =================
+
 Route::middleware('guest')->controller(InicioController::class)->group(function(){
+
+    // Mostrar el login
     Route::get('/login', 'loginMostrar')->name('inicio.login.mostrar');
+
+    // Mostrar el register
     Route::get('/register', 'registerMostrar')->name('inicio.register.mostrar');
 
     Route::controller(AuthController::class)->group(function() {
+        // Iniciar sesion
         Route::post('/login', 'login')->name('auth.login');
+
+        // Registrarse
         Route::post('/register', 'register')->name('auth.register');
     });
 });
 
+// ================
+// ===== AUTH =====
+// ================
+
 Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
-    // Dashboards
-    
-    Route::middleware('profesor')->prefix('profesor')->group(function() {
-        // Mostrar dashboard de profesor
+    // Dashboard (tanto de profesor como alumno)
+    Route::get('/dashboard/{modulo?}', [InicioController::class, 'dashboardMostrar'])->name('inicio.dashboard.mostrar');
 
-        Route::get('/', [InicioController::class, 'dashboardProfesorMostrar'])->name('inicio.dashboardProfesor.mostrar');
+    // ==================
+    // ==== PROFESOR ====
+    // ==================
+
+    Route::middleware('profesor')->prefix('profesor')->group(function() {
 
         // Crear modulos
 
@@ -41,7 +57,7 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
         // Acceder Modulos
         Route::middleware('moduloProfesor')->controller(ProfesorModuloController::class)
             ->missing(function () { // En caso de que no exista el modulo
-                return redirect()->route('inicio.dashboardProfesor.mostrar')
+                return redirect()->route('inicio.dashboard.mostrar')
                     ->with('error', 'Este módulo no existe.');
             })
             ->group(function () {
@@ -50,8 +66,11 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
             });
     });
 
+    // ================
+    // ==== ALUMNO ====
+    // ================
+
     Route::middleware('alumno')->prefix('alumno')->group(function() {
-        Route::get('/', [InicioController::class, 'dashboardAlumnoMostrar'])->name('inicio.dashboardAlumno.mostrar');
 
         Route::controller(AlumnoModuloController::class)->group(function() {
             Route::get('/modulos', 'modulosMostrar')->name('alumno.modulos.mostrar');

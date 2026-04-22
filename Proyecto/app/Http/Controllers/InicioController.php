@@ -8,11 +8,9 @@ use Illuminate\Http\Request;
 
 class InicioController
 {
-    public function indexMostrar() {
+   public function indexMostrar() {
         if (Auth::check()) {
-            return Auth::user()->esProfesor()
-                ? view('usuario.profesor.dashboard')
-                : view('usuario.alumno.dashboard');
+            return redirect()->route('inicio.dashboard.mostrar');
         }
 
         return view('index');
@@ -31,12 +29,27 @@ class InicioController
             ->header('Pragma', 'no-cache');
     }
 
-    public function dashboardProfesorMostrar(Modulo $modulo) {
-        
-        return view('usuario.profesor.dashboard');
-    }
+    public function dashboardMostrar(?Modulo $modulo = null) {
 
-    public function dashboardAlumnoMostrar() {
-        return view('usuario.alumno.dashboard');
+        $usuario = Auth::user();
+
+        // Si el $modulo es null se busca el último módulo con el que el usuario ha interactuado.
+
+        $moduloActual = $modulo ?? Modulo::find($usuario->id_ultimo_modulo_visitado);
+
+        // Actualiza el id del último módulo visitado
+
+        if($moduloActual) {
+            $usuario->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
+            $usuario->save();
+        }
+
+        // Redirigir al dashboard correspondiente
+
+        if ($usuario->rol === 'profesor') {
+            return view('usuario.profesor.dashboard', compact('moduloActual'));
+        } elseif($usuario->rol === 'alumno') {
+            return view('usuario.alumno.dashboard', compact('moduloActual'));
+        }
     }
 }
