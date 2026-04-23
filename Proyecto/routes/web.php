@@ -43,30 +43,11 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
     Route::middleware('profesor')->prefix('profesor')->group(function() {
 
-    // Acceder Modulos
-        Route::middleware('moduloProfesor')->controller(ProfesorModuloController::class)->group(function () {
-                Route::get('/dashboard/{modulo?}', [InicioController::class, 'dashboardProfesorMostrar'])->name('inicio.dashboardProfesor.mostrar');
-                Route::get('/{modulo}/preguntas', 'preguntasMostrar')->name('profesor.preguntas.mostrar');
-            });
-
-        Route::controller(ProfesorModuloController::class)->group(function() {
-            // Mostrar formulario para crear modulos nuevos
-            Route::get('/crearModulo', 'crearModuloMostrar')->name('profesor.crearModulo.mostrar');
-            // Crear el modulo
-            Route::post('/crearModulo', 'crearModuloCrear')->name('profesor.crearModulo.crear');
-        });
-
         // Acceder Modulos
-        Route::middleware('moduloProfesor')->controller(ProfesorModuloController::class)
-            ->missing(function () { // En caso de que no exista el modulo
-                return redirect()->route('inicio.dashboardProfesor.mostrar')
-                    ->with('error', 'Este módulo no existe.');
-            })
-            ->group(function () {
-                Route::get('/{modulo}', 'modulosMostrar')->name('profesor.modulos.mostrar');
-                    
-            });
-            
+
+        Route::middleware('moduloProfesor')->controller(ProfesorModuloController::class)->group(function () {
+            Route::get('/dashboard/{modulo?}', [InicioController::class, 'dashboardProfesorMostrar'])->name('inicio.dashboardProfesor.mostrar');
+                
             // Preguntas
             Route::controller(PreguntaController::class)->group(function() {
                 Route::get('/{modulo}/preguntas', 'preguntasMostrar')->name('profesor.preguntas.mostrar');
@@ -77,8 +58,15 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 // Crear el modulo
                 Route::post('/{modulo}/preguntas/crear', 'crearPreguntaCrear')->name('profesor.crearPregunta.crear');
             });
-    });
+        });
 
+        Route::controller(ProfesorModuloController::class)->group(function() {
+            // Mostrar formulario para crear modulos nuevos
+            Route::get('/crearModulo', 'crearModuloMostrar')->name('profesor.crearModulo.mostrar');
+            // Crear el modulo
+            Route::post('/crearModulo', 'crearModuloCrear')->name('profesor.crearModulo.crear');
+        });
+    });
 
     // ================
     // ==== ALUMNO ====

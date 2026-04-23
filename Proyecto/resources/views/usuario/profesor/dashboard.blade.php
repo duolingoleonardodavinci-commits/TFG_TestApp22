@@ -34,5 +34,7 @@
         </select> 
 
         <p>{{$moduloActual->ciclo}} {{$moduloActual->modulo}}</p>
+
+        <p><a href="{{ route('profesor.preguntas.mostrar', $moduloActual->id_modulo) }}">Preguntas</a></p>
     @endif
 @endsection
