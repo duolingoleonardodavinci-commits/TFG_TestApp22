@@ -27,4 +27,8 @@ class Modulo extends Model {
     public function alumnos() {
         return $this->belongsToMany(Alumno::class, 'modulos_alumnos', 'id_modulo', 'id_alumno');
     }
+
+    public function tests() {
+        return $this->hasMany(Test::class, 'id_test');
+    }
 }
