@@ -5,6 +5,8 @@
 @section('content')
     <h1>Iniciar sesión</h1>
 
+    <x-errores />
+
     <form method="POST" action="{{ route('auth.login')}}">
         @csrf
 

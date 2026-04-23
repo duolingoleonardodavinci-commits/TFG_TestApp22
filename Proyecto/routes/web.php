@@ -74,6 +74,9 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
                 // Mostrar formulario para crear tests nuevos
                 Route::get('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.mostrar');
+
+                // Crear test
+                Route::post('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.crear');
             });
         });
 

@@ -4,6 +4,7 @@
 
 @section('content')
     <x-header />
+    <x-errores />
     
     <h1>Unirse a un modulo</h1>
 

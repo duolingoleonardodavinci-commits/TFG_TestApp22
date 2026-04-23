@@ -32,7 +32,7 @@ class ModuloPerteneceProfesor
         if ($modulo->id_profesor !== $usuario->id_usuario) {
             return redirect()
                 ->route('inicio.dashboardProfesor.mostrar')
-                ->with('error', 'No tienes acceso a este módulo.');
+                ->withErrors(['error' => 'No tienes acceso a este módulo']);
         }
 
         return $next($request);
