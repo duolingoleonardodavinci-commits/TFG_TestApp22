@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfesorModuloController;
 use App\Http\Controllers\PreguntaController;
+use App\Http\Controllers\TestController;
 use App\Models\Modulo;
 use Illuminate\Support\Facades\Route;
 
@@ -48,8 +49,12 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
         Route::middleware('moduloProfesor')->controller(ProfesorModuloController::class)->group(function () {
             Route::get('/dashboard/{modulo?}', [InicioController::class, 'dashboardProfesorMostrar'])->name('inicio.dashboardProfesor.mostrar');
                 
-            // Preguntas
+            // ===================
+            // ==== PREGUNTAS ====
+            // ===================
+
             Route::controller(PreguntaController::class)->group(function() {
+                // Página de preguntas
                 Route::get('/{modulo}/preguntas', 'preguntasMostrar')->name('profesor.preguntas.mostrar');
 
                 // Mostrar formulario para crear preguntas nuevas
@@ -57,6 +62,18 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
                 // Crear el modulo
                 Route::post('/{modulo}/preguntas/crear', 'crearPreguntaCrear')->name('profesor.crearPregunta.crear');
+            });
+
+            // ===============
+            // ==== TESTS ====
+            // ===============
+
+            Route::controller(TestController::class)->group(function() {
+                // Página de tests
+                Route::get('/{modulo}/tests', 'testsMostrar')->name('profesor.tests.mostrar');
+
+                // Mostrar formulario para crear tests nuevos
+                Route::get('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.mostrar');
             });
         });
 
