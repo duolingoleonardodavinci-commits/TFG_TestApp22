@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 class PreguntaController extends Controller
 {
     public function preguntasMostrar(Modulo $modulo) {
-        return view('usuario.profesor.modulo.preguntas.preguntas', compact('modulo'));
+        return view('usuario.profesor.preguntas.preguntas', compact('modulo'));
     }
 
     public function crearPreguntasMostrar(Modulo $modulo) {
-        return view('usuario.profesor.modulo.preguntas.crearPregunta', compact('modulo'));
+        return view('usuario.profesor.preguntas.crearPregunta', compact('modulo'));
     }
 
     public function crearPreguntaCrear(Request $request, Modulo $modulo) {
