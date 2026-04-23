@@ -4,6 +4,7 @@
 
 @section('content')
     <x-header />
+    <x-errores />
     
     <h1>Matricularse</h1>
     

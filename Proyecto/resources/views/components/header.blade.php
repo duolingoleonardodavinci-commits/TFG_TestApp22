@@ -5,4 +5,5 @@
     <a href="{{ route('auth.logout') }}">
         Cerrar sesión
     </a>
+    
 </header>

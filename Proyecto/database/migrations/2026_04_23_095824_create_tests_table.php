@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_test');
             $table->string('nombre');
             $table->string('descripcion');
+            $table->enum('tipo', ['practica', 'examen']);
             $table->foreignId('id_modulo')
                   ->constrained('modulos', 'id_modulo')
                   ->cascadeOnDelete();

@@ -14,6 +14,7 @@ class Test extends Model
         'id_test',
         'nombre',
         'descripcion',
+        'tipo',
         'id_modulo',
     ];
 

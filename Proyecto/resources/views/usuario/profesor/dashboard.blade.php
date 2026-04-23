@@ -4,14 +4,10 @@
 
 @section('content')
     <x-header />
+    <x-errores />
     
     <p>Dashboard profesor {{ Auth::user()->nombre }}</p>
 
-    @if (session('error'))
-        <div>
-            {{ session('error') }}
-        </div>
-    @endif
 
     @if (!$moduloActual)
         

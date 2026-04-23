@@ -6,6 +6,8 @@
 
     <h1>Registrarse</h1>
 
+    <x-errores />
+
     <form method="POST" action="{{ route('auth.register') }}">
         @csrf
 
