@@ -76,7 +76,7 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 Route::get('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.mostrar');
 
                 // Crear test
-                Route::post('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.crear');
+                Route::post('/{modulo}/test/crear', 'crearTestCrear')->name('profesor.crearTest.crear');
             });
         });
 

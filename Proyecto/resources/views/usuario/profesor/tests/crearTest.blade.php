@@ -4,6 +4,7 @@
 
 @section('content')
     <x-header />
+    <x-errores />
     
     <form method="POST" action="{{ route('profesor.crearTest.crear', $modulo->id_modulo) }}">
         @csrf 
@@ -54,7 +55,7 @@
 
         <div>
             @forelse ($preguntas as $pregunta)
-                    <label for="pregunta-{{ $pregunta->id_pregunta}}">{{ $pregunta->id_pregunta}}<label>
+                    <label for="pregunta-{{ $pregunta->id_pregunta}}">{{ $pregunta->contenido->enunciado}}</label>
                     <input
                         type="checkbox"
                         name="preguntas[]"
