@@ -11,7 +11,8 @@ class TestController extends Controller
 {
     
     public function testsMostrar(Modulo $modulo) {
-        return view('usuario.profesor.tests.tests', compact('modulo'));
+        $tests = $modulo->tests;
+        return view('usuario.profesor.tests.tests', compact('modulo', 'tests'));
     }
 
     public function crearTestMostrar(Modulo $modulo) {
@@ -46,9 +47,21 @@ class TestController extends Controller
             $test->preguntas()->sync($validated['preguntas']);
 
             DB::commit();
+
+            return redirect()->route('profesor.tests.mostrar', compact('modulo'));
         } catch(\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'No se ha podido crear el test, vuelve a intentarlo']);
+        }
+
+    }
+
+    public function testEliminar(Test $test) {
+        try {
+            $test->delete();
+            return redirect()->back();
+        } catch(\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 }

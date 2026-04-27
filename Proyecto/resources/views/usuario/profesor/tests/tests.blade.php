@@ -4,6 +4,38 @@
 
 @section('content')
     <x-header />
-    <p><a href="{{ route('profesor.crearTest.mostrar', $modulo->id_modulo) }}">+ Crear test</a></p>
+    <x-errores />
+
+    <h1>Tests</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($tests as $test)
+                <tr>
+                    <td>{{ $test->nombre }}</td>
+                    <td>
+                        <a href="#">Editar</a>
+                        <form method="POST" action="{{ route('profesor.testEliminar.eliminar', $test->id_test) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="2">No tienes tests...</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+<p><a href="{{ route('profesor.crearTest.mostrar', $modulo->id_modulo) }}">+ Crear test</a></p>
 
 @endsection

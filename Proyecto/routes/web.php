@@ -77,6 +77,9 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
                 // Crear test
                 Route::post('/{modulo}/test/crear', 'crearTestCrear')->name('profesor.crearTest.crear');
+
+                // Eliminar test
+                Route::delete('/test/{test}/eliminar', 'testEliminar')->name('profesor.testEliminar.eliminar');
             });
         });
 
