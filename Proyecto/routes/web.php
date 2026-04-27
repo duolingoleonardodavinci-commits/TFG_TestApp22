@@ -78,6 +78,12 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 // Crear test
                 Route::post('/{modulo}/test/crear', 'crearTestCrear')->name('profesor.crearTest.crear');
 
+                // Mostrar formulario para editar tests
+                Route::get('/{modulo}/test/{test}/editar', 'editarTestMostrar')->name('profesor.editarTest.mostrar');
+
+                // Editar test
+                Route::put('/{modulo}/test/{test}/editar', 'editarTestEditar')->name('profesor.editarTest.editar');
+
                 // Eliminar test
                 Route::delete('/test/{test}/eliminar', 'testEliminar')->name('profesor.testEliminar.eliminar');
             });
