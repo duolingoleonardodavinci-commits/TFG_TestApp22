@@ -15,6 +15,8 @@ return new class extends Migration
             $table->foreignId('id_modulo')->constrained('modulos', 'id_modulo')->cascadeOnDelete();
             $table->foreignId('id_alumno')->constrained('alumnos', 'id_alumno')->cascadeOnDelete();
             $table->primary(['id_modulo', 'id_alumno']);
+
+            $table->boolean('tiene_acceso')->default('1');
         });
     }
 

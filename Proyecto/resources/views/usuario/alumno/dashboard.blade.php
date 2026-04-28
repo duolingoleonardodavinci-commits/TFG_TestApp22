@@ -4,6 +4,7 @@
 
 @section('content')
     <x-header />
+    <x-errores />
     
     <p>Dashboard alumno {{ Auth::user()->nombre }}</p>
 

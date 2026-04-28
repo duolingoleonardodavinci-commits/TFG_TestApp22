@@ -22,6 +22,11 @@ class Usuario extends User {
         'password' => 'hashed',
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     // Relaciones
     public function profesor() {
         return $this->hasOne(Profesor::class, 'id_profesor', 'id_usuario');

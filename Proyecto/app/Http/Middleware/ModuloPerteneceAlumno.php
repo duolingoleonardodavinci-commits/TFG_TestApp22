@@ -26,11 +26,16 @@ class ModuloPerteneceAlumno
 
         $usuario = Auth::user();
 
-        if (!$modulo instanceof Modulo) {
+        /*if (!$modulo instanceof Modulo) {
             $modulo = Modulo::findOrFail($modulo);
-        }
+        }*/
 
-        if (!$modulo->alumnos->contains('id_alumno', $usuario->id_usuario)) {
+        $tieneAcceso = $modulo->alumnos()
+            ->where('alumnos.id_alumno', $usuario->alumno->id_alumno)
+            ->wherePivot('tiene_acceso', 1)
+            ->exists();
+
+        if (!$tieneAcceso) {
             return redirect()
                 ->route('inicio.dashboardAlumno.mostrar')
                 ->withErrors(['error' => 'No tienes acceso a este módulo']);
