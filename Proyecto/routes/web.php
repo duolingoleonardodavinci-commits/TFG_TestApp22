@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfesorModuloController;
 use App\Http\Controllers\PreguntaController;
+use App\Http\Controllers\ProfesorAlumnoController;
 use App\Http\Controllers\TestController;
 use App\Models\Modulo;
 use Illuminate\Support\Facades\Route;
@@ -76,7 +77,31 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 Route::get('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.mostrar');
 
                 // Crear test
-                Route::post('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.crear');
+                Route::post('/{modulo}/test/crear', 'crearTestCrear')->name('profesor.crearTest.crear');
+
+                // Mostrar formulario para editar tests
+                Route::get('/{modulo}/test/{test}/editar', 'editarTestMostrar')->name('profesor.editarTest.mostrar');
+
+                // Editar test
+                Route::put('/{modulo}/test/{test}/editar', 'editarTestEditar')->name('profesor.editarTest.editar');
+
+                // Eliminar test
+                Route::delete('/test/{test}/eliminar', 'testEliminar')->name('profesor.testEliminar.eliminar');
+            });
+
+            // =====================================
+            // ==== GESTION PROFESOR -> ALUMNOS ====
+            // =====================================
+
+            Route::controller(ProfesorAlumnoController::class)->group(function() {
+                // Mostrar los alumnos pertenecientes al módulo 
+                Route::get('/{modulo}/alumnos', 'alumnosMostrar')->name('profesor.alumnos.mostrar');
+
+                // Actualizar el acceso de los alumnos al modulo
+                Route::put('/{modulo}/alumnos/editar', 'alumnosEditar')->name('profesor.alumnos.editar');
+
+                // Eliminar alumnos del módulo
+                Route::delete('/{modulo}/alumnos/{alumno}/eliminar', 'alumnoEliminar')->name('profesor.alumno.eliminar');
             });
         });
 
