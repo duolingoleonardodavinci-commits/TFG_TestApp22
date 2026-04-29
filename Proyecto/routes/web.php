@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ProfesorModuloController;
 use App\Http\Controllers\PreguntaController;
+use App\Http\Controllers\ProfesorAlumnoController;
 use App\Http\Controllers\TestController;
 use App\Models\Modulo;
 use Illuminate\Support\Facades\Route;
@@ -55,13 +56,22 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
             Route::controller(PreguntaController::class)->group(function() {
                 // Página de preguntas
-                Route::get('/{modulo}/preguntas', 'preguntasMostrar')->name('profesor.preguntas.mostrar');
+                Route::get('/{modulo}/preguntas', 'index')->name('profesor.preguntas.mostrar');
 
                 // Mostrar formulario para crear preguntas nuevas
-                Route::get('/{modulo}/preguntas/crear', 'crearPreguntasMostrar')->name('profesor.crearPregunta.mostrar');
+                Route::get('/{modulo}/preguntas/crear', 'create')->name('profesor.crearPregunta.mostrar');
 
-                // Crear el modulo
-                Route::post('/{modulo}/preguntas/crear', 'crearPreguntaCrear')->name('profesor.crearPregunta.crear');
+                // Crear pregunta
+                Route::post('/{modulo}/preguntas/crear', 'store')->name('profesor.crearPregunta.crear');
+
+                // Obtener pregunta para editar
+                Route::get('/{modulo}/preguntas/editar/{pregunta}', 'edit')->name('profesor.editarPregunta.mostrar');
+
+                // Guardar pregunta actualizada
+                Route::put('/{modulo}/preguntas/editar/{pregunta}', 'update')->name('profesor.editarPregunta.editar');
+
+                // Eliminar pregunta
+                Route::delete('/{modulo}/preguntas/eliminar/{pregunta}', 'destroy')->name('profesor.eliminarPregunta.eliminar');
             });
 
             // ===============
@@ -76,7 +86,31 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 Route::get('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.mostrar');
 
                 // Crear test
-                Route::post('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.crear');
+                Route::post('/{modulo}/test/crear', 'crearTestCrear')->name('profesor.crearTest.crear');
+
+                // Mostrar formulario para editar tests
+                Route::get('/{modulo}/test/{test}/editar', 'editarTestMostrar')->name('profesor.editarTest.mostrar');
+
+                // Editar test
+                Route::put('/{modulo}/test/{test}/editar', 'editarTestEditar')->name('profesor.editarTest.editar');
+
+                // Eliminar test
+                Route::delete('/test/{test}/eliminar', 'testEliminar')->name('profesor.testEliminar.eliminar');
+            });
+
+            // =====================================
+            // ==== GESTION PROFESOR -> ALUMNOS ====
+            // =====================================
+
+            Route::controller(ProfesorAlumnoController::class)->group(function() {
+                // Mostrar los alumnos pertenecientes al módulo 
+                Route::get('/{modulo}/alumnos', 'alumnosMostrar')->name('profesor.alumnos.mostrar');
+
+                // Actualizar el acceso de los alumnos al modulo
+                Route::put('/{modulo}/alumnos/editar', 'alumnosEditar')->name('profesor.alumnos.editar');
+
+                // Eliminar alumnos del módulo
+                Route::delete('/{modulo}/alumnos/{alumno}/eliminar', 'alumnoEliminar')->name('profesor.alumno.eliminar');
             });
         });
 
