@@ -16,16 +16,31 @@
         $enunciadoData = $pregunta->contenido['enunciado'] ?? "";
         $respuestaData = $pregunta->contenido['respuesta'] ?? "";
 
-        $opcionesData = $pregunta->contenido['opciones'] ?? [
-            ['id' => 1, 'valor' => ''],
-            ['id' => 2, 'valor' => ''],
-            ['id' => 3, 'valor' => '']
-        ];
+        $opcionesData = [];
+        if ($edicion && isset($pregunta->contenido['opciones'])) {
+            foreach ($pregunta->contenido['opciones'] as $i => $valor) {
+                $opcionesData[] = ['id' => $i + 1, 'valor' => $valor];
+            }
+            
+        } else {
+            $opcionesData = [
+                ['id' => 1, 'valor' => ''],
+                ['id' => 2, 'valor' => ''],
+                ['id' => 3, 'valor' => ''],
+            ];
+        }
         
-        $parejasData = $pregunta->contenido['parejas'] ?? [
-            ['id' => 1, 'a' => '', 'b' => ''],
-            ['id' => 2, 'a' => '', 'b' => '']
-        ];
+        $parejasData = [];
+        if ($edicion && isset($pregunta->contenido['div-1'])) {
+            foreach ($pregunta->contenido['div-1'] as $num => $valorA) {
+                $letra = chr(96 + (int)$num); // 1→a, 2→b...
+                $parejasData[] = [
+                    'id'  => (int)$num,
+                    'a'   => $valorA,
+                    'b'   => $pregunta->contenido['div-2'][$letra] ?? ''
+                ];
+            }
+        }
 
         $etiquetasData = [];
         if ($edicion && isset($pregunta->listaEtiquetas)) {
@@ -213,7 +228,7 @@
 
                 quitarEtiqueta(index) {
                     this.etiquetas_agregadas.splice(index, 1);
-                }
+                },
 
                 // Función auxiliar para convertir el índice (0,1,2) en letras (a, b, c)
                 getLetra(index) {
