@@ -11,13 +11,13 @@
 
     <!-- FORMS -->
 
-    <form id="form-accesos" action="{{ route('profesor.alumnos.editar', $modulo->id_modulo) }}" method="POST">
+    <form id="form-accesos" action="{{ route('profesor.alumnos.update', $modulo->id_modulo) }}" method="POST">
         @csrf
         @method('PUT')
     </form>
 
     @foreach ($usuarios as $usuario)
-        <form id="form-eliminar-{{ $usuario->id_usuario }}" action="{{ route('profesor.alumno.eliminar', [$modulo->id_modulo, $usuario->id_usuario]) }}" method="POST">
+        <form id="form-eliminar-{{ $usuario->id_usuario }}" action="{{ route('profesor.alumnos.destroy', [$modulo->id_modulo, $usuario->id_usuario]) }}" method="POST">
             @csrf
             @method('DELETE')
         </form>

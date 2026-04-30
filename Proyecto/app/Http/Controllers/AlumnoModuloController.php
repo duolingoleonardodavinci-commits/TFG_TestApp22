@@ -10,7 +10,7 @@ class AlumnoModuloController extends Controller
 {
     // Muestra todos los módulos creados por los profesores
 
-    public function seleccionarModuloMostrar() {
+    public function index() {
         $alumno = Auth::user()->alumno;
 
         $modulos = Modulo::whereDoesntHave('alumnos', function ($query) use ($alumno) {
@@ -22,13 +22,13 @@ class AlumnoModuloController extends Controller
 
     // Muestra el formulario para introducir la clave de matriculación al módulo
 
-    public function matricularseModuloMostrar(Modulo $modulo) {
+    public function create(Modulo $modulo) {
         return view('usuario.alumno.modulo.matriculacion.matricularseModulo', compact('modulo'));
     }
 
     // Introduce al alumno en el módulo usando una tabla pivote
 
-    public function matricularseModuloEntrar(Request $request, Modulo $modulo) {
+    public function store(Request $request, Modulo $modulo) {
         $alumno = Auth::user()->alumno;
 
         // Si la clave de matriculiación no es correcta

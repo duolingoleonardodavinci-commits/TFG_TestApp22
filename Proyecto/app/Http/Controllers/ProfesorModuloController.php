@@ -10,13 +10,13 @@ class ProfesorModuloController extends Controller {
 
     // Mostrar la vista de la creación del módulo
 
-    public function crearModuloMostrar() {
+    public function create() {
         return view('usuario.profesor.modulo.crearModulo');
     }
 
     // Crear el modulo
 
-    public function crearModuloCrear(Request $request) {
+    public function store(Request $request) {
 
         $validated = $request->validate([
             'ciclo' => 'required|string|max:255',

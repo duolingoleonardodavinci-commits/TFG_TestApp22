@@ -41,10 +41,10 @@
                 </div>
                 
                 <div x-show="abierta" x-cloak>
-                    <a href="{{ route('profesor.editarPregunta.mostrar', [$modulo->id_modulo, $pregunta->id_pregunta]) }}">
+                    <a href="{{ route('profesor.preguntas.edit', [$modulo->id_modulo, $pregunta->id_pregunta]) }}">
                         <button type="button">Editar</button>
                     </a>
-                    <form action="{{ route('profesor.eliminarPregunta.eliminar', [$modulo->id_modulo, $pregunta->id_pregunta]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar esta pregunta?');">
+                    <form action="{{ route('profesor.preguntas.destroy', [$modulo->id_modulo, $pregunta->id_pregunta]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar esta pregunta?');">
                         @csrf
                         @method('DELETE') 
                         <button type="submit">Eliminar</button>
@@ -58,6 +58,6 @@
         @endforeach
     </div>
 
-    <p><a href="{{ route('profesor.crearPregunta.mostrar', $modulo->id_modulo) }}">+ Crear preguntas</a></p>
+    <p><a href="{{ route('profesor.preguntas.create', $modulo->id_modulo) }}">+ Crear preguntas</a></p>
 
 @endsection

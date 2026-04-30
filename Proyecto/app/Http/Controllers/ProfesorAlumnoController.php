@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProfesorAlumnoController extends Controller
 {
-    public function alumnosMostrar(Modulo $modulo) {
+    public function index(Modulo $modulo) {
         $usuarios = $modulo->alumnos->pluck('usuario');
 
         $alumnosConAcceso = $modulo->alumnos()
@@ -25,7 +25,7 @@ class ProfesorAlumnoController extends Controller
     // ==== EDITAR ====
     // ================
     
-    public function alumnosEditar(Request $request, Modulo $modulo) {
+    public function update(Request $request, Modulo $modulo) {
         $alumnosConAcceso = $request->input('alumnos_acceso', []);
 
         try {
@@ -51,7 +51,7 @@ class ProfesorAlumnoController extends Controller
     // ==== ELIMINAR ====
     // ==================
 
-    public function alumnoEliminar(Modulo $modulo, Alumno $alumno) {
+    public function destroy(Modulo $modulo, Alumno $alumno) {
         try {
             $modulo->alumnos()->detach($alumno->id_alumno);
             return redirect()->back();

@@ -33,7 +33,7 @@ class PreguntaController extends Controller
                 $pregunta->listaEtiquetas()->sync($etiquetas);
             }
 
-            return redirect()->route('profesor.preguntas.mostrar', compact('modulo'));
+            return redirect()->route('profesor.preguntas.index', compact('modulo'));
             
         } catch(\Exception $e) {
            return back()->withErrors(['error' => 'Error al crear la pregunta, inténtalo de nuevo.']);
@@ -59,7 +59,7 @@ class PreguntaController extends Controller
                 $pregunta->listaEtiquetas()->sync($etiquetas);
             }
 
-            return redirect()->route('profesor.preguntas.mostrar', compact('modulo'));
+            return redirect()->route('profesor.preguntas.index', compact('modulo'));
             
         } catch(\Exception $e) {
            return back()->withErrors(['error' => 'Error al actualizar la pregunta, inténtalo de nuevo.']);
@@ -70,7 +70,7 @@ class PreguntaController extends Controller
         try {
             $pregunta->delete();
 
-            return redirect()->route('profesor.preguntas.mostrar', $modulo->id_modulo);
+            return redirect()->route('profesor.preguntas.index', $modulo->id_modulo);
 
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Error al borrar la pregunta, inténtalo de nuevo.']);

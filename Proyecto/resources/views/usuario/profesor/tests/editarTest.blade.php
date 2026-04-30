@@ -6,7 +6,7 @@
     <x-header />
     <x-errores />
     
-    <form method="POST" action="{{ route('profesor.editarTest.editar', [$modulo->id_modulo, $test->id_test]) }}">
+    <form method="POST" action="{{ route('profesor.tests.update', [$modulo->id_modulo, $test->id_test]) }}">
         @include('usuario.profesor.tests.partials.form', ['test' => $test])
     </form>
 @endsection

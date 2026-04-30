@@ -8,7 +8,7 @@
     
     <h1> Crear módulo </h1>
 
-    <form method="POST" action="{{ route('profesor.crearModulo.crear') }}">
+    <form method="POST" action="{{ route('profesor.modulos.store') }}">
         @csrf
 
         <!-- Ciclo -->

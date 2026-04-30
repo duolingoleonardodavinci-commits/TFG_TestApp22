@@ -12,7 +12,7 @@
     @if (!$moduloActual)
         
         <p>¿Primera vez? Crea un módulo</p>
-        <p><a href="{{ route('profesor.crearModulo.mostrar') }}">Crear nuevo modulo</a></p>
+        <p><a href="{{ route('profesor.modulos.create') }}">Crear nuevo modulo</a></p>
 
     @else
         <x-modulo-nav :moduloActual="$moduloActual" />
