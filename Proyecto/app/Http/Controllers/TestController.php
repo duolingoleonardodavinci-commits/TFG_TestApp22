@@ -22,7 +22,7 @@ class TestController extends Controller
     // Mostrar página de creación de tests
     public function create(Modulo $modulo) {
         if ($modulo->preguntas->isEmpty()) {
-            return redirect()->route('profesor.preguntas.mostrar', $modulo->id_modulo)->withErrors(['error' => 'Debes crear preguntas antes de poder crear tests']);;
+            return redirect()->route('profesor.preguntas.index', $modulo->id_modulo)->withErrors(['error' => 'Debes crear preguntas antes de poder crear tests']);;
         }
 
         $preguntas = $modulo->preguntas;
@@ -107,12 +107,12 @@ class TestController extends Controller
     // ==================
 
     // Eliminar test
-    public function destroy(Test $test) {
+    public function destroy(Modulo $modulo, Test $test) {
         try {
             $test->delete();
-            return redirect()->back();
+            return redirect()->route('profesor.tests.index', compact('modulo'));
         } catch(\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
+            return back()->withErrors(['error' => 'No se ha podido eliminar el test, vuelve a intentarlo']);
         }
     }
 }

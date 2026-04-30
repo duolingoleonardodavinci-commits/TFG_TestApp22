@@ -16,7 +16,7 @@
         <p>{{$moduloActual->ciclo}} {{$moduloActual->modulo}}</p>
 
         <p>
-            <a href="{{ route('profesor.preguntas.mostrar', $moduloActual->id_modulo) }}">Preguntas</a>
+            <a href="{{ route('profesor.preguntas.index', $moduloActual->id_modulo) }}">Preguntas</a>
             <a href="{{ route('profesor.tests.index', $moduloActual->id_modulo) }}">Tests</a>
             <a href="{{ route('profesor.alumnos.mostrar', $moduloActual->id_modulo)}}">Alumnos</a>
         </p>

@@ -21,7 +21,7 @@
                     <td>{{ $test->nombre }}</td>
                     <td>
                         <a href="{{ route('profesor.tests.edit', [$modulo->id_modulo, $test->id_test]) }}">Editar</a>
-                        <form method="POST" action="{{ route('profesor.tests.destroy', $test->id_test) }}">
+                        <form method="POST" action="{{ route('profesor.tests.destroy', [$modulo->id_modulo, $test->id_test]) }}">
                             @csrf
                             @method('DELETE')
                             <button type="submit">Eliminar</button>

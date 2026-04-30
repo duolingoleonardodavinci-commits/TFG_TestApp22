@@ -56,22 +56,22 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
             Route::controller(PreguntaController::class)->group(function() {
                 // Página de preguntas
-                Route::get('/{modulo}/preguntas', 'index')->name('profesor.preguntas.mostrar');
+                Route::get('/{modulo}/preguntas', 'index')->name('profesor.preguntas.index');
 
                 // Mostrar formulario para crear preguntas nuevas
-                Route::get('/{modulo}/preguntas/crear', 'create')->name('profesor.crearPregunta.mostrar');
+                Route::get('/{modulo}/preguntas/create', 'create')->name('profesor.preguntas.create');
 
                 // Crear pregunta
-                Route::post('/{modulo}/preguntas/crear', 'store')->name('profesor.crearPregunta.crear');
+                Route::post('/{modulo}/preguntas', 'store')->name('profesor.preguntas.store');
 
                 // Obtener pregunta para editar
-                Route::get('/{modulo}/preguntas/editar/{pregunta}', 'edit')->name('profesor.editarPregunta.mostrar');
+                Route::get('/{modulo}/preguntas/{pregunta}/edit', 'edit')->name('profesor.preguntas.edit');
 
                 // Guardar pregunta actualizada
-                Route::put('/{modulo}/preguntas/editar/{pregunta}', 'update')->name('profesor.editarPregunta.editar');
+                Route::put('/{modulo}/preguntas/{pregunta}', 'update')->name('profesor.preguntas.update');
 
                 // Eliminar pregunta
-                Route::delete('/{modulo}/preguntas/eliminar/{pregunta}', 'destroy')->name('profesor.eliminarPregunta.eliminar');
+                Route::delete('/{modulo}/preguntas/{pregunta}', 'destroy')->name('profesor.preguntas.destroy');
             });
 
             // ===============
@@ -83,19 +83,19 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 Route::get('/{modulo}/tests', 'index')->name('profesor.tests.index');
 
                 // Mostrar formulario para crear tests nuevos
-                Route::get('/{modulo}/test/create', 'create')->name('profesor.tests.create');
+                Route::get('/{modulo}/tests/create', 'create')->name('profesor.tests.create');
 
                 // Crear test
-                Route::post('/{modulo}/test/store', 'store')->name('profesor.tests.store');
+                Route::post('/{modulo}/tests', 'store')->name('profesor.tests.store');
 
                 // Mostrar formulario para editar tests
-                Route::get('/{modulo}/test/{test}/edit', 'edit')->name('profesor.tests.edit');
+                Route::get('/{modulo}/tests/{test}/edit', 'edit')->name('profesor.tests.edit');
 
                 // Editar test
-                Route::put('/{modulo}/test/{test}/update', 'update')->name('profesor.tests.update');
+                Route::put('/{modulo}/tests/{test}', 'update')->name('profesor.tests.update');
 
                 // Eliminar test
-                Route::delete('/test/{test}/destroy', 'destroy')->name('profesor.tests.destroy');
+                Route::delete('{modulo}/tests/{test}', 'destroy')->name('profesor.tests.destroy');
             });
 
             // =====================================
