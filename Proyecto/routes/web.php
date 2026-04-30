@@ -56,13 +56,22 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
             Route::controller(PreguntaController::class)->group(function() {
                 // Página de preguntas
-                Route::get('/{modulo}/preguntas', 'preguntasMostrar')->name('profesor.preguntas.mostrar');
+                Route::get('/{modulo}/preguntas', 'index')->name('profesor.preguntas.mostrar');
 
                 // Mostrar formulario para crear preguntas nuevas
-                Route::get('/{modulo}/preguntas/crear', 'crearPreguntasMostrar')->name('profesor.crearPregunta.mostrar');
+                Route::get('/{modulo}/preguntas/crear', 'create')->name('profesor.crearPregunta.mostrar');
 
-                // Crear el modulo
-                Route::post('/{modulo}/preguntas/crear', 'crearPreguntaCrear')->name('profesor.crearPregunta.crear');
+                // Crear pregunta
+                Route::post('/{modulo}/preguntas/crear', 'store')->name('profesor.crearPregunta.crear');
+
+                // Obtener pregunta para editar
+                Route::get('/{modulo}/preguntas/editar/{pregunta}', 'edit')->name('profesor.editarPregunta.mostrar');
+
+                // Guardar pregunta actualizada
+                Route::put('/{modulo}/preguntas/editar/{pregunta}', 'update')->name('profesor.editarPregunta.editar');
+
+                // Eliminar pregunta
+                Route::delete('/{modulo}/preguntas/eliminar/{pregunta}', 'destroy')->name('profesor.eliminarPregunta.eliminar');
             });
 
             // ===============
