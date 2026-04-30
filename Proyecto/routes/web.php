@@ -7,7 +7,6 @@ use App\Http\Controllers\ProfesorModuloController;
 use App\Http\Controllers\PreguntaController;
 use App\Http\Controllers\ProfesorAlumnoController;
 use App\Http\Controllers\TestController;
-use App\Models\Modulo;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [InicioController::class, 'indexMostrar'])->name('inicio.index.mostrar');
@@ -95,7 +94,7 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 Route::put('/{modulo}/tests/{test}', 'update')->name('profesor.tests.update');
 
                 // Eliminar test
-                Route::delete('{modulo}/tests/{test}', 'destroy')->name('profesor.tests.destroy');
+                Route::delete('/{modulo}/tests/{test}', 'destroy')->name('profesor.tests.destroy');
             });
 
             // =====================================
@@ -132,18 +131,18 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
         Route::middleware('moduloAlumno')->controller(AlumnoModuloController::class)->group(function() {
 
             // Dashboard de alumno
-            Route::get('dashboard/{modulo?}', [InicioController::class, 'dashboardAlumnoMostrar'])->name('inicio.dashboardAlumno.mostrar');
+            Route::get('/dashboard/{modulo?}', [InicioController::class, 'dashboardAlumnoMostrar'])->name('inicio.dashboardAlumno.mostrar');
         });
 
         Route::controller(AlumnoModuloController::class)->group(function() {
             // Unirse a módulos nuevos
-            Route::get('/modulos/seleccionar', 'seleccionarModuloMostrar')->name('alumno.seleccionarModulo.mostrar');
-            Route::get('/modulos/seleccionar/{modulo}', 'matricularseModuloMostrar')->name('alumnos.matricularseModulo.mostrar');
-            Route::post('/modulos/seleccionar/{modulo}', 'matricularseModuloEntrar')->name('alumnos.matricularseModulo.entrar');
+            Route::get('/matriculas', 'index')->name('alumno.matriculas.index');
+            Route::get('/matriculas/{modulo}', 'create')->name('alumno.matriculas.create');
+            Route::post('/matriculas/{modulo}', 'store')->name('alumno.matriculas.store');
         });
     });
 
     // Cerrar sesión
 
-    Route::get('/logout', 'logout')->name('auth.logout');
+    Route::post('/logout', 'logout')->name('auth.logout');
 });

@@ -17,7 +17,7 @@
     @if (!$moduloActual)
         
         <p>¿Primera vez? Únete a un módulo</p>
-        <p><a href="{{ route('alumno.seleccionarModulo.mostrar') }}">Unirse a un nuevo modulo</a></p>
+        <p><a href="{{ route('alumno.matriculas.index') }}">Unirse a un nuevo modulo</a></p>
 
     @else
         <select onchange="if(this.value) location = this.value;">
@@ -31,7 +31,7 @@
                 </option>
             @endforeach
 
-            <option value="{{ route('alumno.seleccionarModulo.mostrar') }}">+ Unirse a un nuevo módulo</option>
+            <option value="{{ route('alumno.matriculas.index') }}">+ Unirse a un nuevo módulo</option>
         </select> 
 
         <p>{{$moduloActual->ciclo}} {{$moduloActual->modulo}} {{$moduloActual->profesor->usuario->nombre}} {{$moduloActual->profesor->usuario->apellidos}}</p>

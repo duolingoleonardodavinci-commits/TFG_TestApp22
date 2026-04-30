@@ -10,7 +10,7 @@
     
     <h2>{{ $modulo->ciclo }} {{ $modulo->modulo }} {{$modulo->profesor->usuario->nombre}} {{$modulo->profesor->usuario->apellidos}}</h2>
 
-    <form method="POST" action="{{ route('alumnos.matricularseModulo.entrar', $modulo) }}">
+    <form method="POST" action="{{ route('alumno.matriculas.store', $modulo) }}">
         @csrf
 
         <!-- Clave matriculación -->
