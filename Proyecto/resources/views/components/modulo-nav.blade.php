@@ -18,6 +18,6 @@
         <p>
             <a href="{{ route('profesor.preguntas.index', $moduloActual->id_modulo) }}">Preguntas</a>
             <a href="{{ route('profesor.tests.index', $moduloActual->id_modulo) }}">Tests</a>
-            <a href="{{ route('profesor.alumnos.mostrar', $moduloActual->id_modulo)}}">Alumnos</a>
+            <a href="{{ route('profesor.alumnos.index', $moduloActual->id_modulo)}}">Alumnos</a>
         </p>
 </nav>

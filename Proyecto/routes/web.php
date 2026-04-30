@@ -104,13 +104,13 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
             Route::controller(ProfesorAlumnoController::class)->group(function() {
                 // Mostrar los alumnos pertenecientes al módulo 
-                Route::get('/{modulo}/alumnos', 'alumnosMostrar')->name('profesor.alumnos.mostrar');
+                Route::get('/{modulo}/alumnos', 'index')->name('profesor.alumnos.index');
 
                 // Actualizar el acceso de los alumnos al modulo
-                Route::put('/{modulo}/alumnos/editar', 'alumnosEditar')->name('profesor.alumnos.editar');
+                Route::put('/{modulo}/alumnos', 'update')->name('profesor.alumnos.update');
 
                 // Eliminar alumnos del módulo
-                Route::delete('/{modulo}/alumnos/{alumno}/eliminar', 'alumnoEliminar')->name('profesor.alumno.eliminar');
+                Route::delete('/{modulo}/alumnos/{alumno}', 'destroy')->name('profesor.alumnos.destroy');
             });
         });
 
