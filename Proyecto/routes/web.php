@@ -116,9 +116,9 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
         Route::controller(ProfesorModuloController::class)->group(function() {
             // Mostrar formulario para crear modulos nuevos
-            Route::get('/crearModulo', 'crearModuloMostrar')->name('profesor.crearModulo.mostrar');
+            Route::get('/modulos/create', 'create')->name('profesor.modulos.create');
             // Crear el modulo
-            Route::post('/crearModulo', 'crearModuloCrear')->name('profesor.crearModulo.crear');
+            Route::post('/modulos', 'store')->name('profesor.modulos.store');
         });
     });
 

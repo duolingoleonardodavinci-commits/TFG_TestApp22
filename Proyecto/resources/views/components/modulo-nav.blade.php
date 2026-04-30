@@ -10,7 +10,7 @@
             </option>
         @endforeach
 
-        <option value="{{ route('profesor.crearModulo.mostrar') }}">+ Crear nuevo módulo</option>
+        <option value="{{ route('profesor.modulos.create') }}">+ Crear nuevo módulo</option>
     </select> 
 
         <p>{{$moduloActual->ciclo}} {{$moduloActual->modulo}}</p>
