@@ -107,25 +107,17 @@ class PreguntaController extends Controller
                     'respuesta' => $validated['respuesta']];
 
             } else if ($validated['tipo'] == 'conecta') {
-                $div1 = [];
-                $div2 = [];
-                $respuestas = [];
-
+                $parejas = [];
                 foreach ($validated['columna_a'] as $index => $valorA) {
-                    $numero = $index + 1;
-                    $letra = chr(97 + $index); 
-
-                    $div1[(string)$numero] = $valorA; 
-                    $div2[$letra] = $validated['columna_b'][$index]; 
-                    
-                    $respuestas[(string)$numero] = $letra; 
+                    $parejas[] = [
+                        'a' => $valorA,
+                        'b' => $validated['columna_b'][$index]
+                    ];
                 }
 
                 $contenido = [
                     'enunciado' => $validated['enunciado'],
-                    'div-1' => $div1,
-                    'div-2' => $div2,
-                    'respuesta' => $respuestas
+                    'parejas'   => $parejas
                 ];
                 
             } else {
