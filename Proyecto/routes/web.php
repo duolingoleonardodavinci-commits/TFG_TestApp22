@@ -80,22 +80,22 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
             Route::controller(TestController::class)->group(function() {
                 // Página de tests
-                Route::get('/{modulo}/tests', 'testsMostrar')->name('profesor.tests.mostrar');
+                Route::get('/{modulo}/tests', 'index')->name('profesor.tests.index');
 
                 // Mostrar formulario para crear tests nuevos
-                Route::get('/{modulo}/test/crear', 'crearTestMostrar')->name('profesor.crearTest.mostrar');
+                Route::get('/{modulo}/test/create', 'create')->name('profesor.tests.create');
 
                 // Crear test
-                Route::post('/{modulo}/test/crear', 'crearTestCrear')->name('profesor.crearTest.crear');
+                Route::post('/{modulo}/test/store', 'store')->name('profesor.tests.store');
 
                 // Mostrar formulario para editar tests
-                Route::get('/{modulo}/test/{test}/editar', 'editarTestMostrar')->name('profesor.editarTest.mostrar');
+                Route::get('/{modulo}/test/{test}/edit', 'edit')->name('profesor.tests.edit');
 
                 // Editar test
-                Route::put('/{modulo}/test/{test}/editar', 'editarTestEditar')->name('profesor.editarTest.editar');
+                Route::put('/{modulo}/test/{test}/update', 'update')->name('profesor.tests.update');
 
                 // Eliminar test
-                Route::delete('/test/{test}/eliminar', 'testEliminar')->name('profesor.testEliminar.eliminar');
+                Route::delete('/test/{test}/destroy', 'destroy')->name('profesor.tests.destroy');
             });
 
             // =====================================

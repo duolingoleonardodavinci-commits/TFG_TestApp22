@@ -6,7 +6,7 @@
     <x-header />
     <x-errores />
     
-    <form method="POST" action="{{ route('profesor.crearTest.crear', $modulo->id_modulo) }}">
+    <form method="POST" action="{{ route('profesor.tests.store', $modulo->id_modulo) }}">
         @include('usuario.profesor.tests.partials.form')
     </form>
 @endsection
