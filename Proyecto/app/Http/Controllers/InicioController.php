@@ -53,48 +53,33 @@ class InicioController
 
     public function dashboardAlumnoMostrar(?Modulo $modulo = null) {
 
-     /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-         HAY QUE MODIFICAR ESTA CONSULTA PARA QUE MUESTRE AQUELLOS MÓDULOS EN LOS QUE EL ALUMNO TIENE ACCESO
-         SELECT m.id_modulo FROM m.modulos, ma.modulos_alumnos 
-         WHERE (ma.id_alumno = alumno->id_alumno AND tiene_acceso = 1) AND ma.id_modulo = m.id_modulo;
-         Es decir, el middleware funciona, solo que esta mostrandole el último módulo por pantalla al que ha accedido, y también lo muestra en la lista
-        
+        try {
 
-        $modulos = $alumno->modulos()
-                   ->wherePivot('tiene_acceso', true)
-                   ->pluck('modulos.id_modulo');
+            $usuario = Auth::user();
+            $alumno = Auth::user()->alumno;
 
-        */
+            $moduloActual = $modulo ?? Modulo::find($usuario->id_ultimo_modulo_visitado);
 
-        $alumno = Auth::user();
+            // Verificar que el alumno tiene acceso al módulo
 
-        // Si el módulo es null busca el último módulo. Recibe null si no se ha visitado ninguno
+            $tieneAcceso = $moduloActual->alumnos()
+                    ->wherePivot('id_alumno', $alumno->id_alumno)
+                    ->wherePivot('tiene_acceso', 1)
+                    ->exists();
 
-         /*
-            SELECT m.id_modulo 
-            FROM modulos m, usuarios u, alumnos a, modulos_alumnos ma
-            WHERE     m.id_modulo = ma.id_modulo 
-                  AND ma.id_alumno = a.id_alumno 
-                  AND a.id_alumno = u.id_usuario 
-                  AND u.id_ultimo_modulo_visitado = m.id_modulo
-                  AND ma.tiene_acceso = TRUE
-                  AND a.id_alumno = $alumno->id_alumno;
-        */
-        $moduloActual = $modulo ?? DB::table('modulos')
-                                        ->join('modulos_alumno', 'modulos.id_modulo', '=', 'modulos_alumno.id_modulo')
-                                        ->join('alumnos', 'modulos_alumnos.id_alumno', '=', 'alumnos.id_alumno')
-                                        ->join('usuarios', 'alumnos.id_alumno', '=', 'usuarios.id_usuario')
-                                        ->join('modulos', 'usuarios.id_ultimo_modulo_visitado', '=', 'modulos.id_modulo')
-                                        ->where('modulos_alumnos.tiene_acceso', '=', true)
-                                        ->where('alumnos.id_alumno', '=', $alumno->id_usuario)
-                                        ->pluck('id_modulo');
+            if ($tieneAcceso) {
+                // Se guarda el último módulo visitado
+                if ($moduloActual) {
+                    $usuario->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
+                    $usuario->save();
+                }
+            } else {
+                $moduloActual = null;
+            }
 
-        // Se guarda el último módulo visitado
-        if ($moduloActual) {
-            $alumno->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
-            $alumno->save();
+            return view('usuario.alumno.dashboard', compact('moduloActual'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Error al acceder al módulo, inténtalo de nuevo.']);
         }
-
-        return view('usuario.alumno.dashboard', compact('moduloActual'));
     }
 }
