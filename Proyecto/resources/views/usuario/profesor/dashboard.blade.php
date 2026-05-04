@@ -8,13 +8,17 @@
     
     <p>Dashboard profesor {{ Auth::user()->nombre }}</p>
 
-
-    @if (!$moduloActual)
-        
+    @if (Auth::user()->profesor->modulos->isEmpty())
+        <!-- No tiene ningún módulo -->
         <p>¿Primera vez? Crea un módulo</p>
-        <p><a href="{{ route('profesor.modulos.create') }}">Crear nuevo modulo</a></p>
+        <p><a href="{{ route('profesor.modulos.create') }}">Crear nuevo módulo</a></p>
 
     @else
+        <!-- Tiene módulos pero ninguno seleccionado -->
+        @if (!$moduloActual)
+            <p>Selecciona un módulo</p>
+        @endif
+
         <x-modulo-nav :moduloActual="$moduloActual" />
     @endif
 @endsection
