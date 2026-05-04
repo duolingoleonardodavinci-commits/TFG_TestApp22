@@ -61,11 +61,14 @@ class InicioController
             $moduloActual = $modulo ?? Modulo::find($usuario->id_ultimo_modulo_visitado);
 
             // Verificar que el alumno tiene acceso al módulo
+            $tieneAcceso = false;
 
-            $tieneAcceso = $moduloActual->alumnos()
-                    ->wherePivot('id_alumno', $alumno->id_alumno)
-                    ->wherePivot('tiene_acceso', 1)
-                    ->exists();
+            if ($moduloActual) {
+                $tieneAcceso = $moduloActual->alumnos()
+                        ->wherePivot('id_alumno', $alumno->id_alumno)
+                        ->wherePivot('tiene_acceso', 1)
+                        ->exists();
+            }
 
             if ($tieneAcceso) {
                 // Se guarda el último módulo visitado
