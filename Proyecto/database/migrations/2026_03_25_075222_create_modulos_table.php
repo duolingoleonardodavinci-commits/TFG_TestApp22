@@ -13,13 +13,11 @@ return new class extends Migration
     {
         Schema::create('modulos', function (Blueprint $table) {
             $table->id('id_modulo');
-
             $table->string('ciclo');
-
             $table->string('modulo');
-
+            $table->string('color', 7);
+            $table->string('idioma', 2);
             $table->string('clave_matriculacion');
-
             $table->foreignId('id_profesor')
                   ->constrained('profesores', 'id_profesor')
                   ->cascadeOnDelete();

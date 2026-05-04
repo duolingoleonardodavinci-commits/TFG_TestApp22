@@ -44,7 +44,25 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
     Route::middleware('profesor')->prefix('profesor')->group(function() {
 
-        // Acceder Modulos
+        // =================
+        // ==== MODULOS ====
+        // =================
+
+        Route::controller(ProfesorModuloController::class)->group(function() {
+            // Mostrar formulario para crear modulos nuevos
+            Route::get('/modulos/create', 'create')->name('profesor.modulos.create');
+            // Crear el modulo
+            Route::post('/modulos', 'store')->name('profesor.modulos.store');
+
+            Route::middleware('moduloProfesor')->group(function () {
+                // Mostrar formulario para editar módulo
+                Route::get('/modulos/{modulo}/edit', 'edit')->name('profesor.modulos.edit');
+                // Editar módulo
+                Route::put('/modulos/{modulo}', 'update')->name('profesor.modulos.update');
+                // Eliminar módulo
+                Route::delete('/modulos/{modulo}', 'destroy')->name('profesor.modulos.destroy');
+            });
+        });
 
         Route::middleware('moduloProfesor')->controller(ProfesorModuloController::class)->group(function () {
             Route::get('/dashboard/{modulo?}', [InicioController::class, 'dashboardProfesorMostrar'])->name('inicio.dashboardProfesor.mostrar');
@@ -111,14 +129,10 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 // Eliminar alumnos del módulo
                 Route::delete('/{modulo}/alumnos/{alumno}', 'destroy')->name('profesor.alumnos.destroy');
             });
+
         });
 
-        Route::controller(ProfesorModuloController::class)->group(function() {
-            // Mostrar formulario para crear modulos nuevos
-            Route::get('/modulos/create', 'create')->name('profesor.modulos.create');
-            // Crear el modulo
-            Route::post('/modulos', 'store')->name('profesor.modulos.store');
-        });
+        
     });
 
     // ================
