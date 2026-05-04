@@ -20,12 +20,13 @@
                 <tr>
                     <td>{{ $test->nombre }}</td>
                     <td>
-                        <a href="{{ route('profesor.editarTest.mostrar', [$modulo->id_modulo, $test->id_test]) }}">Editar</a>
+                        <a href="{{ route('profesor.editarTest.mostrar', [$modulo->id_modulo, $test->id_test]) }}"><button>Editar</button></a>
                         <form method="POST" action="{{ route('profesor.testEliminar.eliminar', $test->id_test) }}">
                             @csrf
                             @method('DELETE')
                             <button type="submit">Eliminar</button>
                         </form>
+                        <a href="{{ route('tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}"><button>Probar</button></a>
                     </td>
                 </tr>
             @empty
