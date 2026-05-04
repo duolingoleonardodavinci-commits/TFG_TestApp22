@@ -35,6 +35,7 @@ class ModuloPerteneceProfesor
                 ->withErrors(['error' => 'No tienes acceso a este módulo']);
         }
 
+        app()->setLocale($modulo->idioma);
         return $next($request);
     }
 }

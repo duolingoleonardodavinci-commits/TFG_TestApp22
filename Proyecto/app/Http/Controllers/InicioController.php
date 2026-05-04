@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Modulo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InicioController
 {
@@ -51,17 +52,34 @@ class InicioController
     // Dashboard de alumno
 
     public function dashboardAlumnoMostrar(?Modulo $modulo = null) {
-        $alumno = Auth::user();
 
-        // Si el módulo es null busca el último módulo. Recibe null si no se ha visitado ninguno
-        $moduloActual = $modulo ?? Modulo::find($alumno->id_ultimo_modulo_visitado);
+        try {
 
-        // Se guarda el último módulo visitado
-        if ($moduloActual) {
-            $alumno->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
-            $alumno->save();
+            $usuario = Auth::user();
+            $alumno = Auth::user()->alumno;
+
+            $moduloActual = $modulo ?? Modulo::find($usuario->id_ultimo_modulo_visitado);
+
+            // Verificar que el alumno tiene acceso al módulo
+
+            $tieneAcceso = $moduloActual->alumnos()
+                    ->wherePivot('id_alumno', $alumno->id_alumno)
+                    ->wherePivot('tiene_acceso', 1)
+                    ->exists();
+
+            if ($tieneAcceso) {
+                // Se guarda el último módulo visitado
+                if ($moduloActual) {
+                    $usuario->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
+                    $usuario->save();
+                }
+            } else {
+                $moduloActual = null;
+            }
+
+            return view('usuario.alumno.dashboard', compact('moduloActual'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Error al acceder al módulo, inténtalo de nuevo.']);
         }
-
-        return view('usuario.alumno.dashboard', compact('moduloActual'));
     }
 }

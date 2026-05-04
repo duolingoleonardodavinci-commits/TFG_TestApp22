@@ -111,12 +111,12 @@
                 <br>
                 <label>
                     <input type="radio" name="respuesta" x-model="respuesta" value="verdadero" :disabled="tipo_pregunta !== 'booleana'">
-                    <span>Verdadero</span>
+                    <span>{{ __('pregunta.verdadero') }}</span>
                 </label>
                 <br>
                 <label>
                     <input type="radio" name="respuesta" x-model="respuesta" value="falso" :disabled="tipo_pregunta !== 'booleana'">
-                    <span>Falso</span>
+                    <span>{{ __('pregunta.falso') }}</span>
                 </label>
             </div>
 
