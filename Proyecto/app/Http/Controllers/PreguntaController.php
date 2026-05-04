@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Pregunta;
 use App\Models\Modulo;
 use App\Models\Etiqueta;
+use App\Services\preguntaService;
 use Illuminate\Http\Request;
 
 class PreguntaController extends Controller
 {
+    // Inyectamos el servicio
+    public function __construct(preguntaService $preguntaService) {
+        $this->preguntaService = $preguntaService;
+    }
+
     public function index(Modulo $modulo) {
         $preguntas = $modulo->preguntas()->with('listaEtiquetas')->get();
         return view('usuario.profesor.preguntas.preguntas', compact('preguntas', 'modulo'));
@@ -19,24 +25,14 @@ class PreguntaController extends Controller
         return view('usuario.profesor.preguntas.crearPregunta', compact('modulo', 'etiquetas_bd'));
     }
 
-    public function store(Request $request, Modulo $modulo) {
-        [$validated, $contenido, $etiquetas] = $this->comprobarPregunta($request);
-        
+    public function store(Request $request, Modulo $modulo) {        
         try {
-            $pregunta = Pregunta::create([
-                'tipo' => $validated['tipo'],
-                'contenido' => $contenido,
-                'id_modulo' => $modulo->id_modulo
-            ]);
-
-            if (!empty($etiquetas)) {
-                $pregunta->listaEtiquetas()->sync($etiquetas);
-            }
+            $this->preguntaService->crearPregunta($request, $modulo->id_modulo);
 
             return redirect()->route('profesor.preguntas.mostrar', compact('modulo'));
             
         } catch(\Exception $e) {
-           return back()->withErrors(['error' => 'Error al crear la pregunta, inténtalo de nuevo.']);
+           return back()->withErrors(['error' => 'Error al crear la pregunta, inténtalo de nuevo.'. $e->getMessage()]);
         }        
     }
 
@@ -47,17 +43,8 @@ class PreguntaController extends Controller
     }
 
     public function update(Request $request, Modulo $modulo, Pregunta $pregunta) {
-        [$validated, $contenido, $etiquetas] = $this->comprobarPregunta($request);
-
         try {
-            $pregunta->update([
-                'tipo' => $validated['tipo'],
-                'contenido' => $contenido,
-            ]);
-
-            if (!empty($etiquetas)) {
-                $pregunta->listaEtiquetas()->sync($etiquetas);
-            }
+            $this->preguntaService->actualizarPregunta($request, $pregunta);
 
             return redirect()->route('profesor.preguntas.mostrar', compact('modulo'));
             
@@ -74,78 +61,6 @@ class PreguntaController extends Controller
 
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Error al borrar la pregunta, inténtalo de nuevo.']);
-        }
-    }
-
-    private function comprobarPregunta($request) {
-        $validated = $request->validate([
-            'tipo' => 'required|string|max:255',
-            'enunciado' => 'required|string|max:255',
-
-            'opciones' => 'nullable|required_if:tipo,multiple|array|min:3',
-            'opciones.*' => 'nullable|required_if:tipo,multiple|string|max:255',
-
-            'columna_a' => 'nullable|required_if:tipo,conecta|array|min:2',
-            'columna_a.*' => 'nullable|required_if:tipo,conecta|string|max:255',
-            'columna_b' => 'nullable|required_if:tipo,conecta|array|min:2',
-            'columna_b.*' => 'nullable|required_if:tipo,conecta|string|max:255',
-
-            'respuesta' => 'required_unless:tipo,conecta|string|max:255',
-
-            'etiquetas_existentes'   => 'nullable|array',
-            'etiquetas_existentes.*' => 'integer|exists:etiquetas,id_etiqueta',
-            
-            'etiquetas_nuevas'       => 'nullable|array',
-            'etiquetas_nuevas.*'     => 'string|max:255',
-        ]);
-
-        try {
-            if ($validated['tipo'] == 'multiple') {
-                $contenido = [
-                    'enunciado' => $validated['enunciado'],
-                    'opciones' => $validated['opciones'],
-                    'respuesta' => $validated['respuesta']];
-
-            } else if ($validated['tipo'] == 'conecta') {
-                $parejas = [];
-                foreach ($validated['columna_a'] as $index => $valorA) {
-                    $parejas[] = [
-                        'a' => $valorA,
-                        'b' => $validated['columna_b'][$index]
-                    ];
-                }
-
-                $contenido = [
-                    'enunciado' => $validated['enunciado'],
-                    'parejas'   => $parejas
-                ];
-                
-            } else {
-                $contenido = [
-                    'enunciado' => $validated['enunciado'],
-                    'respuesta' => $validated['respuesta']];
-            }
-
-            // ETIQUETAS ----------------
-            $etiquetas = [];
-
-            if ($request->has('etiquetas_existentes')) {
-                $etiquetas = $request->etiquetas_existentes;
-            }
-
-            if ($request->has('etiquetas_nuevas')) {
-                foreach ($request->etiquetas_nuevas as $nombreEtiqueta) {
-                    $etiqueta = Etiqueta::firstOrCreate([  // Con esto no  deberia haber etiquetas repetidas en la bd
-                        'nombre' => strtolower(trim($nombreEtiqueta))
-                    ]);
-                    
-                    $etiquetas[] = $etiqueta->id_etiqueta;
-                }
-            }
-            return [$validated, $contenido, $etiquetas];
-        
-        } catch (\Exception $e) {
-            throw $e;
         }
     }
 }
