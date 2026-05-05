@@ -19,6 +19,6 @@
                value="{{ $valor }}"
                {{ $checked }}
                {{ $disabled }}>
-        {{ ucfirst($valor) }}
+        {{ __('pregunta.' . $valor) }}
     </label>
 @endforeach

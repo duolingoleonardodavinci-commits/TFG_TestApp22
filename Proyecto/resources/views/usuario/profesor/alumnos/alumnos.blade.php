@@ -59,7 +59,7 @@
                         <button type="submit" form="form-eliminar-{{ $usuario->id_usuario }}">
                             Eliminar
                         </button>
-                        <a href="#">Historial</a>
+                        <a href="#"><button type="button">Historial</button></a>
                     </td>
                 </tr>
             @endforeach

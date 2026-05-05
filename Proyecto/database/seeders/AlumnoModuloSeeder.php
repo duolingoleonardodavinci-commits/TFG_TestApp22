@@ -15,11 +15,11 @@ class AlumnoModuloSeeder extends Seeder
 
         // Obtenemos alumnos por email para no depender del orden de inserción
         $emails = [
-            'ana.fernandez@alumno.es',
-            'marco.rodriguez@alumno.es',
-            'sofia.lopez@alumno.es',
-            'javier.moreno@alumno.es',
-            'paula.jimenez@alumno.es',
+            'alumno1@gmail.com',
+            'alumno2@gmail.com',
+            'alumno3@gmail.com',
+            'alumno4@gmail.com',
+            'alumno5@gmail.com',
         ];
 
         $alumnos = Usuario::whereIn('email', $emails)
@@ -33,15 +33,15 @@ class AlumnoModuloSeeder extends Seeder
 
         $matriculas = [
             // Ana → DAW completo
-            'ana.fernandez@alumno.es'    => ['Programación', 'Bases de Datos', 'Desarrollo Web'],
+            'alumno1@gmail.com'    => ['Programación', 'Bases de Datos', 'Desarrollo Web'],
             // Marco → DAW completo + SO
-            'marco.rodriguez@alumno.es'  => ['Programación', 'Bases de Datos', 'Desarrollo Web', 'Sistemas Operativos'],
+            'alumno2@gmail.com'  => ['Programación', 'Bases de Datos', 'Desarrollo Web', 'Sistemas Operativos'],
             // Sofía → DAM completo
-            'sofia.lopez@alumno.es'      => ['Sistemas Operativos', 'Entornos de Desarrollo'],
+            'alumno3@gmail.com'      => ['Sistemas Operativos', 'Entornos de Desarrollo'],
             // Javier → DAM completo + programación
-            'javier.moreno@alumno.es'    => ['Programación', 'Sistemas Operativos', 'Entornos de Desarrollo'],
+            'alumno4@gmail.com'    => ['Programación', 'Sistemas Operativos', 'Entornos de Desarrollo'],
             // Paula → Todo
-            'paula.jimenez@alumno.es'    => ['Programación', 'Bases de Datos', 'Desarrollo Web', 'Sistemas Operativos', 'Entornos de Desarrollo'],
+            'alumno5@gmail.com'    => ['Programación', 'Bases de Datos', 'Desarrollo Web', 'Sistemas Operativos', 'Entornos de Desarrollo'],
         ];
 
         $usuariosPorEmail = Usuario::whereIn('email', array_keys($matriculas))->get()->keyBy('email');

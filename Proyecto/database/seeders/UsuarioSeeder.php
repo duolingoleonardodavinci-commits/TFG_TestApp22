@@ -14,8 +14,8 @@ class UsuarioSeeder extends Seeder
     {
         // ── PROFESORES ───────────────────────────────────────────────────────
         $profesoresData = [
-            ['nombre' => 'Carlos',  'apellidos' => 'García López',   'email' => 'carlos.garcia@instituto.es'],
-            ['nombre' => 'Lucía',   'apellidos' => 'Martínez Ruiz',  'email' => 'lucia.martinez@instituto.es'],
+            ['nombre' => 'Carlos',  'apellidos' => 'García López',   'email' => 'profesor1@gmail.com'],
+            ['nombre' => 'Lucía',   'apellidos' => 'Martínez Ruiz',  'email' => 'profesor2@gmail.com'],
         ];
 
         $profesores = [];
@@ -37,11 +37,11 @@ class UsuarioSeeder extends Seeder
 
         // ── ALUMNOS ──────────────────────────────────────────────────────────
         $alumnosData = [
-            ['nombre' => 'Ana',      'apellidos' => 'Fernández Torres',  'email' => 'ana.fernandez@alumno.es'],
-            ['nombre' => 'Marco',    'apellidos' => 'Rodríguez Vega',    'email' => 'marco.rodriguez@alumno.es'],
-            ['nombre' => 'Sofía',    'apellidos' => 'López Sánchez',     'email' => 'sofia.lopez@alumno.es'],
-            ['nombre' => 'Javier',   'apellidos' => 'Moreno Castillo',   'email' => 'javier.moreno@alumno.es'],
-            ['nombre' => 'Paula',    'apellidos' => 'Jiménez Blanco',    'email' => 'paula.jimenez@alumno.es'],
+            ['nombre' => 'Ana',      'apellidos' => 'Fernández Torres',  'email' => 'alumno1@gmail.com'],
+            ['nombre' => 'Marco',    'apellidos' => 'Rodríguez Vega',    'email' => 'alumno2@gmail.com'],
+            ['nombre' => 'Sofía',    'apellidos' => 'López Sánchez',     'email' => 'alumno3@gmail.com'],
+            ['nombre' => 'Javier',   'apellidos' => 'Moreno Castillo',   'email' => 'alumno4@gmail.com'],
+            ['nombre' => 'Paula',    'apellidos' => 'Jiménez Blanco',    'email' => 'alumno5@gmail.com'],
         ];
 
         foreach ($alumnosData as $data) {
