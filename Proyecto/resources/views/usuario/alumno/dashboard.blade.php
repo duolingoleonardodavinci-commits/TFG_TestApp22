@@ -20,4 +20,13 @@
 
         <x-modulo-nav-alumno :moduloActual="$moduloActual" />
     @endif
+
+    <!---------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!-- test -->
+    <div>
+        <p><a href="{{ route('alumno.tests.examen', $moduloActual->id_modulo) }}">Examenes</a></p>
+        <p><a href="{{ route('alumno.tests.practica', $moduloActual->id_modulo) }}">Ejercicios</a></p>
+    </div>
+
+
 @endsection
