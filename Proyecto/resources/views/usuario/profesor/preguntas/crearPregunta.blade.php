@@ -8,8 +8,8 @@
     @php
         $edicion = isset($pregunta);  // Detecta si es creacion o edicion 
         $url = $edicion 
-            ? route('profesor.editarPregunta.editar', [$modulo->id_modulo, $pregunta->id_pregunta]) 
-            : route('profesor.crearPregunta.crear', $modulo->id_modulo);
+            ? route('profesor.preguntas.update', [$modulo->id_modulo, $pregunta->id_pregunta]) 
+            : route('profesor.preguntas.store', $modulo->id_modulo);
 
         // Cargamos los datos de la pregunta a editar o lo dejamos vacio
         $tipoData = $pregunta->tipo ?? "";
@@ -111,12 +111,12 @@
                 <br>
                 <label>
                     <input type="radio" name="respuesta" x-model="respuesta" value="verdadero" :disabled="tipo_pregunta !== 'booleana'">
-                    <span>Verdadero</span>
+                    <span>{{ __('pregunta.verdadero') }}</span>
                 </label>
                 <br>
                 <label>
                     <input type="radio" name="respuesta" x-model="respuesta" value="falso" :disabled="tipo_pregunta !== 'booleana'">
-                    <span>Falso</span>
+                    <span>{{ __('pregunta.falso') }}</span>
                 </label>
             </div>
 

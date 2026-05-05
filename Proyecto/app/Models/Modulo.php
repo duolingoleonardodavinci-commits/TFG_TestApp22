@@ -14,6 +14,8 @@ class Modulo extends Model {
         'id_modulo',
         'ciclo',
         'modulo',
+        'color',
+        'idioma',
         'clave_matriculacion',
         'id_profesor',
     ];

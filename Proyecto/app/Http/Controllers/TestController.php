@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class TestController extends Controller
 {
     // Mostrar páginas de tests
-    public function testsMostrar(Modulo $modulo) {
+    public function index(Modulo $modulo) {
         $tests = $modulo->tests;
         return view('usuario.profesor.tests.tests', compact('modulo', 'tests'));
     }
@@ -20,9 +20,9 @@ class TestController extends Controller
     // ===============
 
     // Mostrar página de creación de tests
-    public function crearTestMostrar(Modulo $modulo) {
+    public function create(Modulo $modulo) {
         if ($modulo->preguntas->isEmpty()) {
-            return redirect()->route('profesor.preguntas.mostrar', $modulo->id_modulo)->withErrors(['error' => 'Debes crear preguntas antes de poder crear tests']);;
+            return redirect()->route('profesor.preguntas.index', $modulo->id_modulo)->withErrors(['error' => 'Debes crear preguntas antes de poder crear tests']);;
         }
 
         $preguntas = $modulo->preguntas;
@@ -31,7 +31,7 @@ class TestController extends Controller
     }
 
     // Crear test
-    public function crearTestCrear(Request $request, Modulo $modulo) {
+    public function store(Request $request, Modulo $modulo) {
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255',
@@ -54,7 +54,7 @@ class TestController extends Controller
 
             DB::commit();
 
-            return redirect()->route('profesor.tests.mostrar', compact('modulo'));
+            return redirect()->route('profesor.tests.index', compact('modulo'));
         } catch(\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'No se ha podido crear el test, vuelve a intentarlo']);
@@ -67,13 +67,13 @@ class TestController extends Controller
     // ================
 
     // Mostrar página de edición de tests
-    public function editarTestMostrar(Modulo $modulo, Test $test) {
+    public function edit(Modulo $modulo, Test $test) {
         $preguntas = $modulo->preguntas;
         return view('usuario.profesor.tests.editarTest', compact('preguntas', 'test', 'modulo'));
     }
 
     // Editar test
-    public function editarTestEditar(Request $request, Modulo $modulo, Test $test) {
+    public function update(Request $request, Modulo $modulo, Test $test) {
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255',
@@ -95,7 +95,7 @@ class TestController extends Controller
 
             DB::commit();
 
-            return redirect()->route('profesor.tests.mostrar', compact('modulo'));
+            return redirect()->route('profesor.tests.index', compact('modulo'));
         } catch(\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'No se ha podido editar el test, vuelve a intentarlo']);
@@ -107,12 +107,12 @@ class TestController extends Controller
     // ==================
 
     // Eliminar test
-    public function testEliminar(Test $test) {
+    public function destroy(Modulo $modulo, Test $test) {
         try {
             $test->delete();
-            return redirect()->back();
+            return redirect()->route('profesor.tests.index', compact('modulo'));
         } catch(\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
+            return back()->withErrors(['error' => 'No se ha podido eliminar el test, vuelve a intentarlo']);
         }
     }
 }
