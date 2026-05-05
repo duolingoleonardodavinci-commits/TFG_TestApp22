@@ -25,4 +25,8 @@ class Test extends Model
     public function preguntas() {
         return $this->belongsToMany(Pregunta::class, 'preguntas_tests', 'id_test', 'id_pregunta');
     }
+
+    public function puntuaciones() {
+        return $this->hasMany(Puntuacion::class, 'id_test');
+    }
 }

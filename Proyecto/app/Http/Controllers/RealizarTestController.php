@@ -44,7 +44,6 @@ class RealizarTestController extends Controller
             Puntuacion::create([
                 'id_test'    => $test->id_test,
                 'id_alumno'  => $usuario->id_usuario, 
-                'fecha'      => now(),
                 'puntuacion' => $resultado['nota'], 
                 'tipo'       => $test->tipo
             ]);

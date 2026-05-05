@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('puntuaciones', function (Blueprint $table) {
-            $table->id(); 
+            $table->id('id_puntuacion'); 
             
-            $table->unsignedBigInteger('id_test'); 
-            $table->unsignedBigInteger('id_alumno');
+            $table->foreignId('id_test')->constrained('tests', 'id_test')->cascadeOnDelete(); 
+            $table->foreignId('id_alumno')->constrained('alumnos', 'id_alumno')->cascadeOnDelete();
             
-            $table->timestamp('fecha')->useCurrent();
+            $table->timestamp('fecha')->nullable();
             
             $table->decimal('puntuacion', 5, 2)->nullable();
             $table->string('tipo')->default('examen');
