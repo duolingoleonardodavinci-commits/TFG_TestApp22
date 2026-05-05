@@ -12,8 +12,8 @@ class ModuloSeeder extends Seeder
     {
         // Obtenemos los profesores por email para no depender del ID
         $profesores = Profesor::with('usuario')->get();
-        $profCarlos = $profesores->first(fn($p) => $p->usuario->email === 'carlos.garcia@instituto.es');
-        $profLucia  = $profesores->first(fn($p) => $p->usuario->email === 'lucia.martinez@instituto.es');
+        $profCarlos = $profesores->first(fn($p) => $p->usuario->email === 'profesor1@gmail.com');
+        $profLucia  = $profesores->first(fn($p) => $p->usuario->email === 'profesor2@gmail.com');
 
         $modulos = [
             [
@@ -21,7 +21,7 @@ class ModuloSeeder extends Seeder
                 'modulo'              => 'Programación',
                 'color'               => '#4F46E5',
                 'idioma'              => 'es',
-                'clave_matriculacion' => 'prog2024',
+                'clave_matriculacion' => '1234',
                 'id_profesor'         => $profCarlos->id_profesor,
             ],
             [
@@ -29,7 +29,7 @@ class ModuloSeeder extends Seeder
                 'modulo'              => 'Bases de Datos',
                 'color'               => '#0891B2',
                 'idioma'              => 'es',
-                'clave_matriculacion' => 'bbdd2024',
+                'clave_matriculacion' => '1234',
                 'id_profesor'         => $profCarlos->id_profesor,
             ],
             [
@@ -37,7 +37,7 @@ class ModuloSeeder extends Seeder
                 'modulo'              => 'Desarrollo Web',
                 'color'               => '#16A34A',
                 'idioma'              => 'es',
-                'clave_matriculacion' => 'web2024',
+                'clave_matriculacion' => '1234',
                 'id_profesor'         => $profCarlos->id_profesor,
             ],
             [
@@ -45,7 +45,7 @@ class ModuloSeeder extends Seeder
                 'modulo'              => 'Sistemas Operativos',
                 'color'               => '#DC2626',
                 'idioma'              => 'es',
-                'clave_matriculacion' => 'so2024',
+                'clave_matriculacion' => '1234',
                 'id_profesor'         => $profLucia->id_profesor,
             ],
             [
@@ -53,7 +53,7 @@ class ModuloSeeder extends Seeder
                 'modulo'              => 'Entornos de Desarrollo',
                 'color'               => '#D97706',
                 'idioma'              => 'es',
-                'clave_matriculacion' => 'edes2024',
+                'clave_matriculacion' => '1234',
                 'id_profesor'         => $profLucia->id_profesor,
             ],
         ];
