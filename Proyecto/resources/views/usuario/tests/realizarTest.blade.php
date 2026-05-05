@@ -66,8 +66,8 @@
         @if(!isset($estado))
             <button type="submit">Enviar Respuestas</button>
         @else
-            @if(auth()->user()->tipo_usuario === 'profesor') 
-                <a href="{{ route('profesor.tests.mostrar', [$modulo->id_modulo]) }}"><button type="button">Volver</button></a>
+            @if(auth()->user()->rol === 'profesor') 
+                <a href="{{ route('profesor.tests.index', [$modulo->id_modulo]) }}"><button type="button">Volver</button></a>
             @else
                 {{-- dashboard del alumno --}}
                 <a href="{{ route('inicio.dashboardAlumno.mostrar', [$modulo->id_modulo]) }}"><button type="button">Volver</button></a>
