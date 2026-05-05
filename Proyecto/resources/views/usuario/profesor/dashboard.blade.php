@@ -19,6 +19,6 @@
             <p>Selecciona un módulo</p>
         @endif
 
-        <x-modulo-nav :moduloActual="$moduloActual" />
+        <x-modulo-nav-profesor :moduloActual="$moduloActual" />
     @endif
 @endsection
