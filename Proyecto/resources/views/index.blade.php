@@ -8,7 +8,7 @@
 
     <p>Landing</p>
 
-    <a href="{{ route('inicio.login.mostrar') }}">Iniciar sesión</a>
-    <a href="{{ route('inicio.register.mostrar') }}">Registrarse</a>
+    <a href="{{ route('inicio.login.mostrar') }}"><button type="button">Iniciar sesión</button></a>
+    <a href="{{ route('inicio.register.mostrar') }}"><button type="button">Registrarse</button></a>
 
 @endsection

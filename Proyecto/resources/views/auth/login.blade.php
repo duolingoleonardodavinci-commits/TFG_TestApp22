@@ -60,6 +60,6 @@
  
     <p>
         ¿No tienes una cuenta?
-        <a href="{{ route('inicio.register.mostrar') }}">Registrarse</a>
+        <a href="{{ route('inicio.register.mostrar') }}"><button type="button">Registrarse</button></a>
     </p>
 @endsection

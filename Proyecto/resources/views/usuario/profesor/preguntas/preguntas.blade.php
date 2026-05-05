@@ -85,6 +85,6 @@
         @endforeach
     </div>
 
-    <p><a href="{{ route('profesor.preguntas.create', $modulo->id_modulo) }}">+ Crear preguntas</a></p>
+    <p><a href="{{ route('profesor.preguntas.create', $modulo->id_modulo) }}"><button type="button">+ Crear preguntas</button></a></p>
 
 @endsection

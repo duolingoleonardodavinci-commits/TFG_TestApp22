@@ -1,6 +1,6 @@
 <header>
     <a href="/">
-        Inicio
+        <button type="button">Inicio</button>
     </a>
       
     <form action="{{ route('auth.logout') }}" method="POST">

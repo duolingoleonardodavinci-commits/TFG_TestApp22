@@ -15,8 +15,8 @@
 
     @if ($moduloActual)
         <h2>{{ $moduloActual->ciclo }} {{ $moduloActual->modulo }}</h2>
-        <a href="">Tests</a>
-        <a href="">Historial</a>
-        <a href="">Ajustes</a>
+        <a href=""><button type="button">Tests</button></a>
+        <a href=""><button type="button">Historial</button></a>
+        <a href=""><button type="button">Ajustes</button></a>
     @endif
 </nav>

@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{ $test->nombre }}</td>
                     <td>
-                        <a href="{{ route('profesor.tests.edit', [$modulo->id_modulo, $test->id_test]) }}">Editar</a>
+                        <a href="{{ route('profesor.tests.edit', [$modulo->id_modulo, $test->id_test]) }}"><button type="button">Editar</button></a>
                         <form method="POST" action="{{ route('profesor.tests.destroy', [$modulo->id_modulo, $test->id_test]) }}">
                             @csrf
                             @method('DELETE')
@@ -37,6 +37,6 @@
         </tbody>
     </table>
 
-<p><a href="{{ route('profesor.tests.create', $modulo->id_modulo) }}">+ Crear test</a></p>
+<p><a href="{{ route('profesor.tests.create', $modulo->id_modulo) }}"><button type="button">+ Crear test</button></a></p>
 
 @endsection
