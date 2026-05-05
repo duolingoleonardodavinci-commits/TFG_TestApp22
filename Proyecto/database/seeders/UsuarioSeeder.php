@@ -6,43 +6,50 @@ use App\Models\Alumno;
 use App\Models\Profesor;
 use App\Models\Usuario;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioSeeder extends Seeder
 {
     public function run(): void
     {
-        // Profesores
-        $profesores = [
-            ['nombre' => 'Pepe',  'apellidos' => 'García',  'email' => 'profesor1@gmail.com',  'password' => 'profesor1'],
-            ['nombre' => 'María',   'apellidos' => 'Martínez', 'email' => 'profesor2@gmail.com',   'password' => 'profesor2'],
+        // ── PROFESORES ───────────────────────────────────────────────────────
+        $profesoresData = [
+            ['nombre' => 'Carlos',  'apellidos' => 'García López',   'email' => 'carlos.garcia@instituto.es'],
+            ['nombre' => 'Lucía',   'apellidos' => 'Martínez Ruiz',  'email' => 'lucia.martinez@instituto.es'],
         ];
 
-        foreach ($profesores as $datos) {
+        $profesores = [];
+        foreach ($profesoresData as $data) {
             $usuario = Usuario::create([
-                'nombre'    => $datos['nombre'],
-                'apellidos' => $datos['apellidos'],
-                'email'     => $datos['email'],
-                'password'  => $datos['password'],
+                'nombre'    => $data['nombre'],
+                'apellidos' => $data['apellidos'],
+                'email'     => $data['email'],
+                'password'  => Hash::make('1234'),
                 'rol'       => 'profesor',
             ]);
 
-            Profesor::create([
+            $profesor = Profesor::create([
                 'id_profesor' => $usuario->id_usuario,
             ]);
+
+            $profesores[] = $profesor;
         }
 
-        // Alumnos
-        $alumnos = [
-            ['nombre' => 'Pedro',   'apellidos' => 'Sánchez Gil',   'email' => 'alumno1@gmail.com',   'password' => 'alumno1'],
-            ['nombre' => 'Laura',   'apellidos' => 'López Torres',  'email' => 'alumno2@gmail.com',   'password' => 'alumno2'],
+        // ── ALUMNOS ──────────────────────────────────────────────────────────
+        $alumnosData = [
+            ['nombre' => 'Ana',      'apellidos' => 'Fernández Torres',  'email' => 'ana.fernandez@alumno.es'],
+            ['nombre' => 'Marco',    'apellidos' => 'Rodríguez Vega',    'email' => 'marco.rodriguez@alumno.es'],
+            ['nombre' => 'Sofía',    'apellidos' => 'López Sánchez',     'email' => 'sofia.lopez@alumno.es'],
+            ['nombre' => 'Javier',   'apellidos' => 'Moreno Castillo',   'email' => 'javier.moreno@alumno.es'],
+            ['nombre' => 'Paula',    'apellidos' => 'Jiménez Blanco',    'email' => 'paula.jimenez@alumno.es'],
         ];
 
-        foreach ($alumnos as $datos) {
+        foreach ($alumnosData as $data) {
             $usuario = Usuario::create([
-                'nombre'    => $datos['nombre'],
-                'apellidos' => $datos['apellidos'],
-                'email'     => $datos['email'],
-                'password'  => $datos['password'],
+                'nombre'    => $data['nombre'],
+                'apellidos' => $data['apellidos'],
+                'email'     => $data['email'],
+                'password'  => Hash::make('1234'),
                 'rol'       => 'alumno',
             ]);
 
