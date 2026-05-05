@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfesorModuloController;
 use App\Http\Controllers\PreguntaController;
 use App\Http\Controllers\ProfesorAlumnoController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\RealizarTestController;
+use App\Models\Modulo;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [InicioController::class, 'indexMostrar'])->name('inicio.index.mostrar');
@@ -158,5 +160,16 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
     // Cerrar sesión
 
+    Route::get('/logout', 'logout')->name('auth.logout');
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // test para ambos usuarios
+    
+    Route::controller(RealizarTestController::class)->group(function() {
+        Route::get('/modulo/{modulo}/test/{test}/iniciar', 'iniciarTest')->name('tests.iniciar');
+        Route::get('/modulo/{modulo}/test/{test}/realizar', 'probarTest')->name('tests.realizar');
+        Route::post('/modulo/{modulo}/test/{test}/realizar', 'correccionTest')->name('tests.corregir');
+    });
     Route::post('/logout', 'logout')->name('auth.logout');
 });

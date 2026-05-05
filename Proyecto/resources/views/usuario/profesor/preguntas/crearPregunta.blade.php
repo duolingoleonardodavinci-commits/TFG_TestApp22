@@ -31,15 +31,15 @@
         }
         
         $parejasData = [];
-        if ($edicion && isset($pregunta->contenido['div-1'])) {
-            foreach ($pregunta->contenido['div-1'] as $num => $valorA) {
-                $letra = chr(96 + (int)$num); // 1→a, 2→b...
-                $parejasData[] = [
-                    'id'  => (int)$num,
-                    'a'   => $valorA,
-                    'b'   => $pregunta->contenido['div-2'][$letra] ?? ''
-                ];
+        if ($edicion && !empty($pregunta->contenido['parejas'])) {
+            foreach ($pregunta->contenido['parejas'] as $i => $pareja) {
+                $parejasData[] = ['id' => $i + 1, 'a' => $pareja['a'], 'b' => $pareja['b']];
             }
+        } else {
+            $parejasData = [
+                ['id' => 1, 'a' => '', 'b' => ''],
+                ['id' => 2, 'a' => '', 'b' => ''],
+            ];
         }
 
         $etiquetasData = [];
@@ -100,7 +100,7 @@
                     <select name="respuesta" x-model="respuesta" :required="tipo_pregunta === 'multiple'" :disabled="tipo_pregunta !== 'multiple'">
                         <option value="">Selecciona la respuesta correcta...</option>
                         <template x-for="(opcion, index) in opciones" :key="'resp-'+opcion.id">
-                            <option :value="opcion.valor" x-text="'Opción ' + getLetra(index).toUpperCase()"></option>
+                            <option :value="opcion.valor" :selected="opcion.valor === respuesta" x-text="'Opción ' + getLetra(index).toUpperCase()"></option>
                         </template>
                     </select>
                 </div>
@@ -143,6 +143,9 @@
             </div>
 
             <button type="submit">Guardar Pregunta</button>
+            <a href="{{ route('profesor.preguntas.mostrar', $modulo->id_modulo) }}">
+                <button type="button">Cancelar</button>
+            </a>
 
             <br><hr><br>
             <div>
