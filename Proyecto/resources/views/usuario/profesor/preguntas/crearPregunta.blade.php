@@ -143,7 +143,7 @@
             </div>
 
             <button type="submit">Guardar Pregunta</button>
-            <a href="{{ route('profesor.preguntas.mostrar', $modulo->id_modulo) }}">
+            <a href="{{ route('profesor.preguntas.index', $modulo->id_modulo) }}">
                 <button type="button">Cancelar</button>
             </a>
 
