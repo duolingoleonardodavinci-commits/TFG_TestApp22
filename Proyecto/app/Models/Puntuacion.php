@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Puntuacion extends Model
 {
-    use HasFactory;
-
     protected $table = 'puntuaciones';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_test',
