@@ -43,7 +43,7 @@ class RealizarTestController extends Controller
         if ($usuario->rol === 'alumno') { 
             Puntuacion::create([
                 'id_test'    => $test->id_test,
-                'id_usuario' => $usuario->id, 
+                'id_alumno'  => $usuario->id_usuario, 
                 'fecha'      => now(),
                 'puntuacion' => $resultado['nota'], 
                 'tipo'       => $test->tipo
