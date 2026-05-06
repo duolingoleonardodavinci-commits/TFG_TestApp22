@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Examen;
 use App\Models\Modulo;
 use App\Models\Test;
 use Illuminate\Http\Request;
@@ -38,6 +39,8 @@ class TestController extends Controller
             'tipo' => 'required|in:practica,examen',
             'preguntas' => 'required|array|min:1',
             'preguntas.*' => 'exists:preguntas,id_pregunta',
+            'duracion' => 'required_if:tipo,examen|nullable|integer|min:1',
+            'fecha_apertura' => 'required_if:tipo,examen|nullable|date',
         ]);
 
         try {
@@ -51,6 +54,14 @@ class TestController extends Controller
             ]);
 
             $test->preguntas()->sync($validated['preguntas']);
+
+            if ($test->tipo == 'examen') {
+                Examen::create([
+                    'duracion' => $validated['duracion'],
+                    'fecha_apertura' => $validated['fecha_apertura'],
+                    'id_test' => $test->id_test,
+                ]);
+            }
 
             DB::commit();
 
@@ -80,10 +91,27 @@ class TestController extends Controller
             'tipo' => 'required|in:practica,examen',
             'preguntas' => 'required|array|min:1',
             'preguntas.*' => 'exists:preguntas,id_pregunta',
+            'duracion' => 'required_if:tipo,examen|nullable|integer|min:1',
+            'fecha_apertura' => 'required_if:tipo,examen|nullable|date',
         ]);
 
         try {
             DB::beginTransaction();
+
+            if ($test->tipo == 'examen' && $validated['tipo'] == 'practica') {
+                $test->examen()->delete();
+            } else if ($test->tipo == 'practica' && $validated['tipo'] == 'examen') {
+                Examen::create([
+                    'duracion' => $validated['duracion'],
+                    'fecha_apertura' => $validated['fecha_apertura'],
+                    'id_test' => $test->id_test,
+                ]);
+            } else if ($test->tipo == 'examen' && $validated['tipo'] == 'examen'){
+                $test->examen->update([
+                    'duracion' => $validated['duracion'],
+                    'fecha_apertura' => $validated['fecha_apertura'],
+                ]);
+            }
 
             $test->update([
                 'nombre' => $validated['nombre'],
@@ -98,7 +126,7 @@ class TestController extends Controller
             return redirect()->route('profesor.tests.index', compact('modulo'));
         } catch(\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => 'No se ha podido editar el test, vuelve a intentarlo']);
+            return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 

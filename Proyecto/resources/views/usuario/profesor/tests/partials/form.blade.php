@@ -36,20 +36,35 @@
 
         <!-- Tipo -->
 
-        <p>
-            Tipo:
+        <div x-data="{ tipo: '{{ old('tipo', $test->tipo ?? '') }}' }">
+    
             <label>
                 <input type="radio" name="tipo" value="practica"
-                {{ old('tipo', $test->tipo ?? '') === 'practica' ? 'checked' : '' }}>
+                    x-on:change="tipo = 'practica'"
+                    {{ old('tipo', $test->tipo ?? '') === 'practica' ? 'checked' : '' }}>
                 <span>Práctica</span>
             </label>
 
             <label>
                 <input type="radio" name="tipo" value="examen"
-                {{ old('tipo', $test->tipo ?? '') === 'examen' ? 'checked' : '' }}>
+                    x-on:change="tipo = 'examen'"
+                    {{ old('tipo', $test->tipo ?? '') === 'examen' ? 'checked' : '' }}>
                 <span>Examen</span>
             </label>
-        </p>
+
+            <div x-show="tipo === 'examen'">
+                <label>
+                    <span>Duración (minutos)</span>
+                    <input type="number" name="duracion" value="{{ old('duracion', $test->examen->duracion ?? '') }}">
+                </label>
+
+                <label>
+                    <span>Fecha de apertura</span>
+                    <input type="datetime-local" name="fecha_apertura" value="{{ old('fecha_apertura', $test->examen->fecha_apertura ?? '') }}">
+                </label>
+            </div>
+
+        </div>
 
         <!-- Asignar Preguntas al Test -->
         

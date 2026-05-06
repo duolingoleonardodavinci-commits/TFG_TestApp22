@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('examenes', function (Blueprint $table) {
             $table->id('id_examen');
-            $table->unsignedSmallInteger('duracion');
+            $table->unsignedSmallInteger('duracion')->nullable();
             $table->timestamp('fecha_apertura')->nullable();
             $table->foreignId('id_test')->constrained('tests', 'id_test')->cascadeOnDelete(); 
         });
