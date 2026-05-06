@@ -34,9 +34,12 @@
             coincide(enunciado, etiquetas_pregunta, tipo_pregunta) {
                 let { etiquetas, tipo, texto } = this.parsed;
 
-                if (texto && !enunciado.includes(texto)) return false;
+                let enunciadoNorm = this.normalizar(enunciado);
+                let etiquetasNorm = etiquetas_pregunta.map(e => this.normalizar(e));
+
+                if (texto && !enunciadoNorm.includes(texto)) return false;
                 if (tipo  && !tipo_pregunta.includes(tipo)) return false;
-                if (etiquetas.length && !etiquetas.every(e => etiquetas_pregunta.some(ep => ep.includes(e)))) return false;
+                if (etiquetas.length && !etiquetas.every(e => etiquetasNorm.some(ep => ep.includes(e)))) return false;
 
                 return true;
             }
@@ -58,12 +61,12 @@
 
         @foreach ($preguntas as $pregunta)
             <div x-data='{
-                    abierta: false,
-                    enunciado: @json(strtolower($pregunta->contenido["enunciado"] ?? "")),
-                    etiquetas: @json($pregunta->listaEtiquetas->pluck("nombre")->map(fn($n) => strtolower($n))->toArray()),
-                    tipo: @json(strtolower($pregunta->tipo))
-                }'
-                x-show="coincide(enunciado, etiquetas, tipo)">
+                        abierta: false,
+                        enunciado: @json(strtolower($pregunta->contenido["enunciado"] ?? "")),
+                        etiquetas: @json($pregunta->listaEtiquetas->pluck("nombre")->map(fn($n) => strtolower($n))->toArray()),
+                        tipo: @json(strtolower($pregunta->tipo))
+                    }'
+                    x-show="coincide(enunciado, etiquetas, tipo)">
 
                 <div @click="abierta = !abierta">        
                     <b>Pregunta:</b> {{ $pregunta->contenido['enunciado'] }}
