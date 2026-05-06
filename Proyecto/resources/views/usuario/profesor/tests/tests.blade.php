@@ -63,7 +63,7 @@
                                 @method('DELETE')
                                 <button type="submit">Eliminar</button>
                             </form>
-                            <a href="{{ route('tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}"><button>Probar</button></a>
+                            <a href="{{ route('profesor.tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}"><button>Probar</button></a>
                         </td>
                     </tr>
                 @empty

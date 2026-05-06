@@ -7,6 +7,7 @@ use App\Models\Test;
 use App\Models\Puntuacion;
 use App\Services\TestService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RealizarTestController extends Controller
 {
@@ -16,7 +17,8 @@ class RealizarTestController extends Controller
     // PROBAR
     public function iniciarTest(Modulo $modulo, Test $test) {
         $this->testService->limpiarSesion($test->id_test, $test->preguntas);
-        return redirect()->route('tests.realizar', [$modulo->id_modulo, $test->id_test]);
+        $ruta = Auth::user()->rol === 'profesor' ? 'profesor.tests.realizar' : 'alumno.tests.realizar';
+        return redirect()->route($ruta, [$modulo->id_modulo, $test->id_test]);
     }
 
     public function probarTest(Modulo $modulo, Test $test) {

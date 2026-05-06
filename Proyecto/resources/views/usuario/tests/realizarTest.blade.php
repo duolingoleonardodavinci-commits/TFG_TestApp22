@@ -9,7 +9,10 @@
             </h2>
         </div>
     @endif
-    <form action="#" method="POST">  
+    <form action="{{ Auth::user()->rol === 'profesor' 
+        ? route('profesor.tests.corregir', [$modulo->id_modulo, $test->id_test])
+        : route('alumno.tests.corregir', [$modulo->id_modulo, $test->id_test]) 
+    }}" method="POST">  
         @csrf
 
         @foreach($test->preguntas as $index => $pregunta)

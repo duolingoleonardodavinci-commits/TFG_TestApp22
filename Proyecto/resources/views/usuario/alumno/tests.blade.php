@@ -9,7 +9,7 @@
             <div>
                 <h3>{{ $test->nombre }}</h3>
                 <p>{{ $test->descripcion }}</p>
-                <a href="{{ route('tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}"><button>Realizar Test</button></a>
+                <a href="{{ route('alumno.tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}"><button>Realizar Test</button></a>
             </div>
         @empty
             <div>
