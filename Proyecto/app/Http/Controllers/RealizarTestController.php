@@ -43,12 +43,26 @@ class RealizarTestController extends Controller
         $usuario = auth()->user();
 
         if ($usuario->rol === 'alumno') { 
-            Puntuacion::create([
-                'id_test'    => $test->id_test,
-                'id_alumno'  => $usuario->id_usuario, 
-                'puntuacion' => $resultado['nota'], 
-                'tipo'       => $test->tipo
-            ]);
+
+            if ($test->tipo == 'examen') {
+                $puedeEntregarExamen = $test->examen->fecha_apertura->addMinutes($test->examen->duracion) > now();
+
+                Puntuacion::create([
+                    'id_test'    => $test->id_test,
+                    'id_alumno'  => $usuario->id_usuario, 
+                    'puntuacion' => $puedeEntregarExamen ? $resultado['nota'] : 0, 
+                    'tipo'       => $test->tipo
+                ]);
+                
+            } else {
+                Puntuacion::create([
+                    'id_test'    => $test->id_test,
+                    'id_alumno'  => $usuario->id_usuario, 
+                    'puntuacion' => $resultado['nota'], 
+                    'tipo'       => $test->tipo
+                ]);
+            }
+            
         }
 
         $preguntasMezcladas = $this->testService->aleatorizarPreguntas($preguntas, $test->id_test);

@@ -10,6 +10,10 @@ class Examen extends Model
     protected $primaryKey = 'id_examen';
     public $timestamps = false;
 
+    protected $casts = [
+        'fecha_apertura' => 'datetime',
+    ];
+
     protected $fillable = [
         'id_examen',
         'duracion',
