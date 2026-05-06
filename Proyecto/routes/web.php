@@ -131,6 +131,11 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
                 // Eliminar alumnos del módulo
                 Route::delete('/{modulo}/alumnos/{alumno}', 'destroy')->name('profesor.alumnos.destroy');
+
+
+                /////////////////////////////////////////////////////////////////////////////////////
+                // Historial
+                Route::get('/{modulo}/historial', 'historial')->name('profesor.historial');
             });
 
         });
