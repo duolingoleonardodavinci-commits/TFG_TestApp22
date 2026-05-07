@@ -1,65 +1,55 @@
 @extends('layouts.app')
 
-@section('title', 'login')
+@section('title', 'Iniciar sesión')
 
 @section('content')
     <h1>Iniciar sesión</h1>
 
     <x-errores />
 
-    <form method="POST" action="{{ route('auth.login')}}">
+    <form method="POST" action="{{ route('auth.login') }}" class="form-card">
         @csrf
 
-        <!-- Email -->
-        <p>
-            <label>
-                <input type="email"
-                        name="email"
-                        placeholder="ejemplo@email.com"
-                        value="{{ old('email') }}"
-                        class="input input-bordered @error('email') input-error @enderror"
-                        required
-                        autofocus>
-                <span>Email</span>
-            </label>
+        <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email"
+                    name="email"
+                    placeholder="ejemplo@email.com"
+                    value="{{ old('email') }}"
+                    class="form-input @error('email') incorrect-bg @enderror"
+                    required
+                    autofocus>
             @error('email')
-                <span>{{ $message }}</span>
+                <span class="error-text">{{ $message }}</span>
             @enderror
-        </p>
+        </div>
 
-        <!-- Password -->
-        <p>
-            <label>
-                <input type="password"
-                        name="password"
-                        placeholder="••••••••"
-                        class="input input-bordered @error('password') input-error @enderror"
-                        required>
-                <span>Password</span>
-            </label>
+        <div class="form-group">
+            <label class="form-label">Contraseña</label>
+            <input type="password"
+                    name="password"
+                    placeholder="••••••••"
+                    class="form-input @error('password') incorrect-bg @enderror"
+                    required>
             @error('password')
-                <span>{{ $message }}</span>
+                <span class="error-text">{{ $message }}</span>
             @enderror
-        </p>
+        </div>
 
-        <!-- Mantener sesión -->
-        <p>
-            <label>
-                <input type="checkbox"
-                        name="remember"
-                        class="checkbox">
-                <span>Mantener sesión iniciada</span>
+        <div class="form-group">
+            <label style="flex-direction: row; align-items: center; gap: 10px; cursor: pointer;">
+                <input type="checkbox" name="remember">
+                <span style="text-transform: none; letter-spacing: 0; font-size: 0.9rem;">Mantener sesión iniciada</span>
             </label>
-        </p>
+        </div>
 
-        <!-- Submit Button -->
-        <button type="submit">
+        <button type="submit" class="btn btn-primary">
             Iniciar sesión
         </button>
     </form>
  
-    <p>
-        ¿No tienes una cuenta?
-        <a href="{{ route('inicio.register.mostrar') }}"><button type="button">Registrarse</button></a>
-    </p>
+    <div style="text-align: center; margin-top: 20px;">
+        <p>¿No tienes una cuenta?</p>
+        <a href="{{ route('inicio.register.mostrar') }}"><button type="button" class="btn btn-secondary">Registrarse</button></a>
+    </div>
 @endsection

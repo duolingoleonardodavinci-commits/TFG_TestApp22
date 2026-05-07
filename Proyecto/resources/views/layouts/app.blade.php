@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <title>@yield('title')</title>
-
-    <!-- Temporal. Para hacer más legible la página sin tocar css-->
-    <style>
-        body{
-            text-align: center;
-        }
-    </style>
+    <title>@yield('title') - Sistema de Tests</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    
-    @yield('content')
+    @if(Auth::check())
+        <x-header />
+    @endif
+
+    <main class="page-wrap">
+        @yield('content')
+    </main>
 </body>
 </html>

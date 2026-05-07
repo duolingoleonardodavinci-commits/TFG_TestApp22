@@ -1,80 +1,72 @@
 @extends('layouts.app')
 
-@section('title', 'tests')
+@section('title', 'Tests')
 
 @section('content')
-    <x-header />
     <x-errores />
 
-    <h1>Tests</h1>
+    <h1>Listado de Tests</h1>
+
+    <div style="text-align: right; margin-bottom: 2rem;">
+        <a href="{{ route('profesor.tests.create', $modulo->id_modulo) }}">
+            <button type="button" class="btn btn-primary">+ Crear nuevo test</button>
+        </a>
+    </div>
 
     <div x-data="{
             busqueda: '',
-
-            get parsed() {
-                let tokens    = this.busqueda.trim().toLowerCase().split(/\s+/).filter(Boolean);
-                let etiquetas = tokens.filter(t => t.startsWith(':')).map(t => this.normalizar(t.slice(1)));
-                let tipo      = this.normalizar((tokens.find(t => t.startsWith('tipo:')) ?? '').slice(5));
-                let texto     = this.normalizar(tokens.filter(t => !t.startsWith(':') && !t.startsWith('tipo:')).join(' '));
-                return { etiquetas, tipo, texto };
-            },
-
             normalizar(texto) {
-                return texto
-                    .toLowerCase()
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                    .replace(/[^\w\s]/g, '')
-                    .replace(/\s+/g, ' ')
-                    .trim();
+                return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/g, '').trim();
             },
-
             coincide(nombre, tipo) {
-                let { tipo: bTipo, texto } = this.parsed;
-                if (texto && !nombre.includes(texto)) return false;
-                if (bTipo && !tipo.includes(bTipo))   return false;
-                return true;
+                let b = this.normalizar(this.busqueda);
+                return b === '' || this.normalizar(nombre).includes(b) || this.normalizar(tipo).includes(b);
             }
         }">
 
-        <label>Buscar test:</label>
-        <input type="search"
-            x-model="busqueda"
-            placeholder="Nombre del test, tipo:examen, tipo:practica ...">
+        <div class="form-group" style="margin-bottom: 2rem;">
+            <input type="search" x-model="busqueda" class="form-input" placeholder="Buscar por nombre o tipo de test...">
+        </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($tests as $test)
-                    <tr x-show="coincide(
-                            normalizar({{ Js::from(strtolower($test->nombre)) }}),
-                            normalizar({{ Js::from(strtolower($test->tipo)) }})
-                        )">
-                        <td>{{ $test->nombre }}</td>
-                        <td>
-                            <a href="{{ route('profesor.tests.edit', [$modulo->id_modulo, $test->id_test]) }}"><button type="button">Editar</button></a>
-                            <form method="POST" action="{{ route('profesor.tests.destroy', [$modulo->id_modulo, $test->id_test]) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Eliminar</button>
-                            </form>
-                            <a href="{{ route('profesor.tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}"><button>Probar</button></a>
-                        </td>
-                    </tr>
-                @empty
+        <div class="table-container">
+            <table class="main-table">
+                <thead>
                     <tr>
-                        <td>No tienes tests...</td>
+                        <th>Nombre del Test</th>
+                        <th>Tipo</th>
+                        <th style="text-align: right;">Acciones</th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse ($tests as $test)
+                        <tr x-show="coincide({{ Js::from($test->nombre) }}, {{ Js::from($test->tipo) }})">
+                            <td style="font-weight: 600;">{{ $test->nombre }}</td>
+                            <td>
+                                <span style="text-transform: capitalize; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem; {{ $test->tipo == 'examen' ? 'background: #fee2e2; color: #dc2626;' : 'background: #d1fae5; color: #059669;' }}">
+                                    {{ $test->tipo }}
+                                </span>
+                            </td>
+                            <td style="text-align: right;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                                    <a href="{{ route('profesor.tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}" class="btn btn-secondary">Probar</a>
+                                    <a href="{{ route('profesor.tests.edit', [$modulo->id_modulo, $test->id_test]) }}" class="btn btn-secondary">Editar</a>
+                                    <form method="POST" action="{{ route('profesor.tests.destroy', [$modulo->id_modulo, $test->id_test]) }}" style="margin:0;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar test?')">Eliminar</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" style="text-align: center; padding: 3rem; color: var(--tx-4);">
+                                No tienes tests creados para este módulo.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-
-<p><a href="{{ route('profesor.tests.create', $modulo->id_modulo) }}"><button type="button">+ Crear test</button></a></p>
-
 @endsection

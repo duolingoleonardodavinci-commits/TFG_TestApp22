@@ -1,49 +1,66 @@
 @extends('layouts.app')
 
+@section('title', 'Mis Tests')
+
 @section('content')
-    <x-header />
     <x-errores />
     
-    <div>
+    <div style="max-width: 800px; margin: 0 auto;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1 style="margin: 0; text-align: left;">Tests Disponibles</h1>
+            <a href="{{ route('inicio.dashboardAlumno.mostrar', $modulo->id_modulo) }}" class="btn btn-secondary">Volver al Panel</a>
+        </div>
+
         @php $hayTests = false; @endphp
 
-        @foreach ($tests as $test)
-            @php
-                $mostrar = true;
+        <div style="display: grid; gap: 1.5rem;">
+            @foreach ($tests as $test)
+                @php
+                    $mostrar = true;
 
-                if ($test->tipo == 'examen') {
-                    $alumno = Auth::user()->alumno;
+                    if ($test->tipo == 'examen') {
+                        $alumno = Auth::user()->alumno;
 
-                    $tieneAcceso = now() >= $test->examen->fecha_apertura 
-                        && now() < $test->examen->fecha_apertura->addMinutes($test->examen->duracion);
-                    
-                    $hizoExamen = $alumno->puntuaciones()
-                        ->where('id_test', $test->id_test)
-                        ->exists();
+                        $tieneAcceso = now() >= $test->examen->fecha_apertura 
+                            && now() < $test->examen->fecha_apertura->addMinutes($test->examen->duracion);
+                        
+                        $hizoExamen = $alumno->puntuaciones()
+                            ->where('id_test', $test->id_test)
+                            ->exists();
 
-                    $mostrar = $tieneAcceso && !$hizoExamen;
-                }
+                        $mostrar = $tieneAcceso && !$hizoExamen;
+                    }
 
-                if ($mostrar) $hayTests = true;
-            @endphp
+                    if ($mostrar) $hayTests = true;
+                @endphp
 
-            @if ($mostrar)
-                <div>
-                    <h3>{{ $test->nombre }}</h3>
-                    <p>{{ $test->descripcion }}</p>
-                    <a href="{{ route('alumno.tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}">
-                        <button>Realizar Test</button>
-                    </a>
+                @if ($mostrar)
+                    <div class="form-card" style="padding: 1.5rem; margin-bottom: 0; display: flex; flex-direction: column; gap: 1rem; border-left: 4px solid var(--color-modulo);">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                                <h3 style="margin: 0; font-size: 1.25rem;">{{ $test->nombre }}</h3>
+                                <span style="font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 99px; font-weight: 600; {{ $test->tipo == 'examen' ? 'background: #fee2e2; color: #dc2626;' : 'background: #d1fae5; color: #059669;' }}">
+                                    {{ strtoupper($test->tipo) }}
+                                </span>
+                            </div>
+                            <p style="color: var(--tx-2); margin: 0;">{{ $test->descripcion }}</p>
+                        </div>
+                        
+                        <div style="text-align: right; margin-top: 0.5rem;">
+                            <a href="{{ route('alumno.tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}" class="btn btn-primary">
+                                Realizar Test
+                            </a>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+
+            @if (!$hayTests)
+                <div class="form-card" style="text-align: center; padding: 3rem 2rem;">
+                    <p style="color: var(--tx-3); font-size: 1.1rem; margin: 0;">No tienes tests disponibles en este momento.</p>
                 </div>
             @endif
-        @endforeach
-
-        @if (!$hayTests)
-            <p>No hay tests disponibles</p>
-        @endif
-
-        <br>
-        <a href="{{ route('inicio.dashboardAlumno.mostrar', $modulo->id_modulo) }}"><button type="button">Volver</button>
-        </a>
+        </div>
     </div>
 @endsection

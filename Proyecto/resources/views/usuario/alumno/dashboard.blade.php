@@ -1,23 +1,35 @@
 @extends('layouts.app')
 
-@section('title', 'dashboard alumno')
+@section('title', 'Dashboard Alumno')
 
 @section('content')
-    <x-header />
     <x-errores />
     
-    <p>Dashboard alumno {{ Auth::user()->nombre }}</p>
+    <div class="dashboard-wrap">
+        <div class="form-card" style="margin-bottom: 2rem; border-left: 4px solid var(--color-modulo); padding: 1.5rem 2rem;">
+            <h1 style="text-align: left; margin-bottom: 0.5rem; font-size: 1.8rem;">¡Hola, {{ Auth::user()->nombre }}! 👋</h1>
+            <p style="color: var(--tx-2); font-size: 1.1rem; margin: 0;">Bienvenido a tu panel de estudiante.</p>
+        </div>
 
-    @if (Auth::user()->alumno->modulos->isEmpty())
-        
-        <p>¿Primera vez? Únete a un módulo</p>
-        <p><a href="{{ route('alumno.matriculas.index') }}">Unirse a un nuevo modulo</a></p>
+        @if (Auth::user()->alumno->modulos->isEmpty())
+            <div class="form-card" style="text-align: center; padding: 4rem 2rem;">
+                <h2 style="margin-bottom: 1rem; color: var(--tx-1);">¿Primera vez por aquí?</h2>
+                <p style="color: var(--tx-3); margin-bottom: 2rem; font-size: 1.1rem;">
+                    Para empezar a aprender, necesitas unirte a un módulo de tu profesor.
+                </p>
+                <a href="{{ route('alumno.matriculas.index') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 0.8rem 2rem;">
+                    + Unirse a un nuevo módulo
+                </a>
+            </div>
+        @else
+            @if (!$moduloActual)
+                <div class="form-card" style="text-align: center; padding: 3rem 2rem; background: var(--surface-2); border-style: dashed;">
+                    <h2 style="color: var(--tx-2); margin-bottom: 0.5rem; font-size: 1.4rem;">Panel de Asignaturas</h2>
+                    <p style="color: var(--tx-3); margin: 0;">Selecciona un módulo en el menú inferior para ver tus exámenes y ejercicios.</p>
+                </div>
+            @endif
 
-    @else
-        @if (!$moduloActual)
-            <p>Selecciona un módulo</p>
+            <x-modulo-nav-alumno :moduloActual="$moduloActual" />
         @endif
-
-        <x-modulo-nav-alumno :moduloActual="$moduloActual" />
-    @endif
+    </div>
 @endsection
