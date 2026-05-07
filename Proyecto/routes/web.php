@@ -182,6 +182,11 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
             Route::get('/{modulo}/examen', [AlumnoTestController::class, 'examenes'])->name('alumno.tests.examen');
             Route::get('/{modulo}/practica', [AlumnoTestController::class, 'practicas'])->name('alumno.tests.practica');
 
+
+            /////////////////////////////////////////////////////////////////////////////////////
+            // Historial
+            Route::get('/{modulo}/historial', 'historial')->name('alumno.historial');
+
             // ===================
             // === HACER TESTS ===
             // ===================

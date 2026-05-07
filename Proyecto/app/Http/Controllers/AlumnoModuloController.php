@@ -49,4 +49,23 @@ class AlumnoModuloController extends Controller
             return back()->withErrors(['error' => 'Error al matricularse, inténtalo de nuevo.']);
         }
     }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    // Historial
+    public function historial(Modulo $modulo) {
+        try {
+            $alumno = Auth::user()->alumno;
+            $puntuaciones = $modulo->puntuaciones()
+                ->where('puntuaciones.id_alumno', $alumno->id_alumno)
+                ->with(['test'])
+                ->orderBy('fecha', 'desc')
+                ->get();
+
+            return view('usuario.historial', compact('puntuaciones', 'modulo'));
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'No se ha podido acceder al historial'. $e->getMessage()]);
+        }
+    }  
 }
