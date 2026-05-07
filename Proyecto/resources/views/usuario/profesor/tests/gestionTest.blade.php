@@ -90,7 +90,7 @@
                     <label class="form-label">Buscar pregunta en el banco:</label>
                     <input type="search" x-model="busqueda" class="form-input" placeholder="Texto libre, :etiqueta, tipo:multiple...">
                 </div>
-                <button type="button" class="btn btn-secondary" onclick="gestorPreguntas('{{ route('profesor.preguntas.create', $modulo->id_modulo) }}')">+ Crear sobre la marcha</button>
+                <button type="button" class="btn btn-secondary" onclick="gestorPreguntas('{{ route('profesor.preguntas.create', $modulo->id_modulo) }}')">+ Crear pregunta</button>
             </div>
 
             <div style="max-height: 400px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0.5rem; background: var(--bg);">

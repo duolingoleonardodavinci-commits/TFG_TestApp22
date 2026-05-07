@@ -24,7 +24,7 @@
                 <a href="{{ route('alumno.tests.examen', $moduloActual->id_modulo) }}" class="btn btn-secondary">Exámenes</a>
                 <a href="{{ route('alumno.tests.practica', $moduloActual->id_modulo) }}" class="btn btn-secondary">Ejercicios</a>
                 <a href="{{ route('alumno.historial', $moduloActual->id_modulo) }}" class="btn btn-secondary">Historial</a>
-                <a href="#" class="btn btn-secondary">Ajustes</a>
+                <a href="{{ route('alumno.ajustes', $moduloActual->id_modulo) }}" class="btn btn-secondary">Ajustes</a>
             </div>
         </div>
     @endif

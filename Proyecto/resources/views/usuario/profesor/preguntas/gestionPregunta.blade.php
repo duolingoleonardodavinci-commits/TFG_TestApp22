@@ -38,6 +38,11 @@
                 return ['id' => $t->id_etiqueta, 'nombre' => $t->nombre, 'es_nueva' => false];
             })->toArray();
         }
+
+        $borrador = session('test_borrador');
+        $urlCancelar = $borrador 
+            ? (isset($borrador['origen_test']) ? route('profesor.tests.edit', [$modulo->id_modulo, $borrador['origen_test']]) : route('profesor.tests.create', $modulo->id_modulo))
+            : route('profesor.preguntas.index', $modulo->id_modulo);
     @endphp
 
     <h1 style="text-align: left;">{{ $edicion ? 'Editar Pregunta' : 'Crear Pregunta' }}</h1>
@@ -152,7 +157,7 @@
 
         <div style="display: flex; gap: 1rem; margin-top: 2rem;">
             <button type="submit" class="btn btn-primary">Guardar Pregunta</button>
-            <a href="{{ route('profesor.preguntas.index', $modulo->id_modulo) }}" class="btn btn-secondary">Cancelar</a>
+            <a href="{{ $urlCancelar }}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 
