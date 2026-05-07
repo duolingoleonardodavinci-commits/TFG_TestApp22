@@ -23,14 +23,13 @@ class AlumnoTieneAccesoExamen
 
         if ($test->tipo == 'examen') {
             $tieneAcceso = now() < $test->examen->fecha_apertura->addMinutes($test->examen->duracion);
-        }
 
-        if (!$tieneAcceso) {
-            return redirect()
-                ->back()
-                ->withErrors(['error' => 'No tienes acceso al examen']);
+            if (!$tieneAcceso) {
+                return redirect()
+                    ->back()
+                    ->withErrors(['error' => 'No tienes acceso al examen']);
+            }
         }
-
 
         return $next($request);
     }
