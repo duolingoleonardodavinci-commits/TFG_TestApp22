@@ -187,6 +187,12 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
             // Historial
             Route::get('/{modulo}/historial', 'historial')->name('alumno.historial');
 
+            /////////////////////////////////////////////////////////////////////////////////////
+            // Ajustes
+
+            Route::get('/{modulo}/ajustes', 'ajustes')->name('alumno.ajustes');
+            Route::delete('/{modulo}/ajustes/abandonar', 'abandonar')->name('alumno.ajustes.abandonar');
+            
             // ===================
             // === HACER TESTS ===
             // ===================
