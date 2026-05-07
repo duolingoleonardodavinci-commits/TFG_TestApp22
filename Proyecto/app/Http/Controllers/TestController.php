@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class TestController extends Controller
 {
+    const SESSION_KEY = 'test_borrador';
+
     // Mostrar páginas de tests
     public function index(Modulo $modulo) {
         $tests = $modulo->tests;
@@ -23,10 +25,10 @@ class TestController extends Controller
     // Mostrar página de creación de tests
     public function create(Modulo $modulo) {
         if ($modulo->preguntas->isEmpty()) {
-            return redirect()->route('profesor.preguntas.index', $modulo->id_modulo)->withErrors(['error' => 'Debes crear preguntas antes de poder crear tests']);;
+            return redirect()->route('profesor.preguntas.index', $modulo->id_modulo)->withErrors(['error' => 'Debes crear preguntas antes de poder crear tests']);
         }
 
-        $preguntas = $modulo->preguntas;
+        $preguntas = $modulo->preguntas()->with('listaEtiquetas')->get();
 
         return view('usuario.profesor.tests.crearTest', compact('modulo', 'preguntas'));
     }
@@ -65,7 +67,9 @@ class TestController extends Controller
 
             DB::commit();
 
-            return redirect()->route('profesor.tests.index', compact('modulo'));
+            session()->forget(self::SESSION_KEY);
+
+            return redirect()->route('profesor.tests.index', $modulo->id_modulo);
         } catch(\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'No se ha podido crear el test, vuelve a intentarlo']);
@@ -79,8 +83,8 @@ class TestController extends Controller
 
     // Mostrar página de edición de tests
     public function edit(Modulo $modulo, Test $test) {
-        $preguntas = $modulo->preguntas;
-        return view('usuario.profesor.tests.editarTest', compact('preguntas', 'test', 'modulo'));
+        $preguntas = $modulo->preguntas()->with('listaEtiquetas')->get();
+        return view('usuario.profesor.tests.crearTest', compact('preguntas', 'test', 'modulo'));
     }
 
     // Editar test
@@ -123,7 +127,9 @@ class TestController extends Controller
 
             DB::commit();
 
-            return redirect()->route('profesor.tests.index', compact('modulo'));
+            session()->forget(self::SESSION_KEY);
+
+            return redirect()->route('profesor.tests.index', $modulo->id_modulo);
         } catch(\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => $e->getMessage()]);
@@ -138,9 +144,28 @@ class TestController extends Controller
     public function destroy(Modulo $modulo, Test $test) {
         try {
             $test->delete();
-            return redirect()->route('profesor.tests.index', compact('modulo'));
+            session()->forget(self::SESSION_KEY);
+            return redirect()->route('profesor.tests.index', $modulo->id_modulo);
         } catch(\Exception $e) {
             return back()->withErrors(['error' => 'No se ha podido eliminar el test, vuelve a intentarlo']);
         }
+    }
+
+
+    ////////////////////////////////////////////////////////
+    // Borrador
+    public function borrador(Request $request, Modulo $modulo, Test $test = null) {
+        session([self::SESSION_KEY => [
+            'nombre'         => $request->input('nombre'),
+            'descripcion'    => $request->input('descripcion'),
+            'tipo'           => $request->input('tipo'),
+            'preguntas'      => $request->input('preguntas', []),
+            'duracion'       => $request->input('duracion'),       // <-- NUEVO
+            'fecha_apertura' => $request->input('fecha_apertura'), // <-- NUEVO
+            'origen_modulo'  => $modulo->id_modulo,
+            'origen_test'    => $test?->id_test, 
+        ]]);
+
+        return redirect($request->input('destino_pregunta_url'));
     }
 }

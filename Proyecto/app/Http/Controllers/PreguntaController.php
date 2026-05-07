@@ -10,10 +10,8 @@ use Illuminate\Http\Request;
 
 class PreguntaController extends Controller
 {
-    // Inyectamos el servicio
-    public function __construct(preguntaService $preguntaService) {
-        $this->preguntaService = $preguntaService;
-    }
+    const SESSION_KEY = 'test_borrador';
+    public function __construct(protected preguntaService $preguntaService) {}
 
     public function index(Modulo $modulo) {
         $preguntas = $modulo->preguntas()->with('listaEtiquetas')->get();
@@ -29,10 +27,10 @@ class PreguntaController extends Controller
         try {
             $this->preguntaService->crearPregunta($request, $modulo->id_modulo);
 
-            return redirect()->route('profesor.preguntas.index', compact('modulo'));
+            return $this->preguntaService->redirigir($modulo);
             
         } catch(\Exception $e) {
-           return back()->withErrors(['error' => 'Error al crear la pregunta, inténtalo de nuevo.'. $e->getMessage()]);
+           return back()->withErrors(['error' => 'Error al crear la pregunta, inténtalo de nuevo.']);
         }        
     }
 
@@ -46,7 +44,7 @@ class PreguntaController extends Controller
         try {
             $this->preguntaService->actualizarPregunta($request, $pregunta);
 
-            return redirect()->route('profesor.preguntas.index', compact('modulo'));
+            return $this->preguntaService->redirigir($modulo);
             
         } catch(\Exception $e) {
            return back()->withErrors(['error' => 'Error al actualizar la pregunta, inténtalo de nuevo.']);

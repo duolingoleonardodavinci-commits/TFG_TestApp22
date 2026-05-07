@@ -108,6 +108,13 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 // Crear test
                 Route::post('/{modulo}/tests', 'store')->name('profesor.tests.store');
 
+
+                /////////////////////////////////////////////////////////////////////
+                // Guardar borrador del test en sesión antes de ir a preguntas
+                // crear test borrador
+                Route::post('/{modulo}/tests/borrador/nuevo', 'borrador')->name('profesor.tests.borrador.nuevo');
+
+
                 // Mostrar formulario para editar tests
                 Route::get('/{modulo}/tests/{test}/edit', 'edit')->name('profesor.tests.edit');
 
@@ -116,6 +123,12 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
 
                 // Eliminar test
                 Route::delete('/{modulo}/tests/{test}', 'destroy')->name('profesor.tests.destroy');
+            
+
+                /////////////////////////////////////////////////////////////////////
+                // Guardar borrador del test en sesión antes de ir a preguntas
+                // editar test borrador
+                Route::post('/{modulo}/tests/{test}/borrador', 'borrador')->name('profesor.tests.borrador');
             });
 
             // =====================
