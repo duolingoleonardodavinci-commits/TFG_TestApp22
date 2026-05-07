@@ -73,7 +73,7 @@ class ProfesorAlumnoController extends Controller
                 ->orderBy('fecha', 'desc')
                 ->get();
 
-            return view('usuario.profesor.historial', compact('puntuaciones', 'modulo'));
+            return view('usuario.historial', compact('puntuaciones', 'modulo'));
 
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'No se ha podido acceder al historial'. $e->getMessage()]);
