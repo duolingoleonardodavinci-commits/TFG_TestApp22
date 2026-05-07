@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Pregunta;
 use App\Models\Modulo;
 use App\Models\Etiqueta;
-use App\Services\preguntaService;
+use App\Services\PreguntaService;
 use Illuminate\Http\Request;
 
 class PreguntaController extends Controller
 {
     const SESSION_KEY = 'test_borrador';
-    public function __construct(protected preguntaService $preguntaService) {}
+    public function __construct(protected PreguntaService $preguntaService) {}
 
     public function index(Modulo $modulo) {
         session()->forget(self::SESSION_KEY);
