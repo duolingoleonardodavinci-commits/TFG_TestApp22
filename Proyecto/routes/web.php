@@ -173,8 +173,8 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
             // === HACER TESTS ===
             // ===================
             Route::controller(RealizarTestController::class)->group(function() {
-                Route::get('/modulo/{modulo}/test/{test}/iniciar', 'iniciarTest')->name('alumno.tests.iniciar');
-                Route::get('/modulo/{modulo}/test/{test}/realizar', 'probarTest')->name('alumno.tests.realizar')->middleware('alumnoExamen');
+                Route::get('/modulo/{modulo}/test/{test}/iniciar', 'iniciarTest')->name('alumno.tests.iniciar')->middleware('alumnoExamen');;
+                Route::get('/modulo/{modulo}/test/{test}/realizar', 'probarTest')->name('alumno.tests.realizar');
                 Route::post('/modulo/{modulo}/test/{test}/realizar', 'correccionTest')->name('alumno.tests.corregir');
             });
         });

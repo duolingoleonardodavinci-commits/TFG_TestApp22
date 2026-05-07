@@ -44,25 +44,16 @@ class RealizarTestController extends Controller
 
         if ($usuario->rol === 'alumno') { 
 
-            if ($test->tipo == 'examen') {
-                $puedeEntregarExamen = $test->examen->fecha_apertura->addMinutes($test->examen->duracion) > now();
+            $puntuacion = $test->tipo === 'examen' && $test->examen->fecha_apertura->addMinutes($test->examen->duracion) < now()
+                ? 0
+                : $resultado['nota'];
 
                 Puntuacion::create([
                     'id_test'    => $test->id_test,
                     'id_alumno'  => $usuario->id_usuario, 
-                    'puntuacion' => $puedeEntregarExamen ? $resultado['nota'] : 0, 
+                    'puntuacion' => $puntuacion,
                     'tipo'       => $test->tipo
                 ]);
-                
-            } else {
-                Puntuacion::create([
-                    'id_test'    => $test->id_test,
-                    'id_alumno'  => $usuario->id_usuario, 
-                    'puntuacion' => $resultado['nota'], 
-                    'tipo'       => $test->tipo
-                ]);
-            }
-            
         }
 
         $preguntasMezcladas = $this->testService->aleatorizarPreguntas($preguntas, $test->id_test);
@@ -77,7 +68,7 @@ class RealizarTestController extends Controller
             'modulo' => $modulo,
             'test'   => $test,
             'estado' => $resultado['informe'], 
-            'nota'   => $resultado['nota']
+            'nota'   => $puntuacion,
         ]);
     }
 }
