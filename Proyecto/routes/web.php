@@ -118,6 +118,15 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
                 Route::delete('/{modulo}/tests/{test}', 'destroy')->name('profesor.tests.destroy');
             });
 
+            // =====================
+            // ==== HACER TESTS ====
+            // =====================
+            Route::controller(RealizarTestController::class)->group(function() {
+                Route::get('/modulo/{modulo}/test/{test}/iniciar', 'iniciarTest')->name('profesor.tests.iniciar');
+                Route::get('/modulo/{modulo}/test/{test}/realizar', 'probarTest')->name('profesor.tests.realizar');
+                Route::post('/modulo/{modulo}/test/{test}/realizar', 'correccionTest')->name('profesor.tests.corregir');
+            });
+
             // =====================================
             // ==== GESTION PROFESOR -> ALUMNOS ====
             // =====================================
@@ -159,6 +168,15 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
             // test
             Route::get('/{modulo}/examen', [AlumnoTestController::class, 'examenes'])->name('alumno.tests.examen');
             Route::get('/{modulo}/practica', [AlumnoTestController::class, 'practicas'])->name('alumno.tests.practica');
+
+            // ===================
+            // === HACER TESTS ===
+            // ===================
+            Route::controller(RealizarTestController::class)->group(function() {
+                Route::get('/modulo/{modulo}/test/{test}/iniciar', 'iniciarTest')->name('alumno.tests.iniciar');
+                Route::get('/modulo/{modulo}/test/{test}/realizar', 'probarTest')->name('alumno.tests.realizar')->middleware('alumnoExamen');
+                Route::post('/modulo/{modulo}/test/{test}/realizar', 'correccionTest')->name('alumno.tests.corregir');
+            });
         });
 
         Route::controller(AlumnoModuloController::class)->group(function() {
@@ -172,15 +190,5 @@ Route::middleware('auth')->controller(AuthController::class)->group(function() {
     // Cerrar sesión
 
     Route::get('/logout', 'logout')->name('auth.logout');
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // test para ambos usuarios
-    
-    Route::controller(RealizarTestController::class)->group(function() {
-        Route::get('/modulo/{modulo}/test/{test}/iniciar', 'iniciarTest')->name('tests.iniciar');
-        Route::get('/modulo/{modulo}/test/{test}/realizar', 'probarTest')->name('tests.realizar');
-        Route::post('/modulo/{modulo}/test/{test}/realizar', 'correccionTest')->name('tests.corregir');
-    });
     Route::post('/logout', 'logout')->name('auth.logout');
 });
