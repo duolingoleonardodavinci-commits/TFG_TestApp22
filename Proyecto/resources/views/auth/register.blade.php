@@ -1,101 +1,45 @@
 @extends('layouts.app')
 
-@section('title', 'register')
+@section('title', 'Registro')
 
 @section('content')
-
-    <h1>Registrarse</h1>
-
+    <h1>Crear una cuenta nueva</h1>
     <x-errores />
 
-    <form method="POST" action="{{ route('auth.register') }}">
+    <form method="POST" action="{{ route('auth.register') }}" class="form-card">
         @csrf
 
-        <!-- Nombre -->
-        <p>
-            <label>
-                <span>Nombre</span>
-                <input type="text"
-                        name="nombre"
-                        placeholder="Jane"
-                        value="{{ old('nombre') }}"
-                        class="input input-bordered @error('nombre') input-error @enderror"
-                        required>
-            </label>
+        <div style="display: flex; gap: 1rem;">
+            <div class="form-group" style="flex: 1;">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="nombre" placeholder="Jane" value="{{ old('nombre') }}" class="form-input @error('nombre') incorrect-bg @enderror" required>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label class="form-label">Apellidos</label>
+                <input type="text" name="apellidos" placeholder="Doe" value="{{ old('apellidos') }}" class="form-input @error('apellidos') incorrect-bg @enderror" required>
+            </div>
+        </div>
 
-            @error('name')
-                <span>{{ $message }}</span>
-            @enderror
-        </p>
+        <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" placeholder="alumno@email.com" value="{{ old('email') }}" class="form-input @error('email') incorrect-bg @enderror" required>
+        </div>
 
-        <!-- Apellidos -->
-        <p>
-            <label>
-                <span>Apellidos</span>
-                <input type="text"
-                        name="apellidos"
-                        placeholder="Doe"
-                        value="{{ old('apellidos') }}"
-                        class="input input-bordered @error('nombre') input-error @enderror"
-                        required>
-            </label>
+        <div class="form-group">
+            <label class="form-label">Contraseña</label>
+            <input type="password" name="password" placeholder="••••••••" class="form-input @error('password') incorrect-bg @enderror" required>
+        </div>
 
-            @error('apellidos')
-                <span>{{ $message }}</span>
-            @enderror
-        </p>
+        <div class="form-group">
+            <label class="form-label">Confirma contraseña</label>
+            <input type="password" name="password_confirmation" placeholder="••••••••" class="form-input" required>
+        </div>
 
-        <!-- Email -->
-        <p>
-            <label>
-                <span>Email</span>
-                <input type="email"
-                        name="email"
-                        placeholder="alumno@email.com"
-                        value="{{ old('email') }}"
-                        class="input input-bordered @error('email') input-error @enderror"
-                        required>
-            </label>
-            @error('email')
-                <span>{{ $message }}</span>
-            @enderror
-        </p>
-
-        <!-- Password -->
-        <p>
-            <label>
-                <span>Contraseña</span>
-                <input type="password"
-                        name="password"
-                        placeholder="••••••••"
-                        class="input input-bordered @error('password') input-error @enderror"
-                        required>
-            </label>
-
-            @error('password')
-                <span>{{ $message }}</span>
-            @enderror
-        </p>
-
-        <!-- Password confirmación -->
-        <p>
-            <label>
-                <span>Confirma contraseña</span>
-                <input type="password"
-                        name="password_confirmation"
-                        placeholder="••••••••"
-                        required>
-            </label>
-        </p>
-
-        <!-- Submit Button -->
-        <button type="submit">
-            Registrarse
-        </button>
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Registrarse</button>
     </form>
 
-    <p>
-        ¿Ya tienes una cuenta?
-        <a href="{{ route('inicio.login.mostrar') }}"><button type="button">Iniciar sesión</button></a>
-    </p>
+    <div style="text-align: center; margin-top: 20px;">
+        <p>¿Ya tienes una cuenta?</p>
+        <a href="{{ route('inicio.login.mostrar') }}"><button type="button" class="btn btn-secondary">Iniciar sesión</button></a>
+    </div>
 @endsection

@@ -14,6 +14,7 @@ class PreguntaController extends Controller
     public function __construct(protected PreguntaService $preguntaService) {}
 
     public function index(Modulo $modulo) {
+        session()->forget(self::SESSION_KEY);
         $preguntas = $modulo->preguntas()->with('listaEtiquetas')->get();
         return view('usuario.profesor.preguntas.preguntas', compact('preguntas', 'modulo'));
     }

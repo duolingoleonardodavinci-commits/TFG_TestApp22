@@ -14,6 +14,7 @@ class TestController extends Controller
 
     // Mostrar páginas de tests
     public function index(Modulo $modulo) {
+        session()->forget(self::SESSION_KEY);
         $tests = $modulo->tests;
         return view('usuario.profesor.tests.tests', compact('modulo', 'tests'));
     }

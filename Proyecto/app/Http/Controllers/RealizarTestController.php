@@ -42,11 +42,13 @@ class RealizarTestController extends Controller
 
         $usuario = auth()->user();
 
+        $puntuacion = $resultado['nota'];
+
         if ($usuario->rol === 'alumno') { 
 
-            $puntuacion = $test->tipo === 'examen' && $test->examen->fecha_apertura->addMinutes($test->examen->duracion)->addSeconds(10) < now()
-                ? 0
-                : $resultado['nota'];
+            if ($test->tipo === 'examen' && $test->examen->fecha_apertura->addMinutes($test->examen->duracion)->addSeconds(10) < now()) {
+                $puntuacion = 0;
+            }
 
                 Puntuacion::create([
                     'id_test'    => $test->id_test,
