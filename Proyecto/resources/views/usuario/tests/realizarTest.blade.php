@@ -41,7 +41,7 @@
         </div>
     @endif
 
-    <form action="{{ Auth::user()->rol === 'profesor' ? route('profesor.tests.corregir', [$modulo->id_modulo, $test->id_test]) : route('alumno.tests.corregir', [$modulo->id_modulo, $test->id_test]) }}" method="POST" style="background: transparent; border: none; box-shadow: none; padding: 0;">  
+    <form id="form-test" action="{{ Auth::user()->rol === 'profesor' ? route('profesor.tests.corregir', [$modulo->id_modulo, $test->id_test]) : route('alumno.tests.corregir', [$modulo->id_modulo, $test->id_test]) }}" method="POST" style="background: transparent; border: none; box-shadow: none; padding: 0;">  
         @csrf
 
         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
@@ -102,7 +102,7 @@
                 segundosRestantes--;
                 if (segundosRestantes < 0) {
                     clearInterval(temporizador);
-                    document.querySelector('form').submit();
+                    document.getElementById('form-test').submit();
                 }
             }, 1000);
         }
