@@ -50,7 +50,6 @@ class AlumnoModuloController extends Controller
         }
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////////
     // Historial
     public function historial(Modulo $modulo) {
@@ -68,4 +67,23 @@ class AlumnoModuloController extends Controller
             return back()->withErrors(['error' => 'No se ha podido acceder al historial'. $e->getMessage()]);
         }
     }  
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    // Ajustes
+    public function ajustes(Modulo $modulo) {
+        return view('usuario.alumno.ajustes', compact('modulo'));
+    }
+
+    // Abandonar el módulo
+    public function abandonar(Modulo $modulo) {
+        try {
+            $alumno = Auth::user()->alumno;
+
+            $alumno->modulos()->detach($modulo->id_modulo);
+
+            return redirect()->route('inicio.dashboardAlumno.mostrar');
+        } catch(\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 }
