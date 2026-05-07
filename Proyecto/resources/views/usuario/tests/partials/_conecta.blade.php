@@ -17,7 +17,7 @@
                 $esCorrecta = $estado && $seleccionado === $correcto;
                 $letraCorrecta = $textoParaLetra[$correcto] ?? '?';
 
-                $class = '' . $id;
+                $class = 'conecta-select conecta-grupo-' . $id;
                 if ($estado) {
                     $class .= $esCorrecta ? ' correct-bg' : ' incorrect-bg';
                 }
