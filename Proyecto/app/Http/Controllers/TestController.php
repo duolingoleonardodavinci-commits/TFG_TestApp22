@@ -30,7 +30,7 @@ class TestController extends Controller
 
         $preguntas = $modulo->preguntas()->with('listaEtiquetas')->get();
 
-        return view('usuario.profesor.tests.crearTest', compact('modulo', 'preguntas'));
+        return view('usuario.profesor.tests.gestionTest', compact('modulo', 'preguntas'));
     }
 
     // Crear test
@@ -84,7 +84,7 @@ class TestController extends Controller
     // Mostrar página de edición de tests
     public function edit(Modulo $modulo, Test $test) {
         $preguntas = $modulo->preguntas()->with('listaEtiquetas')->get();
-        return view('usuario.profesor.tests.crearTest', compact('preguntas', 'test', 'modulo'));
+        return view('usuario.profesor.tests.gestionTest', compact('preguntas', 'test', 'modulo'));
     }
 
     // Editar test

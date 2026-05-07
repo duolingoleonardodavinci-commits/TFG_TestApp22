@@ -20,7 +20,7 @@ class PreguntaController extends Controller
 
     public function create(Modulo $modulo) {
         $etiquetas_bd = Etiqueta::all();
-        return view('usuario.profesor.preguntas.crearPregunta', compact('modulo', 'etiquetas_bd'));
+        return view('usuario.profesor.preguntas.gestionPregunta', compact('modulo', 'etiquetas_bd'));
     }
 
     public function store(Request $request, Modulo $modulo) {        
@@ -37,7 +37,7 @@ class PreguntaController extends Controller
     public function edit(Modulo $modulo, Pregunta $pregunta) {
         $etiquetas_bd = Etiqueta::all();
         $pregunta->load('listaEtiquetas');
-        return view('usuario.profesor.preguntas.crearPregunta', compact('modulo', 'etiquetas_bd', 'pregunta'));
+        return view('usuario.profesor.preguntas.gestionPregunta', compact('modulo', 'etiquetas_bd', 'pregunta'));
     }
 
     public function update(Request $request, Modulo $modulo, Pregunta $pregunta) {
