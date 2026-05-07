@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Test;
+use Auth;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +23,15 @@ class AlumnoTieneAccesoExamen
         }
 
         if ($test->tipo == 'examen') {
-            $tieneAcceso = now() < $test->examen->fecha_apertura->addMinutes($test->examen->duracion);
+            $alumno = Auth::user()->alumno;
 
-            if (!$tieneAcceso) {
+            $tieneAcceso = now() < $test->examen->fecha_apertura->addMinutes($test->examen->duracion);
+            $hizoExamen = $alumno->puntuaciones()
+                ->where('puntuaciones.id_test', $test->id_test)
+                ->where('puntuaciones.id_alumno', $alumno->id_alumno)
+                ->exists();
+
+            if (!$tieneAcceso || $hizoExamen) {
                 return redirect()
                     ->back()
                     ->withErrors(['error' => 'No tienes acceso al examen']);
