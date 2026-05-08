@@ -39,18 +39,24 @@
                 };
             },
             normalizar(texto) {
-                return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/g, '').trim();
+                if (!texto) return '';
+                // Convertimos forzosamente a String para evitar que explote con los números de las notas
+                return String(texto).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/g, '').trim();
             },
             coincide(nombre_completo, test, tipo, puntuacion, fecha) {
                 let p = this.parsed;
                 let n = this.normalizar(nombre_completo);
                 let t = this.normalizar(test);
-                if (p.texto && !n.includes(this.normalizar(p.texto)) && !t.includes(this.normalizar(p.texto))) return false;
+                
+                let bTexto = this.normalizar(p.texto);
+
+                if (bTexto && !n.includes(bTexto) && !t.includes(bTexto)) return false;
                 if (p.nombre && !n.includes(this.normalizar(p.nombre))) return false;
                 if (p.test && !t.includes(this.normalizar(p.test))) return false;
-                if (p.tipo && !tipo.toLowerCase().includes(p.tipo)) return false;
+                if (p.tipo && !this.normalizar(tipo).includes(this.normalizar(p.tipo))) return false;
                 if (p.puntuacion && !String(puntuacion).startsWith(p.puntuacion)) return false;
                 if (p.fecha && !fecha.includes(p.fecha)) return false;
+                
                 return true;
             }
         }">

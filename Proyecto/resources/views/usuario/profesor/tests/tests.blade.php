@@ -5,15 +5,9 @@
 @push('styles')
 <style>
     :root {
-        /* Usamos el color de la base de datos */
         --color-modulo: {{ $modulo->color }};
-        
-        /* Opcional: Generar variantes con transparencia usando el mismo color */
-        /* Si tu color es Hex (ej: #4F46E5), puedes añadir opacidad al final */
-        --color-modulo-10: {{ $modulo->color }}1a; /* 10% de opacidad */
-        --color-modulo-20: {{ $modulo->color }}33; /* 20% de opacidad */
-        
-        /* Para el hover, podrías simplemente usar el mismo o uno ligeramente distinto */
+        --color-modulo-10: {{ $modulo->color }}1a;
+        --color-modulo-20: {{ $modulo->color }}33;
         --color-modulo-h: {{ $modulo->color }}; 
     }
 </style>
@@ -33,16 +27,35 @@
     <div x-data="{
             busqueda: '',
             normalizar(texto) {
-                return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/g, '').trim();
+                if (!texto) return '';
+                return String(texto).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/g, '').trim();
+            },
+            get parsed() {
+                let tokens = this.busqueda.trim().toLowerCase().split(/\s+/).filter(Boolean);
+                // Extraemos el tipo si existe el prefijo tipo:
+                let tipoRaw = (tokens.find(t => t.startsWith('tipo:')) ?? '').slice(5);
+                // El resto es búsqueda por nombre
+                let textoRaw = tokens.filter(t => !t.startsWith('tipo:')).join(' ');
+                
+                return {
+                    tipo: this.normalizar(tipoRaw),
+                    texto: this.normalizar(textoRaw)
+                };
             },
             coincide(nombre, tipo) {
-                let b = this.normalizar(this.busqueda);
-                return b === '' || this.normalizar(nombre).includes(b) || this.normalizar(tipo).includes(b);
+                let p = this.parsed;
+                let nNorm = this.normalizar(nombre);
+                let tNorm = this.normalizar(tipo);
+
+                if (p.texto && !nNorm.includes(p.texto)) return false;
+                if (p.tipo && !tNorm.includes(p.tipo)) return false;
+                
+                return true;
             }
         }">
 
         <div class="form-group" style="margin-bottom: 2rem;">
-            <input type="search" x-model="busqueda" class="form-input" placeholder="Buscar por nombre o tipo de test...">
+            <input type="search" x-model="busqueda" class="form-input" placeholder="Ej: Unidad 1 tipo:examen">
         </div>
 
         <div class="table-container">
