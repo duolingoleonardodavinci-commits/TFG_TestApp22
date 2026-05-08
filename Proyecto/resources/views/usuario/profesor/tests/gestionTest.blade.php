@@ -85,19 +85,37 @@
 
         <div x-data="{
                 busqueda: '',
-                normalizar(texto) { return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim(); },
+
+                normalizar(texto) {
+                    if (!texto) return '';
+                    return texto
+                        .toLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .replace(/[^\w\s]/g, '')
+                        .replace(/\s+/g, ' ')
+                        .trim();
+                },
+
                 get parsed() {
-                    let tokens = this.normalizar(this.busqueda).split(/\s+/).filter(Boolean);
-                    let etiquetas = tokens.filter(t => t.startsWith(':')).map(t => t.slice(1));
-                    let tipo      = (tokens.find(t => t.startsWith('tipo:')) ?? '').slice(5);
-                    let texto     = tokens.filter(t => !t.startsWith(':') && !t.startsWith('tipo:')).join(' ');
+                    let tokens = this.busqueda.trim().toLowerCase().split(/\s+/).filter(Boolean);
+                    
+                    let etiquetas = tokens.filter(t => t.startsWith(':')).map(t => this.normalizar(t.slice(1)));
+                    let tipo      = this.normalizar((tokens.find(t => t.startsWith('tipo:')) ?? '').slice(5));
+                    let texto     = this.normalizar(tokens.filter(t => !t.startsWith(':') && !t.startsWith('tipo:')).join(' '));
+                    
                     return { etiquetas, tipo, texto };
                 },
+
                 coincide(enunciado, etiquetas_pregunta, tipo_pregunta) {
                     let { etiquetas, tipo, texto } = this.parsed;
-                    if (texto && !enunciado.includes(texto)) return false;
+                    let enunciadoNorm = this.normalizar(enunciado);
+                    let etiquetasNorm = etiquetas_pregunta.map(e => this.normalizar(e));
+
+                    if (texto && !enunciadoNorm.includes(texto)) return false;
                     if (tipo  && !tipo_pregunta.includes(tipo)) return false;
-                    if (etiquetas.length && !etiquetas.every(e => etiquetas_pregunta.some(ep => ep.includes(e)))) return false;
+                    if (etiquetas.length && !etiquetas.every(e => etiquetasNorm.some(ep => ep.includes(e)))) return false;
+                    
                     return true;
                 }
             }">
