@@ -69,7 +69,7 @@
     <button type="submit" class="btn btn-primary" style="font-size: 1.05rem; padding: 0.75rem 1.5rem;">
         {{ isset($modulo) ? 'Actualizar Módulo' : 'Crear Módulo' }}
     </button>
-    <button onclick="history.back()" class="boton_cancelar btn btn-primary" style="font-size: 1.05rem; padding: 0.75rem 1.5rem;">
+    <button type="reset" onclick="history.back()" class="boton_cancelar btn btn-primary" style="font-size: 1.05rem; padding: 0.75rem 1.5rem;">
         <span class="volver_negrita">Cancelar</span>
     </button>
 </div>
