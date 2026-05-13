@@ -209,6 +209,15 @@ span.volver_negrita{
     color: #ff1818;
 }
 
+.cancelar_test{
+    position: fixed;   /* Lo fija en la pantalla, ignorando el scroll */
+    left: 10px;        /* Distancia desde el borde izquierdo (ajústalo a tu gusto) */
+    top: 90px;          /* Lo centra verticalmente en la pantalla */
+    transform: translateY(-10%); /* Centrado vertical exacto */
+    z-index: 9999;
+    min-width: 50px;
+}
+
 /* FEEDBACK */
 .correct-bg { background-color: var(--success-bg) !important; border-color: var(--success) !important; color: #065F46 !important; }
 .incorrect-bg { background-color: var(--error-bg) !important; border-color: var(--error) !important; color: #991B1B !important; }

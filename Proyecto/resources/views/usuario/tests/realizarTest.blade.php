@@ -21,6 +21,9 @@
 
 @section('content')
 <div style="max-width: 800px; margin: 0 auto;">
+    <button type="button" class="btn btn-primary cancelar_test" onclick="if(confirm('El test NO SE GUARDARÁ \n¿Estás seguro que quieres salir?')) { history.back(); }">
+        Salir <span class="volver_negrita">(sin guardar)</span>
+    </button>
     
     <div style="text-align: center; margin-bottom: 2rem;">
         <h1 style="margin-bottom: 0.5rem;">{{ $test->nombre }}</h1>
