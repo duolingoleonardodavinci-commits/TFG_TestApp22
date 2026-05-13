@@ -8,9 +8,6 @@
     <div style="max-width: 600px; margin: 0 auto;">
         <form method="POST" action="{{ route('profesor.modulos.update', $modulo->id_modulo) }}" class="form-card">
             @include('usuario.profesor.modulo.partials.form')
-            <button onclick="history.back()" class="btn btn-primary">
-                Volver atrás <span class="volver_negrita">Sin Guardar Cambios</span>
-            </button>
         </form>
 
         <div class="form-card" style="border-color: #FCA5A5; background-color: #FEF2F2; margin-top: 2rem;">

@@ -80,8 +80,8 @@
             <button type="submit" form="form-accesos" class="btn btn-primary">
                 Guardar Cambios de Acceso
             </button>
-            <button onclick="history.back()" class="btn btn-primary">
-                Volver atrás <span class="volver_negrita">Sin Guardar Cambios CAMBIOS DE ACCESO</span>
+            <button onclick="history.back()" class="boton_cancelar btn btn-primary">
+                <span class="volver_negrita">Cancelar</span>
             </button>
         </div>
 

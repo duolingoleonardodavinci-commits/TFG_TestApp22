@@ -157,8 +157,8 @@
         </div>
 
         <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">{{ $edicion ? 'Actualizar Test' : 'Crear Test' }}</button>
-        <button type="button" class="btn btn-primary" onclick="if(confirm('¿Seguro que NO quieres Guardar los Cambios?')) { history.back(); }">
-            Salir <span class="volver_negrita">Sin Guardar Cambios</span>
+        <button type="button" class="boton_cancelar btn btn-primary" onclick="if(confirm('¿Seguro que NO quieres Guardar los Cambios?')) { history.back(); }">
+            <span class="volver_negrita">Cancelar</span>
         </button>
     </form>
 

@@ -204,9 +204,9 @@ span.volver_negrita{
     font-weight: bold;
 }
 
-.btn-primary:hover .volver_negrita{
+.boton_cancelar:hover{
     font-weight: bold;
-    color: #ff1818;
+    background-color: #c31212;
 }
 
 /* FEEDBACK */
