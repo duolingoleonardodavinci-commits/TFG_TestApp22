@@ -64,8 +64,8 @@
                             </td>
                             <td>
                                 <div style="display: flex; gap: 0.5rem;">
-                                    <a href="#"><button type="button" class="btn btn-secondary">Historial</button></a>
-                                    <button type="submit" form="form-eliminar-{{ $usuario->id_usuario }}" class="btn btn-danger">
+                                    <button type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar este Alumno? \n\n ESTA ACCIÓN NO SE PUEDE DESHACER');"
+                                     form="form-eliminar-{{ $usuario->id_usuario }}" class="btn btn-danger">
                                         Eliminar
                                     </button>
                                 </div>
@@ -79,6 +79,9 @@
         <div style="margin-top: 1.5rem; text-align: right;">
             <button type="submit" form="form-accesos" class="btn btn-primary">
                 Guardar Cambios de Acceso
+            </button>
+            <button onclick="history.back()" class="boton_cancelar btn btn-primary">
+                <span class="volver_negrita">Cancelar</span>
             </button>
         </div>
 

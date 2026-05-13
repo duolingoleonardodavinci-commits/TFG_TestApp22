@@ -200,6 +200,15 @@ h2 { font-size: 1.5rem; margin-bottom: 1rem; }
     color: var(--tx-2);
 }
 
+span.volver_negrita{
+    font-weight: bold;
+}
+
+.boton_cancelar:hover{
+    font-weight: bold;
+    background-color: #c31212;
+}
+
 /* FEEDBACK */
 .correct-bg { background-color: var(--success-bg) !important; border-color: var(--success) !important; color: #065F46 !important; }
 .incorrect-bg { background-color: var(--error-bg) !important; border-color: var(--error) !important; color: #991B1B !important; }
