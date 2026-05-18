@@ -168,6 +168,7 @@ class TestController extends Controller
             'preguntas'      => $request->input('preguntas', []),
             'duracion'       => $request->input('duracion'),       // <-- NUEVO
             'fecha_apertura' => $request->input('fecha_apertura'), // <-- NUEVO
+            'fecha_cierre'   => $request->input('fecha_cierre'),
             'origen_modulo'  => $modulo->id_modulo,
             'origen_test'    => $test?->id_test, 
         ]]);

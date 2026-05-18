@@ -177,6 +177,7 @@
         <input id="destino-borrador" type="hidden" name="destino_pregunta_url">
         <input id="duracion-borrador" type="hidden" name="duracion">
         <input id="fecha-borrador" type="hidden" name="fecha_apertura">
+        <input id="fecha-cierre-borrador" type="hidden" name="fecha_cierre">
     </form>
 
     <script>
@@ -189,6 +190,7 @@
             document.getElementById('tipo-borrador').value = tipoSeleccionado;
             document.getElementById('duracion-borrador').value = tipoSeleccionado === 'examen' ? document.getElementById('duracion-test').value : '';
             document.getElementById('fecha-borrador').value = tipoSeleccionado === 'examen' ? document.getElementById('fecha-test').value : '';
+            document.getElementById('fecha-cierre-borrador').value = tipoSeleccionado === 'examen' ? document.getElementById('fecha-cierre-test').value : '';
             
             var contenedorPreguntas = document.getElementById('preguntas-borrador');
             contenedorPreguntas.innerHTML = '';
