@@ -22,6 +22,12 @@ class AlumnoTieneAccesoExamen
             $test = Test::findOrFail($test);
         }
 
+        if ($test->tipo == 'borrador') {
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'Este test no está disponible']);
+        }
+        
         if ($test->tipo == 'examen') {
             $alumno = Auth::user()->alumno;
 

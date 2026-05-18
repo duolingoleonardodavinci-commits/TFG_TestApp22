@@ -66,6 +66,10 @@
                     <input id="tipo-test-examen" type="radio" name="tipo" value="examen" x-on:change="tipo = 'examen'" {{ $valueTipo === 'examen' ? 'checked' : '' }}>
                     <span>Examen Oficial</span>
                 </label>
+                <label>
+                    <input type="radio" name="tipo" value="borrador" x-on:change="tipo = 'borrador'" {{ $valueTipo === 'borrador' ? 'checked' : '' }}>
+                    <span>Borrador</span>
+                </label>
             </div>
 
             <div x-show="tipo === 'examen'" style="display: flex; gap: 1rem; background: var(--surface-2); padding: 1rem; border-radius: var(--r-sm); border: 1px solid var(--border);">

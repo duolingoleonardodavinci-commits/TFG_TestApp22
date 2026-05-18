@@ -39,7 +39,7 @@ class TestController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255',
-            'tipo' => 'required|in:practica,examen',
+            'tipo' => 'required|in:practica,examen,borrador',
             'preguntas' => 'required|array|min:1',
             'preguntas.*' => 'exists:preguntas,id_pregunta',
             'duracion' => 'required_if:tipo,examen|nullable|integer|min:1',
@@ -95,7 +95,7 @@ class TestController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255',
-            'tipo' => 'required|in:practica,examen',
+            'tipo' => 'required|in:practica,examen,borrador',
             'preguntas' => 'required|array|min:1',
             'preguntas.*' => 'exists:preguntas,id_pregunta',
             'duracion' => 'required_if:tipo,examen|nullable|integer|min:1',
