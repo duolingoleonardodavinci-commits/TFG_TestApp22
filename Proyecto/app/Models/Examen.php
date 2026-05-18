@@ -12,12 +12,14 @@ class Examen extends Model
 
     protected $casts = [
         'fecha_apertura' => 'datetime',
+        'fecha_cierre' => 'datetime',
     ];
 
     protected $fillable = [
         'id_examen',
         'duracion',
         'fecha_apertura',
+        'fecha_cierre',
         'id_test',
     ];
 

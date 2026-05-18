@@ -36,6 +36,7 @@
         $valuePreguntas   = old('preguntas',    $usoBorrador ? $borrador['preguntas']   : ($edicion ? $test->preguntas->pluck('id_pregunta')->toArray() : []));
         $valueDuracion    = old('duracion',       $usoBorrador ? ($borrador['duracion'] ?? '')       : ($test->examen->duracion ?? ''));
         $valueFecha       = old('fecha_apertura', $usoBorrador ? ($borrador['fecha_apertura'] ?? '') : ($test->examen->fecha_apertura ?? ''));
+        $valueFechaCierre = old('fecha_cierre', $usoBorrador ? ($borrador['fecha_cierre'] ?? '') : ($test->examen->fecha_cierre ?? ''));
     @endphp
 
     <h1 style="text-align: left;">{{ $edicion ? 'Editar Test' : 'Crear Test' }}</h1>
@@ -75,6 +76,10 @@
                 <div class="form-group" style="flex: 1;">
                     <label class="form-label">Fecha de apertura</label>
                     <input id="fecha-test" type="datetime-local" name="fecha_apertura" value="{{ $valueFecha }}" class="form-input">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Fecha de cierre</label>
+                    <input id="fecha-cierre-test" type="datetime-local" name="fecha_cierre" value="{{ $valueFechaCierre }}" class="form-input">
                 </div>
             </div>
         </div>

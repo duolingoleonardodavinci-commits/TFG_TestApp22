@@ -40,7 +40,7 @@
                         $alumno = Auth::user()->alumno;
 
                         $tieneAcceso = now() >= $test->examen->fecha_apertura 
-                            && now() < $test->examen->fecha_apertura->addMinutes($test->examen->duracion);
+                            && now() <= $test->examen->fecha_cierre;
                         
                         $hizoExamen = $alumno->puntuaciones()
                             ->where('id_test', $test->id_test)
