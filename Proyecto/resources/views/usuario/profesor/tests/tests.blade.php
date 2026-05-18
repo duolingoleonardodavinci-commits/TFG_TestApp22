@@ -72,13 +72,18 @@
                         <tr x-show="coincide({{ Js::from($test->nombre) }}, {{ Js::from($test->tipo) }})">
                             <td style="font-weight: 600;">{{ $test->nombre }}</td>
                             <td>
-                                <span style="text-transform: capitalize; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem; {{ $test->tipo == 'examen' ? 'background: #fee2e2; color: #dc2626;' : 'background: #d1fae5; color: #059669;' }}">
+                                <span style="text-transform: capitalize; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem; 
+                                    {{ $test->tipo == 'examen' ? 'background: #fee2e2; color: #dc2626;' : 
+                                    ($test->tipo == 'borrador' ? 'background: #fef3c7; color: #d97706;' : 
+                                    'background: #d1fae5; color: #059669;') }}">
                                     {{ $test->tipo }}
                                 </span>
                             </td>
                             <td style="text-align: right;">
                                 <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                                    <a href="{{ route('profesor.tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}" class="btn btn-secondary">Probar</a>
+                                    @if($test->tipo !== 'borrador')
+                                        <a href="{{ route('profesor.tests.iniciar', [$modulo->id_modulo, $test->id_test]) }}" class="btn btn-secondary">Probar</a>
+                                    @endif
                                     <a href="{{ route('profesor.tests.edit', [$modulo->id_modulo, $test->id_test]) }}" class="btn btn-secondary">Editar</a>
                                     <form method="POST" action="{{ route('profesor.tests.destroy', [$modulo->id_modulo, $test->id_test]) }}" style="margin:0;">
                                         @csrf

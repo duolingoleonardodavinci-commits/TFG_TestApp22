@@ -39,7 +39,8 @@
                     if ($test->tipo == 'examen') {
                         $alumno = Auth::user()->alumno;
 
-                        $tieneAcceso = now() >= $test->examen->fecha_apertura 
+                        $tieneAcceso = $test->examen 
+                            && now() >= $test->examen->fecha_apertura 
                             && now() <= $test->examen->fecha_cierre;
                         
                         $hizoExamen = $alumno->puntuaciones()

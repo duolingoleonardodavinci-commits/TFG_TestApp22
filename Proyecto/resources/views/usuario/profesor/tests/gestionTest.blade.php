@@ -66,6 +66,10 @@
                     <input id="tipo-test-examen" type="radio" name="tipo" value="examen" x-on:change="tipo = 'examen'" {{ $valueTipo === 'examen' ? 'checked' : '' }}>
                     <span>Examen Oficial</span>
                 </label>
+                <label>
+                    <input type="radio" name="tipo" value="borrador" x-on:change="tipo = 'borrador'" {{ $valueTipo === 'borrador' ? 'checked' : '' }}>
+                    <span>Borrador</span>
+                </label>
             </div>
 
             <div x-show="tipo === 'examen'" style="display: flex; gap: 1rem; background: var(--surface-2); padding: 1rem; border-radius: var(--r-sm); border: 1px solid var(--border);">
@@ -177,6 +181,7 @@
         <input id="destino-borrador" type="hidden" name="destino_pregunta_url">
         <input id="duracion-borrador" type="hidden" name="duracion">
         <input id="fecha-borrador" type="hidden" name="fecha_apertura">
+        <input id="fecha-cierre-borrador" type="hidden" name="fecha_cierre">
     </form>
 
     <script>
@@ -189,6 +194,7 @@
             document.getElementById('tipo-borrador').value = tipoSeleccionado;
             document.getElementById('duracion-borrador').value = tipoSeleccionado === 'examen' ? document.getElementById('duracion-test').value : '';
             document.getElementById('fecha-borrador').value = tipoSeleccionado === 'examen' ? document.getElementById('fecha-test').value : '';
+            document.getElementById('fecha-cierre-borrador').value = tipoSeleccionado === 'examen' ? document.getElementById('fecha-cierre-test').value : '';
             
             var contenedorPreguntas = document.getElementById('preguntas-borrador');
             contenedorPreguntas.innerHTML = '';
