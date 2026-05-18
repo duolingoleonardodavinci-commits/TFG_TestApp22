@@ -17,6 +17,7 @@ class Puntuacion extends Model
         'id_test',
         'id_alumno',
         'fecha',
+        'duracion_segundos',
         'puntuacion',
         'tipo'
     ];

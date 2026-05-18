@@ -77,6 +77,7 @@
                         <th>Tipo</th>
                         <th>Nota</th>
                         <th>Fecha</th>
+                        <th>Duración</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,6 +99,7 @@
                             <td><span style="font-size: 0.8rem; opacity: 0.7;">{{ strtoupper($p->test->tipo) }}</span></td>
                             <td style="font-family: var(--mono); font-weight: 700; color: var(--color-modulo);">{{ $punt }}</td>
                             <td style="font-size: 0.8rem; color: var(--tx-3);">{{ $fecha }}</td>
+                            <td>{{ gmdate('H:i:s', $p->duracion_segundos) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('id_alumno')->constrained('alumnos', 'id_alumno')->cascadeOnDelete();
             
             $table->timestamp('fecha')->nullable();
+            $table->unsignedSmallInteger('duracion_segundos')->nullable();
             
             $table->decimal('puntuacion', 5, 2)->nullable();
             $table->string('tipo')->default('examen');

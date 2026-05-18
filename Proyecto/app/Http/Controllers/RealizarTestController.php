@@ -17,6 +17,7 @@ class RealizarTestController extends Controller
     // PROBAR
     public function iniciarTest(Modulo $modulo, Test $test) {
         $this->testService->limpiarSesion($test->id_test, $test->preguntas);
+        session(['test_inicio_' . $test->id_test => now()]);
         $ruta = Auth::user()->rol === 'profesor' ? 'profesor.tests.realizar' : 'alumno.tests.realizar';
         return redirect()->route($ruta, [$modulo->id_modulo, $test->id_test]);
     }
@@ -50,11 +51,15 @@ class RealizarTestController extends Controller
                 $puntuacion = 0;
             }
 
+                $fechaInicio = session('test_inicio_' . $test->id_test, now());
+                $duracionSegundos = $fechaInicio->diffInSeconds(now());
+
                 Puntuacion::create([
-                    'id_test'    => $test->id_test,
-                    'id_alumno'  => $usuario->id_usuario, 
-                    'puntuacion' => $puntuacion,
-                    'tipo'       => $test->tipo
+                    'id_test'           => $test->id_test,
+                    'id_alumno'         => $usuario->id_usuario,
+                    'puntuacion'        => $puntuacion,
+                    'tipo'              => $test->tipo,
+                    'duracion_segundos' => $duracionSegundos,
                 ]);
         }
 
