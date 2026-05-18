@@ -55,11 +55,12 @@ class PuntuacionSeeder extends Seeder
                             ->format('Y-m-d H:i:s');
 
                         Puntuacion::create([
-                            'id_test'    => $test->id_test,
-                            'id_alumno'  => $alumno->id_alumno,
-                            'fecha'      => $fecha,
-                            'puntuacion' => $nota,
-                            'tipo'       => $test->tipo,
+                            'id_test'           => $test->id_test,
+                            'id_alumno'         => $alumno->id_alumno,
+                            'fecha'             => $fecha,
+                            'puntuacion'        => $nota,
+                            'tipo'              => $test->tipo,
+                            'duracion_segundos' => rand(60, 3600),
                         ]);
                     }
                 }

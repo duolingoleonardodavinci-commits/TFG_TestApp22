@@ -92,7 +92,7 @@
 
 @if (Auth::user()->alumno && $test->tipo == 'examen' && !isset($estado))
     <script>
-        var segundosRestantes = {{ now()->diffInSeconds($test->examen->fecha_apertura->addMinutes($test->examen->duracion)) }};
+        var segundosRestantes = {{ $test->examen->duracion * 60 }};
         if (segundosRestantes > 0) {
             var temporizador = setInterval(() => {
                 var horas = String(Math.floor(segundosRestantes / 3600)).padStart(2, '0');

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_examen');
             $table->unsignedSmallInteger('duracion')->nullable();
             $table->timestamp('fecha_apertura')->nullable();
+            $table->timestamp('fecha_cierre')->nullable();
             $table->foreignId('id_test')->constrained('tests', 'id_test')->cascadeOnDelete(); 
         });
     }

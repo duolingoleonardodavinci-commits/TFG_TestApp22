@@ -44,6 +44,7 @@ class TestController extends Controller
             'preguntas.*' => 'exists:preguntas,id_pregunta',
             'duracion' => 'required_if:tipo,examen|nullable|integer|min:1',
             'fecha_apertura' => 'required_if:tipo,examen|nullable|date',
+            'fecha_cierre' => 'required_if:tipo,examen|nullable|date|after:fecha_apertura',
         ]);
 
         try {
@@ -62,6 +63,7 @@ class TestController extends Controller
                 Examen::create([
                     'duracion' => $validated['duracion'],
                     'fecha_apertura' => $validated['fecha_apertura'],
+                    'fecha_cierre' => $validated['fecha_cierre'],
                     'id_test' => $test->id_test,
                 ]);
             }
@@ -98,6 +100,7 @@ class TestController extends Controller
             'preguntas.*' => 'exists:preguntas,id_pregunta',
             'duracion' => 'required_if:tipo,examen|nullable|integer|min:1',
             'fecha_apertura' => 'required_if:tipo,examen|nullable|date',
+            'fecha_cierre' => 'required_if:tipo,examen|nullable|date|after:fecha_apertura',
         ]);
 
         try {
@@ -109,12 +112,14 @@ class TestController extends Controller
                 Examen::create([
                     'duracion' => $validated['duracion'],
                     'fecha_apertura' => $validated['fecha_apertura'],
+                    'fecha_cierre' => $validated['fecha_cierre'],
                     'id_test' => $test->id_test,
                 ]);
             } else if ($test->tipo == 'examen' && $validated['tipo'] == 'examen'){
                 $test->examen->update([
                     'duracion' => $validated['duracion'],
                     'fecha_apertura' => $validated['fecha_apertura'],
+                    'fecha_cierre' => $validated['fecha_cierre'],
                 ]);
             }
 

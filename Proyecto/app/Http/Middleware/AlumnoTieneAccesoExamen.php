@@ -25,13 +25,16 @@ class AlumnoTieneAccesoExamen
         if ($test->tipo == 'examen') {
             $alumno = Auth::user()->alumno;
 
-            $tieneAcceso = now() < $test->examen->fecha_apertura->addMinutes($test->examen->duracion);
             $hizoExamen = $alumno->puntuaciones()
                 ->where('puntuaciones.id_test', $test->id_test)
                 ->where('puntuaciones.id_alumno', $alumno->id_alumno)
                 ->exists();
 
-            if (!$tieneAcceso || $hizoExamen) {
+            $tieneAcceso = now() >= $test->examen->fecha_apertura 
+                && now() <= $test->examen->fecha_cierre
+                && !$hizoExamen;
+
+            if (!$tieneAcceso) {
                 return redirect()
                     ->back()
                     ->withErrors(['error' => 'No tienes acceso al examen']);
