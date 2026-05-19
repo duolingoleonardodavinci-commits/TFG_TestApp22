@@ -11,7 +11,7 @@
                 
                 // si la respuesta se ha dejado en blanco, le pone una clase especial que indica 
                 // cual sería la correción (de forma diferente a si la hubiera puesto corretamente)
-                if (($estado['correcta'] === $opcion) && $enBlanco) $class .= ' azulado-bg';
+                if (($estado['correcta'] === $valor) && $enBlanco) $class .= ' azulado-bg';
             }
         @endphp
         <label class="{{ $class }}">
