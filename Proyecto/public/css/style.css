@@ -215,9 +215,9 @@ span.volver_negrita{
     border-color: var(--success) !important; 
     color: #065F46 !important; 
 }
-.correct-bg::after { 
+/*.correct-bg::after { 
     content: "✅";
-}
+}*/
 
 .incorrect-bg { 
     background-color: var(--error-bg) ; 
@@ -225,6 +225,12 @@ span.volver_negrita{
     color: #991B1B !important; 
 }
 
-.incorrect-bg::after { 
+/*.incorrect-bg::after { 
     content: "❌";
+}*/
+
+.azulado-bg { 
+    background-color: rgba(0, 106, 255, 0.257) !important; 
+    border-color: rgba(46, 46, 189, 0.599) !important; 
+    color: #0c007d !important; 
 }
