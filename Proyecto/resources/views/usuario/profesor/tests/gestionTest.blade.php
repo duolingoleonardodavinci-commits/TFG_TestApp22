@@ -16,6 +16,10 @@
         /* Para el hover, podrías simplemente usar el mismo o uno ligeramente distinto */
         --color-modulo-h: {{ $modulo->color }}; 
     }
+    /* UX Si una pregunta está marcada, se muestra en arriba en la lista de preguntas */
+    div[style*="display: flex"] > div:has(input[type="checkbox"]:checked) {
+        order: -1;
+    }
 </style>
 @endpush
 
@@ -137,7 +141,7 @@
                 <button type="button" class="btn btn-secondary" onclick="gestorPreguntas('{{ route('profesor.preguntas.create', $modulo->id_modulo) }}')">+ Crear pregunta</button>
             </div>
 
-            <div style="max-height: 400px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0.5rem; background: var(--bg);">
+            <div style="display: flex; flex-direction: column; max-height: 400px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0.5rem; background: var(--bg);">
                 @foreach ($preguntas as $pregunta)
                     <div x-data='{ abierta: false, enunciado: @json(strtolower($pregunta->contenido["enunciado"] ?? "")), etiquetas: @json($pregunta->listaEtiquetas->pluck("nombre")->map(fn($n) => strtolower($n))->toArray()), tipo: @json(strtolower($pregunta->tipo)) }'
                          x-show="coincide(enunciado, etiquetas, tipo)"
