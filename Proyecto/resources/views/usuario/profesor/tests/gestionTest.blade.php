@@ -20,6 +20,10 @@
     div[style*="display: flex"] > div:has(input[type="checkbox"]:checked) {
         order: -1;
     }
+    /* inputs con color del modulo */
+    input:checked{
+        accent-color: var(--color-modulo);
+    }
 </style>
 @endpush
 
