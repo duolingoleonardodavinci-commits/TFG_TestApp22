@@ -4,7 +4,9 @@
     $esCorrecta = $estado && $estado['puntuacion'] >= 1.0;
     $class = 'form-input';
     if ($estado) $class .= $esCorrecta ? ' correct-bg' : ' incorrect-bg';
-    if ($respUsuario == '') $class .= ' azulado-bg';
+
+    if (!$estado) $class .= '';
+    elseif (($respUsuario === '')) $class .= ' azulado-bg';
 @endphp
 
 <p style="all: unset; !important" class="{{ $class }}"></p>
