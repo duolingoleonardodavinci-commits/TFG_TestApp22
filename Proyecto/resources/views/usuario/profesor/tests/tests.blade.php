@@ -63,8 +63,8 @@
                 <thead>
                     <tr>
                         <th>Nombre del Test</th>
-                        <th style="padding-left: 37px;">Tipo</th>
-                        <th style="text-align: right; padding-right: 136px;">Acciones</th>
+                        <th>Tipo</th>
+                        <th style="text-align: right;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
