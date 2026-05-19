@@ -6,10 +6,14 @@ use App\Models\Modulo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\InicioService;
 
 class InicioController
 {
-   public function indexMostrar() {
+    // Constructor PHP8 para añadir funciones de InicioService
+    public function __construct(protected InicioService $inicioService) {}
+    
+    public function indexMostrar() {
         if (Auth::check()) {
             return Auth::user()->esProfesor()
                 ? redirect()->route('inicio.dashboardProfesor.mostrar')
@@ -59,27 +63,10 @@ class InicioController
             $alumno = Auth::user()->alumno;
 
             $moduloActual = $modulo ?? Modulo::find($usuario->id_ultimo_modulo_visitado);
-
-            // Verificar que el alumno tiene acceso al módulo
-            $tieneAcceso = false;
-
-            if ($moduloActual) {
-                $tieneAcceso = $moduloActual->alumnos()
-                        ->wherePivot('id_alumno', $alumno->id_alumno)
-                        ->wherePivot('tiene_acceso', 1)
-                        ->exists();
-            }
-
-            if ($tieneAcceso) {
-                // Se guarda el último módulo visitado
-                if ($moduloActual) {
-                    $usuario->id_ultimo_modulo_visitado = $moduloActual->id_modulo;
-                    $usuario->save();
-                }
-            } else {
-                $moduloActual = null;
-            }
-
+            
+            // Verificar que el alumno tiene acceso al módulo y guarda útilo modulo vistado
+            $moduloActual = $this->inicioService->AccesoModuloAlumno($moduloActual, $alumno, $usuario);
+            
             return view('usuario.alumno.dashboard', compact('moduloActual'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Error al acceder al módulo, inténtalo de nuevo.']);
