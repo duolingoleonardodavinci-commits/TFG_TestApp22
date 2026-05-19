@@ -6,6 +6,7 @@
     if ($estado) $class .= $esCorrecta ? ' correct-bg' : ' incorrect-bg';
 @endphp
 
+<p style="all: unset; !important" class="{{ $class }}"></p>
 <input type="text" name="respuestas[{{ $id }}]" class="{{ $class }}" value="{{ $respUsuario }}" placeholder="Escribe tu respuesta..." autocomplete="off" {{ $disabled }} style="max-width: 100%;">
 
 @if ($estado && !$esCorrecta)

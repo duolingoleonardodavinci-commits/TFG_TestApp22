@@ -210,5 +210,21 @@ span.volver_negrita{
 }
 
 /* FEEDBACK */
-.correct-bg { background-color: var(--success-bg) !important; border-color: var(--success) !important; color: #065F46 !important; }
-.incorrect-bg { background-color: var(--error-bg) !important; border-color: var(--error) !important; color: #991B1B !important; }
+.correct-bg { 
+    background-color: var(--success-bg);
+    border-color: var(--success) !important; 
+    color: #065F46 !important; 
+}
+.correct-bg::after { 
+    content: "✅";
+}
+
+.incorrect-bg { 
+    background-color: var(--error-bg) ; 
+    border-color: var(--error) !important; 
+    color: #991B1B !important; 
+}
+
+.incorrect-bg::after { 
+    content: "❌";
+}

@@ -16,6 +16,10 @@
         /* Para el hover, podrías simplemente usar el mismo o uno ligeramente distinto */
         --color-modulo-h: {{ $modulo->color }}; 
     }
+    /* inputs con color del modulo */
+    input:checked{
+        accent-color: var(--color-modulo);
+    }
 </style>
 @endpush
 
