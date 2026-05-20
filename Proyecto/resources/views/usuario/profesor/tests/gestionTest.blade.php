@@ -81,7 +81,7 @@
     }
 
     .tarjeta-banco--atenuada {
-        opacity: 0.45;
+        background-color:#D4D4D4;
     }
 </style>
 @endpush
