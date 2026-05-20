@@ -1,1 +1,0 @@
-// lo unifique en el index porque no se porque no me iba
